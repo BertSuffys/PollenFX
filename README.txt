@@ -32,6 +32,7 @@
       is position:absolute which is defined as a default style in the ParticleDataManager. This element carries the final particle styling.
 
 
+
   ----- Todo v1.0 ----- 
 -> Origin size position unit option
 -> Git & git kraken
