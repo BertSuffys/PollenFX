@@ -34,7 +34,6 @@ class FXItem {
     }
 
 
-
     /**
      * When an FXItem dies, it might have to kill underlying child FX Items if neccesairy. This method is considered abstract and must be implemented
      */

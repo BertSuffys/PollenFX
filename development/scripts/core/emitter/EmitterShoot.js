@@ -31,11 +31,9 @@ class EmitterShoot extends Emitter {
       }
     }
     // in case of delay: check when to begin
-    else {
-      if (super.emitterLiveTime > super.delay) {
+    else if (super.actTime > super.delay) {
         super.active = true
       }
-    }
   }
 
 

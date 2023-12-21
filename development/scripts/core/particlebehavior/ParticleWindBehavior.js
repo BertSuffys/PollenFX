@@ -1,20 +1,9 @@
-
-
-
 class ParticleWindBehavior extends ParticleBehavior {
 
     _cycleDuration = 0
     _windSpeed = 0
   
-    constructor(
-      angles,
-      cycleDuration = -1,
-      windSpeed = 1,
-      deepRandom = false,
-      shallowRandom = false,
-      considerDefault = false,
-      overrideInitialDirection = false
-    ) {
+    constructor(angles, cycleDuration = -1, windSpeed = 1, deepRandom = false, shallowRandom = false, considerDefault = false, overrideInitialDirection = false ) {
       super("wind")
       this.angles = angles
       this.considerDefault = considerDefault
@@ -32,6 +21,28 @@ class ParticleWindBehavior extends ParticleBehavior {
     reset() {
       this.lastWindEffectX = 0
       this.lastWindEffectY = 0
+       
+    }
+
+
+    act(particle, actTime, deltaTime) { 
+      const fullRangeProgress = (actTime / this.cycleDuration) * (this.directionsX.length - 1)
+  
+      const fromIndex = ~~fullRangeProgress % this.directionsX.length
+      const toIndex = (fromIndex + 1) % this.directionsX.length
+  
+      const localProgress = fullRangeProgress % 1
+  
+      const xDirChange = PollenMath.lerp(this.directionsX[fromIndex],this.directionsX[toIndex], localProgress)
+      const yDirChange = PollenMath.lerp(this.directionsY[fromIndex],this.directionsY[toIndex], localProgress)
+  
+      this.particleDirectionData.directionX += xDirChange - this.lastWindEffectX
+      this.particleDirectionData.directionY += yDirChange - this.lastWindEffectY
+
+  
+      this.lastWindEffectX = xDirChange
+      this.lastWindEffectY = yDirChange
+
     }
   
     applyParticle(particle) {
@@ -39,6 +50,15 @@ class ParticleWindBehavior extends ParticleBehavior {
         this.cycleDuration = particle.lifeTime
       }
     }
+
+
+    initAngles() {
+      for (let i = 0; i < this.angles.length; i++) {
+        this.directionsX[i] = PollenMath.cos(this.angles[i]) * this.windSpeed
+        this.directionsY[i] = PollenMath.sin(this.angles[i]) * this.windSpeed * -1
+      }
+    }
+
   
   
     configure() {
@@ -110,12 +130,7 @@ class ParticleWindBehavior extends ParticleBehavior {
     }
   
   
-    initAngles() {
-      for (let i = 0; i < this.angles.length; i++) {
-        this.directionsX[i] = PollenMath.cos(this.angles[i]) * this.windSpeed
-        this.directionsY[i] = PollenMath.sin(this.angles[i]) * this.windSpeed * -1
-      }
-    }
+
   
   
     static createDefault() {
@@ -176,31 +191,7 @@ class ParticleWindBehavior extends ParticleBehavior {
     }
   
   
-    act(particle, actTime, deltaTime) {
-      const fullRangeProgress = (actTime / this.cycleDuration) * (this.directionsX.length - 1)
-  
-      const fromIndex = ~~fullRangeProgress % this.directionsX.length
-      const toIndex = (fromIndex + 1) % this.directionsX.length
-  
-      const localProgress = fullRangeProgress % 1
-  
-      const xDirChange = PollenMath.lerp(
-        this.directionsX[fromIndex],
-        this.directionsX[toIndex],
-        localProgress
-      )
-      const yDirChange = PollenMath.lerp(
-        this.directionsY[fromIndex],
-        this.directionsY[toIndex],
-        localProgress
-      )
-  
-      this.particleDirectionData.directionX += xDirChange - this.lastWindEffectX
-      this.particleDirectionData.directionY += yDirChange - this.lastWindEffectY
-  
-      this.lastWindEffectX = xDirChange
-      this.lastWindEffectY = yDirChange
-    }
+
   
   
     createNew(copy) {

@@ -21,7 +21,7 @@ class Emitter extends FXItem {
     this.particleLifetimeNoise = particleLifetimeNoise
     this.delay = Math.max(0, delay)
     this.active = delay <= 0
-    this.emitterOrigin = emitterOrigin
+    this.emitterOrigin = emitterOrigin;
     this.cutOff = 0
     this.particleCount = particleCount;
     // infinite emitter
@@ -57,22 +57,21 @@ class Emitter extends FXItem {
   }
 
   /**
-   * When anchoring to an element, First we check whether the anchor already has an emitter container, if not we create one.
-   * If it does have one, we create a new one as a child within this anchorelement
+   * When anchoring to an element, We add an imploded, sizeless container in which the emitterbox is going to then ultimately reside
    */
   ensureEmitterContainer() {
     let emitterContainer;
     let anchor = this.emitterOrigin.anchorElement != null ? this.emitterOrigin.anchorElement : document.body;
-    emitterContainer = anchor.querySelector(`.${PollenFXClasses.EMITTER_CONTAINER_CLASS}`);
-    if (!valid(emitterContainer)) {
-      emitterContainer = document.createElement('div');
-      emitterContainer.classList.add(PollenFXClasses.EMITTER_CONTAINER_CLASS)
-      if (anchor.hasChildNodes()) {
-        anchor.insertBefore(emitterContainer, anchor.firstChild);       // non-empty anchor? stack ontop of child list
-      } else {
-        anchor.appendChild(emitterContainer);                           // empty anchor? just add
-      }
+
+    // Create container
+    emitterContainer = document.createElement('div');
+    emitterContainer.classList.add(PollenFXClasses.EMITTER_CONTAINER_CLASS)
+    if (anchor.hasChildNodes()) {
+      anchor.insertBefore(emitterContainer, anchor.firstChild);       // non-empty anchor? stack ontop of child list
+    } else {
+      anchor.appendChild(emitterContainer);                           // empty anchor? just add
     }
+
     // Container is imploded, but relative with overflow.
     emitterContainer.style.width = "0px";                        // make larger to see where it is positioned
     emitterContainer.style.height = "0px";                       // make larger to see where it is positioned
@@ -82,6 +81,7 @@ class Emitter extends FXItem {
     if (FXManager.devConfig.DEBUG == true) {
       emitterContainer.style.backgroundColor = "red";
     }
+    // Set.
     this.emitterContainer = emitterContainer;
   }
 
@@ -238,7 +238,7 @@ class Emitter extends FXItem {
       additionalOffsetHeight += this.emitterOrigin.includePadding === true ? 0 : anchorPaddingTop;        // i know, a bit confusing
       additionalOffsetHeight *= -1
 
-      
+
 
       /*******  Calculate Height *******/
       // anchor procentueel
@@ -346,6 +346,9 @@ class Emitter extends FXItem {
   getActiveParticles() {
     return this.particleManager.getActiveFXItems()
   }
+
+
+
 
   reset() {
     return this

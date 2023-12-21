@@ -23,7 +23,7 @@
       to the body element. We call this the anchor element. Within this anchor element the EmitterContainer is added, which is an imploded, relatively positioned, width
       and heightless element with top:0 and left:0 initialized. This functions as the first layer of emitter setup. Its styling is important. its class="pollenfx_emitter_container".
       Beware that at some point i changed the position from absolute to relative without being fully aware of the consequences. 
-   -> EmitterBox: When an emitter is being created, it will firstly scan its anchorelement for an existing EmitterContainer. If it does not exist, it quickly creates one. Next up,
+   -> EmitterBox: When an emitter is being created, It will first create the emitterContainer as described earlier. Next up,
       within the EmitterContainer, an EmitterBox is being created. this element mimics the anchor element within which the particles will reside. Its in some sense a sort of clone
       of the anchorelement because we do not have control over its styling. We do have control over the EmitterBox. Each emitter has one emitterbox, it is position:relative, its 
       styling is important, has class="pollenfx_emitter_box", and can only be seen when DevConfig.DEBUG=true.
@@ -31,8 +31,9 @@
       is position:absolute which is defined as a default style in the ParticleDataManager. This element carries the final particle styling.
 
 
+
   ----- Todo v1.0 ----- 
--> Origin size position unit option
+
 -> Git & git kraken
 
 
@@ -43,7 +44,7 @@
 -> 5. Have someone production test? (Hubert?)
 -> 6. UML creation
 -> 7. PDF creation of the html documentation
--> 8. Write introductory text with highlights of the app
+-> 8. Write introductory text with highlights of the app, features & functions, known bugs, introductory text, contact me for huge errors,
 
   ----- Future updates ----- 
 -> Emitterbehavior change to 1 behavior for all particles, with an assistent data-object for all behavior-specific data items which the behaviors currently have
@@ -55,6 +56,14 @@
    sure how an emitter will be visible immediately upon creating it. But this is food for thought.
 -> Perhaps it could be an idea to move the config parameters & enums (found in config.js) to a better location
 -> Include deltatime speed calculation in all behavior objects
+-> Reset function move to FXItem?
+-> Origin size & position of the origin are still absolute and does not use PositionUnits. This also counts for properties such as speed, size, .. of the particle
+   This could be a huge issue, but can be fixed by setting values based on a calculated device sizes.
+
+
+  ----- Bugs found ----- 
+-> When wind is applied, and a particle is being recycled, there is something in the wind behavior that is not being reset, causing some sort of fluttering. Actually has to do with positioning.
+-> When no defaultdata is applied, but another element is that requires that dependency, a new one is going to be made with a default origin object that does not match the real one.
 
   ----- Terminology ----- 
 -> actTime = time (in ms) something is alive for
@@ -62,14 +71,5 @@
 -> lifeTime = time (in ms) something should in total be alive for
 -> liveTime = spawnTime + actTime, in essence.
 
-colorfilter -> timeAlive (calculated) aka livetime
-colorshift -> timeAlive (calculated) aka livetime
-direction -> /
-flipbook -> /
-gravity -> /
-opacity -> /
-rotation -> /
-rotationbydirection -> /
-sizebylife -> /
-wind -> timeAlive (calculated) aka livetime                               lastUpdateTime + deltaTime - particle.spawnTime
+
 

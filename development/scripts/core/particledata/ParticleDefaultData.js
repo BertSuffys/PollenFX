@@ -36,9 +36,6 @@ class ParticleDefaultData extends ParticleData {
       return new ParticleDefaultData(
         10,
         10,
-        -1,
-        -1,
-        true,
         new PointEmitterOrigin(0, 0)
       )
     }
