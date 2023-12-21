@@ -9,7 +9,6 @@
   ----- export documentation to pdf ----- 
 -> In the browser open the html in a tab. press ctrl+p, alter destination to 'Save as pdf', optionally alter the properties, save.
 
-
   ----- script bundling----- 
 -> For the future, i will maybe develop a js bundling tool that inspects the dependencies and merges them into one file.
 -> For now, i bundle manually and the order should not matter due to the hoisting principle within single .js files
