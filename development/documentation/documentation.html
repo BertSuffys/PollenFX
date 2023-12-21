@@ -1,0 +1,901 @@
+<!--
+  Development notes & documentation
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PollenFX - documentation</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <main>
+
+    <!-- PollenFX Logo -->
+    <div class="flex row hcenter" id="logo">
+      <img src="./img/pollenfx_logo.png" alt="">
+    </div>
+
+
+    <!-- HEADER -->
+    <div>
+      <h1>PollenFX - Particle Engine V1.0</h1>
+
+
+
+      <!-- ------------------------------------------------------------------------------- DOCUMENTATION --------------------------------------------------------------------------------------- -->
+
+
+      <!-- DOCUMENTATION -->
+      <div id="documentation" class="topic">
+        <h2>Documentation</h2>
+
+
+        <!-- 1. Introductory text -->
+        <div class="topic">
+          <h3>1. Introduction</h3>
+          <p class="c-80">
+            PollenFX is a lightweight, clientside, code-first, javascript based, DOM-oriented particle engine, used to
+            create a wide variety of
+            visually compelling particle effects. The tool consists out of many
+            different configuration components that allow the developer to create all sorts of visual effects by
+            combining
+            these components without relying on external scripts. In order to use PollenFX, one is expected to have
+            minimal
+            javascript knowledge, although most concepts of PollenFX should be explained sufficiently in this document.
+          </p>
+          <nav>
+            <ul>
+              <li>One single .js script</li>
+              <li>No CSS files</li>
+              <li>No external scripts/dependencies</li>
+              <li>Code-first engine</li>
+              <li>Lightweight</li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- 2. Simple code snippet -->
+        <div class="topic">
+          <h3>
+            <hr>2. A simple code snippet & general overview
+          </h3>
+
+          <!-- Image 1 : initial setup -->
+          <p class="c-80">
+            In the first image we like to offer you an easy template to get started with the engine. Firstly, we create
+            a self-executing function which serves as the entry point
+            for the configuration of our particle setup. Another way could be by making use of a document on-load
+            handler. Next up we create a method 'start', which is going to take the time that has
+            past in milliseconds, which is 0 at the moment of startup. Within the start method we are going to make use
+            of the window.requestAnimationFrame() method, which is the browser's built-in
+            loop method, and is going to continuously be called by the browser depending on how fast your cpu functions.
+            To this requestAnimationFrame we are going to subscribe with one of our own methods.
+            In this case this is the start() method again. What this essentially means is that we have created an
+            endless loop of the start() method, with the difference that each iteration of start(), we receive
+            an updated nowTime, being the time that has passed in milliseconds. We need this value for our engine.
+          </p>
+          <img src="./img/snippet_01.JPG" style="width:450px;">
+          <p class="c-80">
+            First, we quickly gloss over the different concepts, after which they will be explained in more depth. First
+            an FXManager is created, which serves as an object that bundles different emitters.
+            Next, we retrieve the element we want to attach our particle effect to. Then we create an origin object in
+            order to define the area in which particles can spawn. An emitter is then created,
+            with this origin injected. Data objects & behavior objects are being created in order to configure the
+            emitter, and then applied to this emitter. The emitter is then inserted into the FXManager,
+            we start the looping function and subscribe to this function by having our fxmanager perform the act()
+            function. This is the general flow of how to use the engine and one will mostly add/alter
+            more data and behavior objects. Bear in mind that in the above image not all constructor parameters are
+            provided and there is alot more to cover. In the next segments these concepts will be explained
+            in more depth, and the full extend of those parameters will be explained. The order in which constructor
+            parameters will be noted is also the order in which they have to be coded.
+          </p>
+
+
+
+          <p class="c-80">
+            In the next image we demonstrate how a real, yet simple particle is being created. Make sure the DOM in
+            which you are working contains a body element.
+          </p>
+
+          <img src="./img/snippet_02.JPG" style="width:900px;" alt="">
+
+          <p class="c-80">
+            <span class="title">1. FXManager and Emitters</span> <br>
+            Best explained together are the FXManager and Emitters. An emitter is considered the manner in which
+            particles of the same type are being excreted. It is important to note that an
+            emitter will always create particles of the same type and with the same configuration. An example of this
+            would be
+            the way in which smoke
+            particles are generated one after the other. One could consider this to be a smoke 'emitter'.
+            Particle effects will in many cases be more complex than a singe emitter. A good analalogy would be a
+            campfire. When thinking about a campfire one could imagine the sparks, the smoke and the flames.
+            These three concepts will obviously behave differently, thus requiring three different emitters and this is
+            where the FXManager comes into play. The FXManager is a tool to bundle different emitters
+            in order to create one coherent particle effect. In the analogy described previously an FXManager could
+            combine a smoke, spark and flame emitter, creating a fire particle effect. The creation and
+            different types of emitters will be explained further down.
+          </p>
+          <p class="c-80">
+            <span class="title">2. Origins</span> <br>
+            Regardless of the type of emitter one picks, it is required to also configure an origin object. Origins can
+            be seen as an imaginary or invisible region of space in which particles are allowed
+            to spawn. Upon creation of an emitter, one is required to pass the origin object to the emitter for it to
+            function correctly.
+          </p>
+          <p class="c-80">
+            <span class="title">3. Behavior objects</span> <br>
+            Behavior objects are being created and provided to the emitters. These behavior objects define the way an
+            individual particle within a certain emitter should
+            behave, and once applied to an emitter, this behavior will be taking effect on all of the particles created
+            from this emitter. As an example, lets consider snowfall.
+            When snow falls it is obviously affected by gravity and in order to model this, we will add a
+            gravitybehavior object. Secondly, the falling snow is also affected by wind,
+            which can be achieved by adding windbehavior also. Finally, in case we want the snow to melt whilest falling
+            we could add size-by-life behavior which allows to change the size
+            of the particle over time. It is important to note that behavior objects function independantly of eachother
+            and the endresult is a summation of these individual behaviors combined.
+          </p>
+          <p class="c-80">
+            <span class="title">4. Data objects</span> <br>
+            Going hand in hand with the behavior objects, are the data objects. Data objects contain the data required
+            for a particle to be shown in a certain way. In the same way that behavior
+            objects must be provided to an emitter, one must do so too for data objects. When applying behavior to an
+            emitter it is actually this data object that is internally being altered. It
+            is however important to note that you can apply behavior without its respective data object, in which case a
+            default data object will be created for this behavior type. Applying data
+            objects without their respective behavior objects is also possible and will result in giving the particle an
+            initial, and unchanging property. Finally and most intrestingly, data
+            objects and their respective behavior objects can be used in combination and result in an initial configured
+            state for this particle, which is then being altered over time by the
+            behavior object. It is important to note that when talking about 'its respective behavior'-object, that each
+            behavior object acts on a certain data object. An example of this would be
+            the directionbehavior acting on the directiondata. There are also certain data objects that are not acted
+            upon by any behavioral
+            objects.
+          </p>
+          <p class="c-80">
+            <span class="title">5. Initial setup</span> <br>
+            todo: code snippet show renderloop of browser
+          </p>
+
+        </div>
+
+
+        <!-- 3. FXManager -->
+        <div class="topic">
+          <h3>
+            <hr>3. FXManager
+          </h3>
+          <p class="c-80">
+            As explained earlier, the FXManager is the core object of PollenFX. One will usually only need one to be
+            active and a one time.
+          </p>
+
+
+          <span class="parameter">* allowDOMOverflow: </span>Defines whether particles will be hidden upon overflowing
+          the body, or whether scrolling will be enabled. If for some reason one would need
+          two FXManager objects, the last FXManager object created will define which allowDOMOverflow value will take
+          action. The default is set to false, meaning overflow:hidden.<br>
+          </p>
+
+
+        </div>
+
+
+
+        <!-- 4. Origins -->
+        <div class="topic">
+          <h3>
+            <hr>4. Origins
+          </h3>
+          <p class="c-80">
+            An origin is considered an area in which particles can be defined and have to be passed on to a future
+            emitter in order to function.
+            There are 4 types of origin. It is important to note that when an origin is created, somewhere within the
+            DOM, an element is going to be created which we refer to as the
+            emitterbox. This emitterbox can be interpreted as the area in which the origin object can exists. As a
+            default, the emitterbox will mimic the body so that the origin can
+            exist anywhere on the webpage.
+          </p>
+
+          <p class="c-80">
+            <span class="title">1. CircularEmitterOrigin</span> <img style="height: 25px;"
+              src="./img/icon_circularEmitterOrigin.png"><br>
+            Allows particles to come to life somewhere within an elliptical/circular area.<br><br>
+
+            <span class="parameter">* posX: </span>Center x coordinate of the circular/elliptical area.<br>
+            <span class="parameter">* posY: </span>Center y coordinate of the circular/elliptical area.<br>
+            <span class="parameter">* width: </span>Width of the circular/elliptical area.<br>
+            <span class="parameter">* height: </span>Height of the circular/elliptical area.<br>
+            <span class="parameter">* posXNoise (optional): </span>Adds noise/random offset to the posX parameter.
+            Smaller values [0,1] yield best results<br>
+            <span class="parameter">* posYNoise (optional): </span>Adds noise/random offset to the posY parameter.
+            Smaller values [0,1] yield best results<br>
+            <span class="parameter">* overflow (optional): </span>Boolean value defining whether the particles will be
+            shown when they go beyond the bounds of its emitterbox. This is usually irrelevant
+            for origins without anchorElement.<br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">2. LineEmitterOrigin</span> <img style="height: 25px;"
+              src="./img/icon_lineEmitterOrigin.png"><br>
+            Allows particles to come to life at some point or around a defined line segment.<br><br>
+
+            <span class="parameter">* posX_1: </span>The x position coordinate of first point defining the line
+            segment.<br>
+            <span class="parameter">* posX_2: </span>The x position coordinate of second point defining the line
+            segment.<br>
+            <span class="parameter">* posY_1: </span>The y position coordinate of first point defining the line
+            segment.<br>
+            <span class="parameter">* posY_2: </span>The y position coordinate of second point defining the line
+            segment.<br>
+            <span class="parameter">* posXNoise (optional): </span>Adds noise/random offset to the posX_1 & posX_2
+            parameters. Smaller values [0,1] yield best results. value -1 means 'unset'.<br>
+            <span class="parameter">* posYNoise (optional): </span>Adds noise/random offset to the posY_1 & posY_2
+            parameters. Smaller values [0,1] yield best results. value -1 means 'unset'.<br>
+            <span class="parameter">* offset (optional): </span>Allows particles to spawn some distance 'óffset' away
+            from the line segment, perpendicularly. value -1 means 'unset.'<br>
+          </p>
+
+
+
+          <p class="c-80">
+            <span class="title">3. PointEmitterOrigin</span> <img style="height: 25px;"
+              src="./img/icon_pointEmitterOrigin.png"><br>
+            Allows particles to come to life on a point.<br><br>
+            <span class="parameter">* posX: </span>The x position coordinate of the point defining where particles can
+            spawn.<br>
+            <span class="parameter">* posY: </span>The y position coordinate of the point defining where particles can
+            spawn.<br>
+            <span class="parameter">* posXNoise (optional): </span>Adds noise/random offset to the posX parameter.
+            Smaller values [0,1] yield best results<br>
+            <span class="parameter">* posYNoise (optional): </span>Adds noise/random offset to the posY parameter.
+            Smaller values [0,1] yield best results<br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">4. RectangularEmitterOrigin</span> <img style="height: 25px;"
+              src="./img/icon_rectangularEmitterOrigin.png"><br>
+            Allows particles to come to life somewhere within an rectangular area.<br><br>
+
+            <span class="parameter">* posX: </span>The x position coordinate of the top left corner of the
+            rectangle/square in which the particles can spawn.<br>
+            <span class="parameter">* posY: </span>The y position coordinate of the top left corner of the
+            rectangle/square in which the particles can spawn.<br>
+            <span class="parameter">* width: </span>Width of the rectangle/square area.<br>
+            <span class="parameter">* height: </span>Height of the rectangle/square area.<br>
+            <span class="parameter">* posXNoise (optional): </span>Adds noise/random offset to the posX
+            parameter. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            <span class="parameter">* posYNoise (optional): </span>Adds noise/random offset to the posY
+            parameter. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+          </p>
+
+          <p class="c-80">
+            <span class="title">Additional origin parameters</span> <br>
+            Regardless of the chosen origin type, all origins share these parameter options.<br><br>
+
+            <span class="parameter">* anchorElement (optional): </span>A native HTMLElement object to which the origin
+            is going to be attached. If initialized, the emitterbox will mimic this anchor element.<br>
+            <span class="parameter">* containerUnitWidth (optional): </span>A positionUnit enum value representing
+            whether the 'width' value of this emitterbox that is optionally provided should be expressed
+            as a percentage of the anchorElement's width, absolutely in pixels, or as a css vw value.<br>
+            <span class="parameter">* containerUnitHeight (optional): </span>A positionUnit enum value representing
+            whether the 'height' value of this emitterbox that is optionally provided should be expressed
+            as a percentage of the anchorElement's height, absolutely in pixels, or as a css vh value.<br>
+            <span class="parameter">* containerWidth (optional): </span>The width of the emitterbox, mimicing the anchorElement,
+            if
+            provided. The width value is expressed through the containerUnitWidth field.<br>
+            <span class="parameter">* containerHeight (optional): </span>The height of the emitterbox, mimicing the
+            anchorElement,
+            if provided. The height value is expressed through the containerUnitHeight field.<br>
+            <span class="parameter">* positionUnitWidth (optional): </span>A positionUnit enum value representing whether the
+            'left' value of this emitterbox that is optionally provided should be expressed
+            as a percentage of the anchorElement's width, absolutely in pixels, or as a css vw value.<br>
+            <span class="parameter">* positionUnitHeight (optional): </span>A positionUnit enum value representing whether the
+            'top' value of this emitterbox that is optionally provided should be expressed
+            as a percentage of the anchorElement's height, absolutely in pixels, or as a css vw value.<br>
+            <span class="parameter">* left (optional): </span>Optional x-offset added to the emitterbox, mimicing the
+            anchorElement, if provided. The left value is expressed through the positionUnitWidth field.<br>
+            <span class="parameter">* top (optional): </span>Optional y-offset added to the emitterbox, mimicing the anchorElement, if provided. The top value is expressed through the positionUnitHeight field.<br>
+            <span class="parameter">* includeMargin (optional): </span>Whether the emittercontainer is also going to get the same margin as the anchor element applied or not. procentual width,height,top and left will be calculated with margin in/excluded depending on this value. Default is false.<br>
+            <span class="parameter">* includePadding (optional): </span>Whether the emittercontainer is also going to get the same padding as the anchor element applied or not. procentual width,height,top and left will be calculated with padding in/excluded depending on this value Default is true.<br>
+            <span class="parameter">* includeBorder (optional): </span>Whether the emittercontainer is also going to get the same border as the anchor element applied or not. procentual width,height,top and left will be calculated with border in/excluded depending on this value Default is true.<br>
+          </p>
+        </div>
+
+
+        <!-- 5. Emitters -->
+        <div class="topic">
+          <h3>
+            <hr>5. Emitters
+          </h3>
+          <p class="c-80">
+            Emitters are considered the source from which particles are being 'emitted' and define the manner in which
+            these particles are being excreted.
+            There are two types of emitter; the burst-emitter and the shoot-emitter. In this section we will go over
+            the
+            different parameters one can configure.
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">1. EmitterShoot</span> <img style="height: 25px;" src="./img/icon_emitterShoot.png"><br>
+            The EmitterShoot object is an emitter that emits particles one by one in a linear flow. This can last
+            indefinitely or be halted at some point. An example would be a dripping fosset.<br><br>
+
+            <span class="parameter">* emitterOrigin: </span>The origin object that defines the area in which particles
+            are allowed to be created.<br>
+            <span class="parameter">* particleCount: </span>The amount of particles that the emitter will emit.<br>
+            <span class="parameter">* emitterDuration: </span>The time (in ms) over which the configured amount of
+            particles will be spawned. A value of -1 makes the emitter emit particles indefinitely.<br>
+            <span class="parameter">* particleLifetime: </span>Defines how long (in ms) particles will remain alive
+            for.<br>
+            <span class="parameter">* delay (optional): </span>Defines an optional delay (in ms) before the emitter
+            will
+            start. <br>
+            <span class="parameter">* particleLifetimeNoise (optional): </span>Adds noise to the particleLifetime of
+            each individual particle. Lower values [0,1] make most sense. <br>
+            <span class="parameter">* spawnIntervalTime (optional): </span>Only relevant for emitterDuration values of
+            -1, and define the time (in ms) between each particle spawn. <br>
+
+          </p>
+
+          <p class="c-80">
+            <span class="title">2. EmitterBurst</span> <img style="height: 25px;" src="./img/icon_emitterBurst.png"><br>
+            The EmitterBurst object is an emitter that releases all of its particle in one go. These bursts can go on
+            indefinitely or occur only once. An example would be a firework explosion.<br><br>
+
+            <span class="parameter">* emitterOrigin: </span>The origin object that defines the area in which particles
+            are allowed to be created.<br>
+            <span class="parameter">* particleCount: </span>The amount of particles that the emitter will burst.<br>
+            <span class="parameter">* burstCount: </span>The amount of burst events that will occur, each containing
+            as
+            many particles as defined in particleCount.<br>
+            <span class="parameter">* emitterDuration: </span>Defines the time (in ms) over which the emitter will
+            emit
+            its x burst-events.<br>
+            <span class="parameter">* particleLifetime: </span>Defines how long (in ms) particles will remain alive
+            for.<br>
+            <span class="parameter">* delay (optional): </span>Defines an optional delay (in ms) before the emitter
+            will
+            start. <br>
+            <span class="parameter">* particleLifetimeNoise (optional): </span>Adds noise to the particleLifetime of
+            each individual particle. Lower values [0,1] make most sense. <br>
+            <span class="parameter">* burstIntervalTime (optional): </span>Only relevant for emitterDuration values of
+            -1, and define the time (in ms) between each burst event. <br>
+          </p>
+        </div>
+
+
+
+
+
+        <!-- 6. Data objects -->
+        <div class="topic">
+          <h3>
+            <hr>6. Data objects
+          </h3>
+          <p class="c-80">
+            A data object defines a certain property of each particle within an emitter. A data object without
+            respective behavior object represents its fixed state for that property. Adding a behavior
+            object of that respective data object, means that the data object defines its initial state for that
+            property, to then be altered over time by the behavior object.
+          </p>
+
+          <p class="c-80">
+            <span class="title">1. ParticleDefaultData</span> <img style="height: 25px;"
+              src="./img/icon_defaultData.png"><br>
+            In order for something to just be shown, it requires at least two properties; position and size. This is
+            what the ParticleDefaultData object prescribes.<br><br>
+
+            <span class="parameter">* width: </span>Width (in pixels) of the particle. <br>
+            <span class="parameter">* height: </span>Height (in pixels) of the particle. <br>
+            <span class="parameter">* emitterOrigin: </span>The origin object that defines the area in which particles
+            are allowed to be created.<br>
+            <span class="parameter">* noiseX (optional): </span>Adds noise/random offset to the posX parameter
+            ultimately derrived from the emitterOrigin parameter. Smaller values [0,1] yield best results. A value of
+            -1
+            means 'unset'.<br>
+            <span class="parameter">* noiseY (optional): </span>Adds noise/random offset to the posY parameter
+            ultimately derrived from the emitterOrigin parameter. Smaller values [0,1] yield best results. A value of
+            -1
+            means 'unset'.<br>
+            <span class="parameter">* uniformNoiseX (optional): </span>Boolean value defining whether the noiseX value
+            should also be applied to the noiseY value in order to keep the size uniform.<br>
+            <span class="parameter">* horizontalPivot (optional): </span>Pivot enum value defining where the pivot
+            point
+            lies, horizontally, in defining the origin of the particle.<br>
+            <span class="parameter">* verticalPivot (optional): </span>Pivot enum value defining where the pivot point
+            lies, vertically, in defining the origin of the particle.<br>
+
+          </p>
+
+          <p class="c-80">
+            <span class="title">2. ParticleCustomCSSData</span> <img style="height: 25px;"
+              src="./img/icon_customCSSData.png"><br>
+            The ParticleCustomCSSData allows for custom css stylerules to be added to each particle within an
+            emitter.<br><br>
+            <span class="parameter">* customCssObject: </span>A string containing x css stylerules, applied to all
+            particles within the emitter. Beware that multiple stylerules within this string should be
+            semicolon-separated.<br>
+            <span class="parameter">* minZIndex (optional): </span>Along with the maxZIndex, a random z-index will be
+            assigned between those two values. unset=z-index:2001<br>
+            <span class="parameter">* maxZIndex (optional): </span>Along with the minZIndex, a random z-index will be
+            assigned between those two values. unset=z-index:2001<br>
+          </p>
+
+          <p class="c-80">
+            <span class="title">3. ParticleDirectionData</span> <img style="height: 25px;"
+              src="./img/icon_directionData.png"><br>
+            The ParticleDirectionData defines the direction and speed of the particles of an emitter. Because this is
+            a
+            data object, this object by itself won't do anything. It is however
+            altered by many Behavioral objects and serves as an initial state of direction and speed when being
+            altered
+            by these behavioral objects.<br><br>
+            <span class="parameter">* directionAngle: </span>Defines (in degrees) the direction particles should move
+            toward.<br>
+            <span class="parameter">* speed: </span>Defines the speed by which the particles move in the direction of
+            the provided directionAngle parameter.<br>
+            <span class="parameter">* coneNoise (optional): </span>Adds an imaginary cone (in degrees) around the
+            directionAngle overriding the directionAngle field by a random angle within this cone.<br>
+            <span class="parameter">* speedNoise (optional): </span>Adds noise/random offset to the speed parameter.
+            Smaller values [0,1] yield best results. A value of -1 means 'unset'. <br>
+          </p>
+
+          <p class="c-80">
+            <span class="title">4. ParticleRotationData</span> <img style="height: 25px;"
+              src="./img/icon_rotationData.png"><br>
+            The ParticleRotationData object defines the rotation property of the particles spawned from an
+            emitter.<br><br>
+            <span class="parameter">* rotation: </span>Defines (in degrees) the amound of rotation a particle must
+            have.<br>
+            <span class="parameter">* coneNoise (Optional): </span>Adds noise/random offset to the rotation parameter.
+            Smaller values [0,1] yield best results. A value of -1 means 'unset'. <br>
+          </p>
+
+          <p class="c-80">
+            <span class="title">5. ParticleOpacityData</span> <img style="height: 25px;"
+              src="./img/icon_opacityData.png"><br>
+            The ParticleRotationData object defines the transparency of the particle object.<br><br>
+            <span class="parameter">* opacity: </span>The transparency/opacity of the particles of the emitter. Values
+            are meaningful between [0,1]<br>
+            <span class="parameter">* opacityNoise (Optional): </span>Adds noise/random offset to the opacity
+            parameter.
+            Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+          </p>
+
+          <p class="c-80">
+            <span class="title">6. ParticleImageData</span> <img style="height: 25px;"
+              src="./img/icon_imageData.png"><br>
+            The ParticleImageData object allows for particles to be presented as an image.<br><br>
+            <span class="parameter">* url: </span>The URL to the image.<br>
+            <span class="parameter">* imgWidth: </span>The physical width of the image file in px.<br>
+            <span class="parameter">* imgHeight: </span>The physical height of the image file in px.<br>
+            <span class="parameter">* imageFitting (optional): </span>The ImageFitting enum value defines how the
+            image
+            is being applied to the particle div element and should usually not be altered.<br>
+            <span class="parameter">* keyOverride (optional): </span>Should not be altered. Flipbookdata extends
+            Imagedata and overrides this key.<br>
+            <span class="parameter">* imgLoadingCallback (optional): </span>Should not be altered. Represents the
+            callback method processing the image.<br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">7. ParticleFlipbookData</span> <img style="height: 25px;"
+              src="./img/icon_flipbookData.png"><br>
+            The ParticleFlipbookData object allows for spritesheets/flipbooks to be applied to the particle through
+            which is being flipped in order to display an animation.<br><br>
+            <span class="parameter">* url: </span>The URL to the image.<br>
+            <span class="parameter">* imgWidth: </span>The physical width of the image file in px.<br>
+            <span class="parameter">* imgHeight: </span>The physical height of the image file in px.<br>
+            <span class="parameter">* frameCountX: </span>The amount of images within the provided spritesheet over
+            the
+            x axis.<br>
+            <span class="parameter">* frameCountY: </span>The amount of images within the provided spritesheet over
+            the
+            y axis.<br>
+            <span class="parameter">* startFrame (optional): </span>At which frame index of the spritesheet the
+            animation should start.<br>
+            <span class="parameter">* imageFitting (optional): </span>The ImageFitting enum value defines how the
+            image
+            is being applied to the particle div element and should usually not be altered.<br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">8. ParticleColorfilterData</span> <img style="height: 25px;"
+              src="./img/icon_colorfilterBehavior.png"><br>
+            The ParticleColorfilterData object allows for altering or adding color to the look of the particle aswel
+            as
+            modifying hue, saturation and brightness.<br><br>
+            <span class="parameter">* hueRotate (optional): </span>The amount (in degrees) of hue shifting that must
+            occur to the particle's appearance.<br>
+            <span class="parameter">* color (optional): </span>A Color object being overlayed ontop of the particle
+            functioning as a colored filter.<br>
+            <span class="parameter">* noise (optional): </span>Adds noise/random offset to color/hue shift parameter,
+            depending on which was provided. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            <span class="parameter">* contrast (optional): </span>Increases the contrast to the appearance of the
+            particles. Values between [0,100] are valid.<br>
+            <span class="parameter">* saturation (optional): </span>Increases the saturation to the appearance of the
+            particles. Values between [0,100] are valid.<br>
+            <span class="parameter">* brightness (optional): </span>Increases the brightness to the appearance of the
+            particles. Values between [0,1000] are valid.<br>
+
+
+          </p>
+        </div>
+
+
+
+        <!-- 7. Behavioral objects -->
+        <div class="topic">
+          <h3>
+            <hr>7. Behavior objects
+          </h3>
+          <p class="c-80">
+            Behavior object are objects that describe the continuous behavior of a certain type that a particle
+            expresses. Each behavior type acts on its corresponding data object. For example,
+            ParticleFlipbookBehavior acts on ParticleFlipbookData and ParticleDirectionalBehavior acts on
+            ParticleDirectionData.
+          </p>
+
+          <p class="c-80">
+            <span class="title">1. ParticleDirectionalBehavior</span> <img style="height: 25px;"
+              src="./img/icon_directionData.png"><br>
+            The particledirectionalbehavior allows for particle movement in a certain direction. It acts on the
+            ParticleDefaultData and has no constructor parameters as all data it requires
+            is already stored in the data object. It does however still need to be applied<br><br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">2. ParticleSizeByLifeBehavior</span> <img style="height: 25px;"
+              src="./img/icon_defaultData.png"><br>
+            This behavioral type allows for gradual changes in size over the lifetime of the particles and acts upon
+            ParticleDefaultData.<br><br>
+            <span class="parameter">* sizeMultipliersX: </span>An array of numbers representing the scalars through
+            which the particle is going interpolate and multiply as a scalar to its width defined in the
+            ParticleDefaultData.<br>
+            <span class="parameter">* sizeMultipliersY: </span>An array of numbers representing the scalars through
+            which the particle is going interpolate and multiply as a scalar to its height defined in the
+            ParticleDefaultData.<br>
+            <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
+            through the sizeMuliplier lists once. -1 means that it runs through it once during its lifetime<br>
+            <span class="parameter">* scalarNoise (optional): </span>Adds noise/random offset to the sizeMuliplier
+            lists. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            <span class="parameter">* uniformNoise (optional): </span>Whether the scalarNoise, if provided, should
+            scale
+            both lists uniformly. Beware that this parameter can yield odd results for sizeMuliplier lists of unequal
+            length.<br>
+            <span class="parameter">* sizeIterationCount (optional): </span>Allows for a forced halt in running
+            through
+            the sizeMuliplier lists after having passed x numbers in those lists. It then remains the size where it
+            halted. <br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">3. ParticleGravityBehavior</span> <img style="height: 25px;"
+              src="./img/icon_gravityBehavior.png"><br>
+            The ParticleGravityBehavior allows for adding gravity and acts upon ParticleDefaultData.<br><br>
+            <span class="parameter">* fieldStrength: </span>The force by which the particles are being pulled
+            downwards.
+            Negative values allow for inverted gravity.<br>
+            <span class="parameter">* fieldStrengthNoise (optional): </span>Adds noise/random offset to the
+            fieldStrength parameter. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">4. ParticleRotationBehavior</span> <img style="height: 25px;"
+              src="./img/icon_rotationData.png"><br>
+            Defines how the particles should be rotating, or for that matter 'spinning'. This behavior object acts on
+            the ParticleRotationData.<br><br>
+            <span class="parameter">* rotation: </span>The speed by which the particle will rotate. Positive values
+            yield counter clockwise rotation.<br>
+            <span class="parameter">* rotationNoise (optional): </span>Adds noise/random offset to the rotation
+            parameter. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            <span class="parameter">* allowReverse (optional): </span>Boolean value defining whether the rotationNoise
+            is allowed to invert the rotation direction.<br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">5. ParticleOpacityByLifeBehavior</span> <img style="height: 25px;"
+              src="./img/icon_opacityData.png"><br>
+            The ParticleOpacityByLifeBehavior allows for alteration in the particle's opacity over time. It acts upon
+            the ParticleOpacityData object.<br><br>
+            <span class="parameter">* opacityMultipliers: </span>An array of numbers between [0,1] representing the
+            scalars through which the particle is going interpolate and multiply with its opacity value defined in the
+            ParticleOpacityData.<br>
+            <span class="parameter">* opacityNoise (optional): </span>Adds noise/random offset to the
+            opacityMultipliers. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
+            through the opacityMultipliers once. -1 means that it runs through it once during its lifetime<br>
+            <span class="parameter">* opacityIterationCount (optional): </span>Allows for a forced halt in running
+            through the opacityMultipliers after having passed x numbers in this list. It then remains the opacity
+            value
+            where it halted. <br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">6. ParticleWindBehavior</span> <img style="height: 25px;"
+              src="./img/icon_windBehavior.png"><br>
+            The ParticleWindBehavior object allows to mimic the effects of wind. It allows just like
+            directionalbehavior
+            for movement to the particle, but the wind behavior allows for wavey movement.
+            It acts upon the ParticleDefaultData.<br><br>
+            <span class="parameter">* angles: </span>An array of angles (numbers, in degrees) representing the angles
+            towards the wind blows and through which the particles are going interpolate and be blown towards.<br>
+            <span class="parameter">* cycleDuration (optional): </span>Time (in ms) it should take for the particle to
+            run through the angles list once. -1 means that it runs through it once during its lifetime<br>
+            <span class="parameter">* windSpeed (optional): </span>The power/windspeed by which the wind will blow
+            towards the direction the particle is currently at in its angles list. Default value is 1.<br>
+            <span class="parameter">* deepRandom (optional): </span>Boolean value that if true, randomizes all angles
+            by
+            an angle between the biggest and smallest angle provided in the angles list.<br>
+            <span class="parameter">* shallowRandom (optional): </span>Boolean value that if true, randomizes each
+            angle
+            by a new random angle between its provided neighbouring angles.<br>
+            <span class="parameter">* considerDefault (optional): </span>Boolean value that if true, the initial
+            direction as defined in the ParticleDirectionData will not be discarded.<br>
+            <span class="parameter">* overrideInitialDirection (optional): </span>Boolean value that if true, the
+            initial direction as defined in the ParticleDirectionData is overridden by the first angle in the angle
+            list.
+            If false, the initial direction will be appended to the angles list. Note that this parameter is only
+            valid
+            when the considerDefault parameter is true.<br>
+          </p>
+
+
+
+          <p class="c-80">
+            <span class="title">7. ParticleColorShiftBehavior</span> <img style="height: 25px;"
+              src="./img/icon_colorshiftBehavior.png"><br>
+            The ParticleColorShiftBehavior allows for a gradual change in what the ColorFilterData only initializes
+            once, when it comes to hue, saturation and brightness. This behavior object acts on the
+            ColorFilterData.<br><br>
+            <span class="parameter">* hues: </span>An array of hue-values between [0,360] through which the particles
+            are going interpolate and take on this interpolated hue value for each moment in time over its life.<br>
+            <span class="parameter">* contrasts: </span>An array of contrast-values between [0,100] through which the
+            particles are going interpolate and take on this interpolated contrast value for each moment in time over
+            its life.<br>
+            <span class="parameter">* saturations: </span>An array of saturation-values between [0,100] through which
+            the particles are going interpolate and take on this interpolated saturation value for each moment in time
+            over its life.<br>
+            <span class="parameter">* brightnesses: </span>An array of brightness-values between [0,1000 through which
+            the particles are going interpolate and take on this interpolated brightness value for each moment in time
+            over its life.<br>
+            <span class="parameter">* forceForwardHue: </span>Given that hue is expressed as an angle, this boolean
+            value will make sure a hue shift from 290 to 30 will not count downwards, but internally upwards from 290
+            to
+            360+30.<br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">8. ParticleColorfilterBehavior</span> <img style="height: 25px;"
+              src="./img/icon_colorfilterBehavior.png"><br>
+            The ParticleColorfilterBehavior allows for a gradual change in what the ColorFilterData only initializes
+            once, when it comes to color. This behavior object acts on the ColorFilterData.<br><br>
+
+            <span class="parameter">* colors: </span>An array of color-objects through which the particles are going
+            interpolate and take on this interpolated color overlay for each moment in time over its life.<br>
+            <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
+            through the colors once. -1 means that it runs through it once during its lifetime<br>
+            <span class="parameter">* randomStartColor (optional): </span>Boolean value defining whether a random
+            color
+            from the colors list is being taken to start from.<br>
+            <span class="parameter">* startIndex (optional): </span>Similar to randomStartColor, a provided startIndex
+            will use the provided color at that index to be the starting color.<br>
+            <span class="parameter">* colorIterationCount (optional): </span>Allows for a forced halt in running
+            through
+            the colors after having passed x colors in this list. It then remains the color value where it halted.
+            <br>
+
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">9. ParticleRotationByDirectionBehavior</span> <img style="height: 25px;"
+              src="./img/icon_rotationData.png"><br>
+            This behavior object allows the rotation to always be set to match the direction that the particle is
+            going towards. The object acts on
+            the rotation data object and does not function in combination with the ParticleRotationBehavior.<br><br>
+
+            <span class="parameter">* offset (optional): </span>Adds an additional offset (in degrees) to the rotation
+            which is being matched to the
+            particle's direction.<br>
+
+          </p>
+        </div>
+
+
+
+
+        <!-- 8. Color, Pivot, PositionUnit, ImageFitting -->
+        <div class="topic">
+          <h3>
+            <hr>8. Color, Pivot, PositionUnit, ImageFitting
+          </h3>
+          <p class="c-80">
+            There are several constants that are worth adressing. These are Color, Pivot, PositionUnit and
+            ImageFitting.
+            These are enums that hold constant values and are sometimes required
+            during configuration of data objects and or behavioral objects
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">1. Color</span> <br>
+            Colors are fairly self explanatory. It is however important to note that when a color is requested, i must
+            be a PollenFX Color object. There are 2 methods of calling its constructor.<br><br>
+            <span class="parameter">* hex string value: </span>new Color('#45F18B')<br>
+            <span class="parameter">* RGB values: </span>new Color(125,251,66)<br>
+          </p>
+
+          <p class="c-80">
+            <span class="title">2. Pivot</span><br>
+            When a Pivot enum is required, this will allow the user to configure the origin of the particle. For
+            example, a pivot placed in the bottom-right corner will scale the particle outwards to the upper left
+            corner
+            when scaling.<br><br>
+            <span class="parameter">* Pivot.BEGIN: </span>Means either top, or very left border of the particle
+            container.<br>
+            <span class="parameter">* Pivot.CENTER: </span>Means either vertical, or horizonta center of the particle
+            container.<br>
+            <span class="parameter">* Pivot.END: </span>Means either bottom, or very right end of the particle
+            container.<br>
+          </p>
+
+          <p class="c-80">
+            <span class="title">3. PositionUnit</span><br>
+            When working with positions or dimensions, we sometimes want this to be expressed as a proportion of its
+            parent, the document or in absolute pixels.<br><br>
+            <span class="parameter">* PositionUnit.PERCENTAGE: </span>Refers to an expression as a percentage of its
+            parent. The css equivalent of this would be '%'.<br>
+            <span class="parameter">* PositionUnit.PIXEL: </span>Refers to an absolute value in pixels. The css
+            equivalent of this would be 'px'.<br>
+            <span class="parameter">* PositionUnit.VIEW_WIDTH: </span>Refers to an expression as a percentage of the
+            screen width. The css equivalent of this would be 'vw'.<br>
+            <span class="parameter">* PositionUnit.VIEW_HEIGHT: </span>Refers to an expression as a percentage of the
+            screen height. The css equivalent of this would be 'vh'.<br>
+            <span class="parameter">* PositionUnit.VIEW: </span>Both VIEW_WIDTH and VIEW_HEIGHT combined when there is
+            no distinction allowed between the two.<br>
+          </p>
+
+          <p class="c-80">
+            <span class="title">4. ImageFitting</span><br>
+            When working with images, it can be useful to specify how the image has to be applied to the particle.
+            These
+            directly entail a css stylerule.<br><br>
+            <span class="parameter">* ImageFitting.COVER: </span>Represents the background-size : "cover" css
+            property.<br>
+            <span class="parameter">* ImageFitting.FIT: </span>Represents the background-size : "100% 100%" css
+            property.<br>
+            <span class="parameter">* ImageFitting.CONTAIN: </span>Represents the background-size : "contain" css
+            property.<br>
+          </p>
+
+
+        </div>
+
+                <!-- 9. Additional functionality -->
+                <div class="topic">
+                  <h3>
+                    <hr>9. Additional functionality
+                  </h3>
+
+                  <span class="title">1. FXItemID</span><br>
+                  When adding an emitter to the FXManager, one can add an ID. Later, perhaps in order to add extra custom functionality, one can request this emitter by its ID in order 
+                  to modify it.<br><br>
+                  <img src="./img/snippet_03.JPG" style="width:600px;" alt="">
+                </div>
+
+
+
+        <!-- 10. Extensive code snippet -->
+        <div class="topic">
+          <h3>
+            <hr>10. An extensive code snippet
+          </h3>
+          <p class="c-80">
+            Finally, here is a more in-depth example of the creation of a particle effect.
+          </p>
+          <img src="./img/pollenfx_logo.png" style="width:400px;" alt="">
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+    </div>
+  </main>
+</body>
+
+</html>
+
+<!-- STYLES -->
+<style>
+  .topic {
+    margin-left: 40px;
+  }
+
+
+  #developer-notes {}
+
+  #documentation {}
+
+
+  .flex {
+    display: flex;
+  }
+
+  .row {
+    flex-direction: row;
+  }
+
+
+
+  .hcenter {
+    justify-content: center;
+  }
+
+  body {
+    background-color: rgb(230, 226, 225);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    color: #1c1d1e;
+  }
+
+  #logo {
+    height: 200px;
+  }
+
+  h1 {
+    color: rgb(12, 19, 33);
+    font-size: 50px;
+  }
+
+  h2 {
+    font-size: 35px;
+    color: rgb(12, 19, 33);
+  }
+
+  h3 {
+    font-size: 25px;
+    color: rgb(12, 19, 33);
+  }
+
+  span.title {
+    color: rgb(33, 43, 62);
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  span.parameter {
+    color: rgb(27, 32, 42);
+    font-weight: bold;
+  }
+
+  .c-60 {
+    width: 60%;
+  }
+
+  .c-80 {
+    width: 80%;
+  }
+</style>
