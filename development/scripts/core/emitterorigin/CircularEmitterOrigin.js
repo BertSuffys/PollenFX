@@ -4,6 +4,7 @@ class CircularEmitterOrigin extends EmitterOrigin {
         this.width = width
         this.height = height
     }
+    
     generateParticleSpawnPosition() {
         const randomScalar = Math.random()
         const randomAngle = Math.random() * (2 * Math.PI)
@@ -13,6 +14,7 @@ class CircularEmitterOrigin extends EmitterOrigin {
             Math.sin(randomAngle) * (randomScalar * (this.height / 2)) + super.posY
         return [x, y]
     }
+
     get width() {
         return this._width
     }

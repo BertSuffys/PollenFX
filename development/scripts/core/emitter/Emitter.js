@@ -292,8 +292,16 @@ class Emitter extends FXItem {
    * Calculates the final lifetime opf an emitter object taking into account possible delay, maximum lifetime of the particle and the duration of the emitter
    */
   static calculateFinalDuration(particleLifetime, particleLifetimeNoise, emitterDuration, delay) {
-    const maxParticleLifetime = particleLifetimeNoise > 0 ? PollenMath.relativeMap(particleLifetime, 1 + particleLifetimeNoise, 1) : particleLifetime
-    return (emitterDuration + maxParticleLifetime + Math.max(0, particleLifetimeNoise) + Math.max(0, delay))
+    let finalEmitterDuration = Math.max(0, delay) + emitterDuration;
+    if(particleLifetimeNoise > 0){
+      let maxParticleLifetime = PollenMath.relativeMap(particleLifetime, particleLifetimeNoise, 1);
+      console.log(maxParticleLifetime)
+      finalEmitterDuration += maxParticleLifetime;
+    }else{
+      finalEmitterDuration += particleLifetime;
+    }
+    console.log(finalEmitterDuration)
+    return finalEmitterDuration
   }
 
 
@@ -302,11 +310,7 @@ class Emitter extends FXItem {
    */
   generateNextParticleLifetime() {
     if (this.particleLifetimeNoise > 0) {
-      return PollenMath.relativeMap(
-        this.particleLifetime,
-        this.particleLifetimeNoise,
-        Math.random()
-      )
+      return PollenMath.relativeMap( this.particleLifetime, this.particleLifetimeNoise, Math.random())
     } else {
       return this.particleLifetime
     }

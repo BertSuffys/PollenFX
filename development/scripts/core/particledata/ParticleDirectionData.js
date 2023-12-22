@@ -35,9 +35,7 @@ class ParticleDirectionData extends ParticleData {
     reset() {
       let alteredSpeed
       if (this.speedNoise > 0) {
-        alteredSpeed = PollenMath.relativeMap(
-          this.speed,
-          1 + this.speedNoise,
+        alteredSpeed = PollenMath.relativeMap(this.speed,1 + this.speedNoise,
           Math.random()
         )
       } else {
@@ -55,6 +53,8 @@ class ParticleDirectionData extends ParticleData {
       this.directionX = PollenMath.cos(alteredDirectionAngle) * alteredSpeed
       this.directionY = PollenMath.sin(alteredDirectionAngle) * alteredSpeed * -1
     }
+
+
   
     getCSS() {
       return ""

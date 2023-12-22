@@ -17,6 +17,8 @@ class ParticleRotationByDirectionBehavior extends ParticleBehavior {
     reset() {
 
     }
+
+    
     applyParticle(particle) { }
 
     /**

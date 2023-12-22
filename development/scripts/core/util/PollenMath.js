@@ -79,10 +79,14 @@ class PollenMath {
 * Example: 7.positiveMap(4) -> random[1.75, 21]
 */
   static relativeMap(number, scalar, random = -1) {
+    /* Some initial setup */
     random = random == -1 ? Math.random() : random
-    const minScalar = 1 / scalar
-    scalar = random * (scalar - minScalar) + minScalar
-    return number * scalar
+    scalar = Math.max(0, scalar)
+    /* Calculate */
+    const max = number + (scalar / 2 * number)
+    const min = 1/ (scalar + 1) * number
+    const range = max - min
+    return (random * range) + min;
   }
 
   /**
