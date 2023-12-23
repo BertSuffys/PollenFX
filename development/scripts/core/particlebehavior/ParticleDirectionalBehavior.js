@@ -6,9 +6,9 @@ class ParticleDirectionalBehavior extends ParticleBehavior {
   }
 
 
-  act(particle, lastUpdateTime, deltaTime) {
-    this._particleDefaultData.posX += this.particleDirectionData.directionX * (deltaTime / ParticleBehavior.IDEAL_FPS)
-    this._particleDefaultData.posY += this.particleDirectionData.directionY * (deltaTime / ParticleBehavior.IDEAL_FPS)
+  act(particle, actTime, deltaTime) {
+    this._particleDefaultData.posX += this.particleDirectionData.directionX * (deltaTime / FXManager.IDEAL_FPS)
+    this._particleDefaultData.posY += this.particleDirectionData.directionY * (deltaTime / FXManager.IDEAL_FPS)
   }
 
 

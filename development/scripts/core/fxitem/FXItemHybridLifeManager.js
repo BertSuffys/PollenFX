@@ -6,13 +6,14 @@ class FXItemHybridLifeManager extends FXItemManager {
   _sharedActivePool = new Array()
 
 
+  constructor(count = -1){
+    super(count);
+  }
 
 
   act(deltaTime) {
-    for(let fxItem of this.getActiveFXItems()){
-      fxItem.act(deltaTime);
-    }
-    this.checkDeath()
+    super.act(deltaTime);
+   // this.checkDeath()
   }
 
 

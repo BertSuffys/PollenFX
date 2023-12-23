@@ -9,7 +9,6 @@ class EmitterShoot extends Emitter {
     } else {
       this.spawnIntervalTime = emitterDuration / particleCount
     }
-    this.spawnEmitterDuration = emitterDuration
     this.timeSinceLastParticle = 0
   }
 
@@ -18,7 +17,6 @@ class EmitterShoot extends Emitter {
    * Core logic loop of the shoot emitter
    */
   act(deltatime) {
-    super.act(deltatime)
     // Spawn logic
     if (super.active) {
       let spawnCount = (deltatime + this.cutOff) / this.spawnIntervalTime
@@ -33,7 +31,8 @@ class EmitterShoot extends Emitter {
     // in case of delay: check when to begin
     else if (super.actTime > super.delay) {
         super.active = true
-      }
+    }
+    super.act(deltatime)
   }
 
 
@@ -46,8 +45,8 @@ class EmitterShoot extends Emitter {
     let particle;
     // Recycled particle from the inactive pool
     if (super.particleManager.canRecycle()) {
-      particle = super.particleManager.recycle().reset()
-      particle.lifeTime = newParticleLifetime
+      console.log('Recycle')
+      particle = super.particleManager.recycle().reset(newParticleLifetime)
       particle.showCSS(super.emitterBox)                // re-show the HTML element
     }
     // Newly created particle
@@ -79,10 +78,5 @@ class EmitterShoot extends Emitter {
   set timeSinceLastParticle(value) {
     this._timeSinceLastParticle = value
   }
-  get spawnEmitterDuration() {
-    return this._spawnEmitterDuration
-  }
-  set spawnEmitterDuration(value) {
-    this._spawnEmitterDuration = value
-  }
+
 }

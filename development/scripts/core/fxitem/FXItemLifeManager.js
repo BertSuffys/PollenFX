@@ -3,9 +3,14 @@ class FXItemLifeManager extends FXItemManager {
   _inactiveFXItemPool = new Array()
 
 
+  constructor(count = -1){
+    super(count);
+  }
+
+
   act(deltaTime) {
-    this.checkDeath()
     super.act(deltaTime)
+    this.checkDeath()
   }
 
 
@@ -25,7 +30,7 @@ class FXItemLifeManager extends FXItemManager {
    * Checks for to-be-dead particles in the active pool and kills them
    */
   checkDeath() {
-    while (!this.activeFXItemPool.isEmpty() && this.activeFXItemPool.peek().isDead()) {
+    while (!super.activeFXItemPool.isEmpty() && super.activeFXItemPool.peek().isDead()) {
       const deadFXItem = super.activeFXItemPool.dequeue()
       this.inactiveFXItemPool.push(deadFXItem)
       deadFXItem.notifyDead()
@@ -54,7 +59,7 @@ class FXItemLifeManager extends FXItemManager {
   * Empties the whole of the active FXItem pool and moves to the recyclable pool
   */
   killAllFXItems() {
-    while (!this.activeFXItemPool.isEmpty()) {
+    while (!super.activeFXItemPool.isEmpty()) {
       const deadFXItem = super.activeFXItemPool.dequeue()
       this.inactiveFXItemPool.push(deadFXItem)
       deadFXItem.notifyDead()

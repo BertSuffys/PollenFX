@@ -8,11 +8,9 @@ FXManager.devConfig.DEBUG = true;
     /* Test of data components  */
     fxManager.addEmitter(dataTest_1(), "emitter_1")
 
-
-
-
     /* Start */
-    this.start(0)
+    this.start(0);
+
 })();
 
 
@@ -23,21 +21,23 @@ FXManager.devConfig.DEBUG = true;
  * 
  */
 function dataTest_1(){
-    let anchor = document.getElementById("div5");
+    let anchor = document.getElementById("div7");
     let origin = new CircularEmitterOrigin(0, 0, 40, 40, -1, -1, true, anchor);
-    let emitter = new EmitterShoot(origin, 300, 1000, 500, -1, 0.3)
+    let emitter = new EmitterShoot(origin, 40, 700, 1000, -1, 8)
     // Data
-    const defaultData = new ParticleDefaultData(10, 10, origin);
-    const cssData = new ParticleCustomCssData("background-color:red;");
-    const directionData = new ParticleDirectionData(90,20, 45, -1)
+    let defaultData = new ParticleDefaultData(10, 10, origin);
+    let cssData = new ParticleCustomCssData("background-color:red;");
+    let directionData = new ParticleDirectionData(90,8, 45, -1)
     emitter.addParticleData(defaultData);
     emitter.addParticleData(cssData);
     emitter.addParticleData(directionData);
     // Behavior
-    const sizeByLifeBehavior = new ParticleSizeByLifeBehavior([1,0], [1,0])
-    const directionBehavior = new ParticleDirectionalBehavior();
-    emitter.addParticleBehavior(directionBehavior);
+    const sizeByLifeBehavior = new ParticleSizeByLifeBehavior([1,0], [1,0], -1)
+    let directionBehavior = new ParticleDirectionalBehavior();
+    let opacityBehavior = new ParticleOpacityByLifeBehavior([0,1,0])
     emitter.addParticleBehavior(sizeByLifeBehavior);
+    emitter.addParticleBehavior(directionBehavior);
+     emitter.addParticleBehavior(opacityBehavior);
     return emitter
 }
 

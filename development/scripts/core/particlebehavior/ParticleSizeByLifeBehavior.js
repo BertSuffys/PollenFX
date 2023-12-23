@@ -25,6 +25,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
       }
     }
   
+
   
     reset() {
       this.setInitialSizeData()
@@ -33,12 +34,45 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
       this.lastXSizeIndexSum = Math.min(this.sizeMultipliersX.length, 1)
       this.lastYSizeIndexSum = Math.min(this.sizeMultipliersY.length, 1)
     }
+
+
+
+    act(particle, actTime, deltaTime) {
+
+      const xFullRangeProgress = (actTime / this.duration) * (this.sizeMultipliersX.length - 1);
+      const xFromIndex = ~~xFullRangeProgress % this.sizeMultipliersX.length;
+      const xToIndex = (xFromIndex + 1) % this.sizeMultipliersX.length;
+      const xLocalProgress = xFullRangeProgress % 1;
+  
+      const yFullRangeProgress = (actTime / this.duration) * (this.sizeMultipliersY.length - 1);
+      const yFromIndex = ~~yFullRangeProgress % this.sizeMultipliersY.length;
+      const yToIndex = (yFromIndex + 1) % this.sizeMultipliersY.length;
+      const yLocalProgress = yFullRangeProgress % 1;
+  
+      const scalarX = PollenMath.lerp( this.sizeMultipliersX[xFromIndex], this.sizeMultipliersX[xToIndex], xLocalProgress );
+      const scalarY = PollenMath.lerp( this.sizeMultipliersY[yFromIndex], this.sizeMultipliersY[yToIndex], yLocalProgress );
+  
+      const newWidth = this.initialWidth * scalarX;
+      const newHeight = this.initialHeight * scalarY;
+  
+      this.particleDefaultData.width = newWidth;
+      this.particleDefaultData.height = newHeight;
+  
+      this.checkBehaviorDeath(
+        yFromIndex,
+        yToIndex,
+        xFromIndex,
+        xToIndex,
+        particle
+      )
+    }
   
   
     applyParticle(particle) {
-      if (this.duration < 0) {
+    //  if (this.duration <= 0) {
         this.duration = particle.lifeTime
-      }
+        console.log(particle.lifeTime)
+    //  }
     }
   
   
@@ -110,34 +144,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     }
   
   
-    act(particle, lastUpdateTime, deltaTime) {
-      const xFullRangeProgress = (particle.actTime / this.duration) * (this.sizeMultipliersX.length - 1);
-      const xFromIndex = ~~xFullRangeProgress % this.sizeMultipliersX.length;
-      const xToIndex = (xFromIndex + 1) % this.sizeMultipliersX.length;
-      const xLocalProgress = xFullRangeProgress % 1;
-  
-      const yFullRangeProgress = (particle.actTime / this.duration) * (this.sizeMultipliersY.length - 1);
-      const yFromIndex = ~~yFullRangeProgress % this.sizeMultipliersY.length;
-      const yToIndex = (yFromIndex + 1) % this.sizeMultipliersY.length;
-      const yLocalProgress = yFullRangeProgress % 1;
-  
-      const scalarX = PollenMath.lerp( this.sizeMultipliersX[xFromIndex], this.sizeMultipliersX[xToIndex], xLocalProgress );
-      const scalarY = PollenMath.lerp( this.sizeMultipliersY[yFromIndex], this.sizeMultipliersY[yToIndex], yLocalProgress );
-  
-      const newWidth = this.initialWidth * scalarX;
-      const newHeight = this.initialHeight * scalarY;
-  
-      this.particleDefaultData.width = newWidth;
-      this.particleDefaultData.height = newHeight;
-  
-      this.checkBehaviorDeath(
-        yFromIndex,
-        yToIndex,
-        xFromIndex,
-        xToIndex,
-        particle
-      )
-    }
+
   
   
     checkBehaviorDeath(yFromIndex, yToIndex, xFromIndex, xToIndex, particle) {

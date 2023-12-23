@@ -22,8 +22,8 @@ class ParticleGravityBehavior extends ParticleBehavior {
   
   
   
-    act(particle, lastUpdateTime, deltaTime) {
-      this.acceleration +=  this.fieldStrength * (deltaTime / ParticleBehavior.IDEAL_FPS)
+    act(particle, actTime, deltaTime) {
+      this.acceleration +=  this.fieldStrength * (deltaTime / FXManager.IDEAL_FPS)
       this.particleDirectionData.directionY += this.acceleration
     }
   

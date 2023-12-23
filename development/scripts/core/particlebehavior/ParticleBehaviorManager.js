@@ -1,6 +1,3 @@
-
-
-
 class ParticleBehaviorManager {
 
     _particleBehavior = new Map()
@@ -14,12 +11,15 @@ class ParticleBehaviorManager {
         }
     }
 
-    reset() {
+
+    reset(particle) {
         this.disabledBehaviors.forEach((disabledBehavior, type) => {
             this.particleBehavior.set(type, disabledBehavior)
         })
         this.disabledBehaviors.clear()
         for (let [type, particleBehavior] of this.particleBehavior) {
+            particle.lifeTime
+            particleBehavior.applyParticle(particle)
             particleBehavior.reset()
         }
     }

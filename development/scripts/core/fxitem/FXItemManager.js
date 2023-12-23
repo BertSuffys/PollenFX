@@ -3,7 +3,7 @@ class FXItemManager {
   _fxItemCount
 
   _activeFXItemPool = new PriorityQueue((cur, next) => {
-    return cur.spawnTime - cur.lifeTime - (next.spawnTime - next.lifeTime)
+    return (cur.lifeTime - cur.actTime) - (next.lifeTime - next.actTime)
   })
 
 

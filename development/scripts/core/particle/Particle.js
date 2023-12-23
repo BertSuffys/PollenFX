@@ -12,6 +12,10 @@ class Particle extends FXItem{
     super(Math.max(0, lifetime))
     this.dataManager = new ParticleDataManager()
     this.behaviorManager = new ParticleBehaviorManager()
+
+    if(lifetime < 200){
+      console.log(lifetime)
+    }
   }
 
       
@@ -20,8 +24,8 @@ class Particle extends FXItem{
  * Coor loop behavior of a particle
  */
   act(deltaTime) {
-    super.act(deltaTime)                                                     // used to be underneath this.behaviorManager.act(th...
     this.behaviorManager.act(this, super.actTime , deltaTime)
+    super.act(deltaTime)        // used to be underneath this.behaviorManager.act(th...
     this.updateStyle();
   }
 
@@ -36,7 +40,7 @@ class Particle extends FXItem{
       this.particleBox = document.createElement('div');                            // create
       this.particleBox.classList.add(PollenFXClasses.PARTICLE_BOX_CLASS)           // add class
       this.updateStyle();                                                          // start css
-      this.emitterBox.appendChild(this.particleBox);                                    // empty anchor? just add
+      this.emitterBox.appendChild(this.particleBox);                               // empty anchor? just add
     }
   }
 
@@ -111,10 +115,9 @@ class Particle extends FXItem{
   }
 
 
-  reset() {
-    super.spawnTime = Date.now()
-    super.actTime = 0
-    this.behaviorManager.reset()
+  reset(lifeTime) {
+    super.reset(lifeTime)
+    this.behaviorManager.reset(this)
     this.dataManager.reset()
     return this
   }

@@ -30,9 +30,15 @@ class FXItem {
     * Checks whether an FXItem has come to the end of its life
     */
     isDead() {
-        return this.actTime >= this.lifeTime;
+        return (this.actTime >= this.lifeTime);
     }
 
+    reset(lifeTime) {
+        this.lifeTime = lifeTime;
+        this.spawnTime = Date.now()
+        this.liveTime = this.spawnTime;
+        this.actTime = 0
+    }
 
     /**
      * When an FXItem dies, it might have to kill underlying child FX Items if neccesairy. This method is considered abstract and must be implemented

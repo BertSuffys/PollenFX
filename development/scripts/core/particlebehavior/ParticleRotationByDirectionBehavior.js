@@ -35,7 +35,7 @@ class ParticleRotationByDirectionBehavior extends ParticleBehavior {
      /**
      * Alters the particles rotation so as to always match the direction its going towards.
      */
-    act(particle, lastUpdateTime, deltaTime){
+    act(particle, actTime, deltaTime){
         const hypotenuse = Math.sqrt(Math.pow(this.particleDirectionData.directionX, 2) + this.particleDirectionData.directionX, 2);
         const normalizedYFactor = this.particleDirectionData.directionY/hypotenuse;
         const normalizedXFactor = this.particleDirectionData.directionX/hypotenuse;

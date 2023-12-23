@@ -46,13 +46,16 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
     }
   
   
-    act(particle, lastUpdateTime, deltaTime) {
+    act(particle, actTime, deltaTime) {
 
-      const fullRangeProgress = (particle.actTime / this.duration) * (this.opacityMultipliers.length - 1)
+    //  console.log(particle.actTime, actTime, this.duration);
+
+      const fullRangeProgress = (actTime / this.duration) * (this.opacityMultipliers.length - 1)
   
       const fromIndex = ~~fullRangeProgress % this.opacityMultipliers.length
       const toIndex = (fromIndex + 1) % this.opacityMultipliers.length
       const localProgress = fullRangeProgress % 1
+
       const scalar = PollenMath.lerp(
         this.opacityMultipliers[fromIndex],
         this.opacityMultipliers[toIndex],
@@ -60,14 +63,12 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
       )
   
       this.particleOpacityData.opacity = this.initialOpacity * scalar
-  
       this.checkBehaviorDeath(fromIndex, toIndex, particle)
     }
   
   
     checkBehaviorDeath(fromIndex, toIndex, particle) {
-      this.opacityIteration +=
-        Math.abs(fromIndex + toIndex - this.lastOpacityIndexSum) / 2
+      this.opacityIteration += Math.abs(fromIndex + toIndex - this.lastOpacityIndexSum) / 2
       this.lastOpacityIndexSum = fromIndex + toIndex
       if (this.opacityIteration + 1 > this.opacityIterationCount) {
         particle.disableBehavior(super.type)
@@ -84,31 +85,25 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
   
     applyParticle(particle) {
       if (this.duration == -1) {
-        this.duration = particle.lifeTime
+        this.duration = particle.lifeTime;
       }
     }
   
   
     setInitialOpacityData() {
       if (this.opacityMultipliers != null && this.opacityMultipliers.length > 0) {
-        this.particleOpacityData.opacity =
-          this.initialOpacity * this.opacityMultipliers[0]
+        this.particleOpacityData.opacity = this.initialOpacity * this.opacityMultipliers[0]
       }
     }
   
-    createNew(copy) {
-      if (copy) {
-        return this
-      } else {
-        return new ParticleOpacityByLifeBehavior(
-          this.opacityMultipliers,
-          this.opacityNoise,
-          this.duration,
-          this.opacityIterationCount
-        )
-      }
+  createNew(copy) {
+    if (copy) {
+      return this
+    } else {
+      return new ParticleOpacityByLifeBehavior(this.opacityMultipliers, this.opacityNoise, this.duration, this.opacityIterationCount)
     }
-  
+  }
+
     get lastOpacityIndexSum() {
       return this._lastOpacityIndexSum
     }

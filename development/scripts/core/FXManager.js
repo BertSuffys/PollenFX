@@ -9,6 +9,7 @@ class FXManager {
   _lastTime = 0;
   _currentFPS = 0;
   _allowDOMOvervlow;
+  static _IDEAL_FPS = 60;
   static _devConfig = {
      DEBUG: false
   }
@@ -60,7 +61,9 @@ class FXManager {
     return this.emitterManager.getActiveFXItems()
   }
 
-
+  static get IDEAL_FPS() {
+    return FXManager._IDEAL_FPS
+  }
   get emitterManager() {
     return this._emitterManager
   }
