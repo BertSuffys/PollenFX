@@ -24,7 +24,7 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     }
   
   
-    act(particle, lastUpdateTime, deltaTime) {
+    act(particle, actTime, deltaTime) {
       this.flipbookData.particleWidth = this.defaultData.width
       this.flipbookData.particleHeight = this.defaultData.height
       this.timeSinceLastFrameshift += deltaTime

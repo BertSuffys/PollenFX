@@ -13,7 +13,7 @@ class FXItemHybridLifeManager extends FXItemManager {
 
   act(deltaTime) {
     super.act(deltaTime);
-   // this.checkDeath()
+    this.checkDeath()
   }
 
 

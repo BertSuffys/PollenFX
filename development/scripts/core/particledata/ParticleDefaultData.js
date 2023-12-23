@@ -1,6 +1,6 @@
 
 class ParticleDefaultData extends ParticleData {
-    constructor(width, height, emitterOrigin, noiseX = -1, noiseY = -1, uniformNoiseX = false, horizontalPivot = Pivot.CENTER, verticalPivot = Pivot.CENTER) {
+    constructor(width, height, emitterOrigin, noiseWidth = -1, noiseHeight = -1, uniformSizeWidth = false, horizontalPivot = Pivot.CENTER, verticalPivot = Pivot.CENTER) {
       super("default")
       const position = emitterOrigin.generateParticleSpawnPosition()
       this.posX = position[0]
@@ -11,11 +11,11 @@ class ParticleDefaultData extends ParticleData {
   
       this.initialWidth = width != null ? width : 10
       this.initialHeight = height != null ? height : 10
-      this.noiseX = noiseX
-      this.noiseY = noiseY
-      this.uniformNoiseX = uniformNoiseX
+      this.noiseWidth = noiseWidth
+      this.noiseHeight = noiseHeight
+      this.uniformSizeWidth = uniformSizeWidth
   
-      this.initSizes(noiseX, noiseY, uniformNoiseX, width, height)
+      this.initSizes(noiseWidth, noiseHeight, uniformSizeWidth, width, height)
     }
   
     reset() {
@@ -49,50 +49,50 @@ class ParticleDefaultData extends ParticleData {
         this.initialWidth,
         this.initialHeight,
         this.emitterOrigin,
-        this.noiseX,
-        this.noiseY,
-        this.uniformNoiseX,
+        this.noiseWidth,
+        this.noiseHeight,
+        this.uniformSizeWidth,
         this.horizontalPivot,
         this.verticalPivot
       )
     }
   
   
-    initSizes(noiseX, noiseY, uniformNoiseX, width, height) {
-      if (noiseX > 0 || noiseY > 0) {
+    initSizes(noiseWidth, noiseHeight, uniformSizeWidth, width, height) {
+      if (noiseWidth > 0 || noiseHeight > 0) {
         let random = Math.random()
   
-        if (noiseX >= 0 && noiseY >= 0) {
+        if (noiseWidth >= 0 && noiseHeight >= 0) {
           this.width = PollenMath.relativeMap(
             this.initialWidth,
-            1 + Math.max(noiseX, 0),
+            1 + Math.max(noiseWidth, 0),
             random
           )
-          if (uniformNoiseX) {
+          if (uniformSizeWidth) {
             this.height = PollenMath.relativeMap(
               this.initialHeight,
-              1 + Math.max(noiseX, 0),
+              1 + Math.max(noiseWidth, 0),
               random
             )
           } else {
             random = Math.random()
             this.height = PollenMath.relativeMap(
               this.initialHeight,
-              1 + Math.max(noiseY, 0),
+              1 + Math.max(noiseHeight, 0),
               random
             )
           }
         }
-        else if (noiseX <= 0) {
+        else if (noiseWidth <= 0) {
           this.height = PollenMath.relativeMap(
             this.initialHeight,
-            1 + Math.max(noiseY, 0),
+            1 + Math.max(noiseHeight, 0),
             random
           )
-          if (uniformNoiseX) {
+          if (uniformSizeWidth) {
             this.width = PollenMath.relativeMap(
               this.initialWidth,
-              1 + Math.max(noiseY, 0),
+              1 + Math.max(noiseHeight, 0),
               random
             )
           } else {
@@ -100,16 +100,16 @@ class ParticleDefaultData extends ParticleData {
           }
         }
   
-        else if (noiseY <= 0) {
+        else if (noiseHeight <= 0) {
           this.width = PollenMath.relativeMap(
             this.initialWidth,
-            1 + Math.max(noiseX, 0),
+            1 + Math.max(noiseWidth, 0),
             random
           )
-          if (uniformNoiseX) {
+          if (uniformSizeWidth) {
             this.height = PollenMath.relativeMap(
               this.initialHeight,
-              1 + Math.max(noiseX, 0),
+              1 + Math.max(noiseWidth, 0),
               random
             )
           } else {
@@ -154,23 +154,23 @@ class ParticleDefaultData extends ParticleData {
     set horizontalPivot(value) {
       this._horizontalPivot = value
     }
-    get uniformNoiseX() {
-      return this._uniformNoiseX
+    get uniformSizeWidth() {
+      return this._uniformSizeWidth
     }
-    set uniformNoiseX(value) {
-      this._uniformNoiseX = value
+    set uniformSizeWidth(value) {
+      this._uniformSizeWidth = value
     }
-    get noiseY() {
-      return this._noiseY
+    get noiseHeight() {
+      return this._noiseHeight
     }
-    set noiseY(value) {
-      this._noiseY = value
+    set noiseHeight(value) {
+      this._noiseHeight = value
     }
-    get noiseX() {
-      return this._noiseX
+    get noiseWidth() {
+      return this._noiseWidth
     }
-    set noiseX(value) {
-      this._noiseX = value
+    set noiseWidth(value) {
+      this._noiseWidth = value
     }
     get width() {
       return this._width

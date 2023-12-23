@@ -29,6 +29,8 @@
       styling is important, has class="pollenfx_emitter_box", and can only be seen when DevConfig.DEBUG=true.
    -> ParticleBox: The particleBox is the true HTMLElement representing the particle. It is being created from an emitter-implementation upon a particle spawn. The particle 
       is position:absolute which is defined as a default style in the ParticleDataManager. This element carries the final particle styling.
+5. The applyParticle() method is used upon particle creation to provide the particle itself to the behaviormanager and thus all behaviors for its potential noised-lifetime
+   to be set in this behavior as duration. this makes particleLifetimeNoise possible.
 
 
 

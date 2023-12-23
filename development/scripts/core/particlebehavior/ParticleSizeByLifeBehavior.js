@@ -7,6 +7,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
       super("size")
       this.initialSizeMultipliersX = sizeMultipliersX
       this.initialSizeMultipliersY = sizeMultipliersY
+      this.durationOverride = duration > 0;
       this.duration = duration
       this.scalarNoise = scalarNoise
       this.uniformNoise = uniformNoise
@@ -58,21 +59,14 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
       this.particleDefaultData.width = newWidth;
       this.particleDefaultData.height = newHeight;
   
-      this.checkBehaviorDeath(
-        yFromIndex,
-        yToIndex,
-        xFromIndex,
-        xToIndex,
-        particle
-      )
+      this.checkBehaviorDeath(yFromIndex, yToIndex, xFromIndex,  xToIndex, particle)
     }
   
   
     applyParticle(particle) {
-    //  if (this.duration <= 0) {
+      if (!this.durationOverride) {
         this.duration = particle.lifeTime
-        console.log(particle.lifeTime)
-    //  }
+      }
     }
   
   
@@ -148,18 +142,15 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
   
   
     checkBehaviorDeath(yFromIndex, yToIndex, xFromIndex, xToIndex, particle) {
-      this.xSizeIteration +=
-        Math.abs(xFromIndex + xToIndex - this.lastXSizeIndexSum) / 2
-      this.ySizeIteration +=
-        Math.abs(yFromIndex + yToIndex - this.lastYSizeIndexSum) / 2
+      this.xSizeIteration += Math.abs(xFromIndex + Math.max(xToIndex, xFromIndex) - this.lastXSizeIndexSum) / 2
+      this.ySizeIteration += Math.abs(yFromIndex + Math.max(yToIndex, yFromIndex) - this.lastYSizeIndexSum) / 2
+      console.log(xFromIndex , xToIndex, xFromIndex + xToIndex)
   
       this.lastXSizeIndexSum = xFromIndex + xToIndex
       this.lastYSizeIndexSum = yFromIndex + yToIndex
   
-      if (
-        Math.max(this.xSizeIteration, this.ySizeIteration) + 1 >
-        this.sizeIterationCount
-      ) {
+      if ( Math.max(this.xSizeIteration, this.ySizeIteration) + 1 > this.sizeIterationCount  ) {
+
         particle.disableBehavior(super.type)
       }
     }
@@ -177,7 +168,9 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
   
   
     static createDefault() {
-      return new ParticleSizeByLifeBehavior([0, 1], [0, 1], -1, -1, true)
+      const newBehavior = new ParticleSizeByLifeBehavior([0, 1], [0, 1], -1, -1, true, -1)
+      newBehavior.durationOverride = false
+      return newBehavior;
     }
   
   
@@ -193,7 +186,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
       if (copy) {
         return this
       } else {
-        return new ParticleSizeByLifeBehavior(
+        const newBehavior = new ParticleSizeByLifeBehavior(
           this.initialSizeMultipliersX,
           this.initialSizeMultipliersY,
           this.duration,
@@ -201,9 +194,19 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
           this.uniformNoise,
           this.sizeIterationCount
         )
+        newBehavior.durationOverride = this.duration > 0;
+        return newBehavior;
       }
     }
   
+
+    get durationOverride() {
+      return this._durationOverride
+    }
+    set durationOverride(value) {
+      this._durationOverride = value
+    }
+
     get lastYSizeIndexSum() {
       return this._lastYSizeIndexSum
     }

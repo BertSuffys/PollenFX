@@ -10,15 +10,14 @@
 
 
     /* CONSTRUCTOR */
-    constructor(rotation, rotationNoise = null, allowReverse = true) {
+    constructor(rotation, rotationNoise = -1, allowReverse = true) {
         super("rotation")
-        if (rotationNoise != null) {
+        if (rotationNoise > 0) {
             if(allowReverse){
-                rotation = (Math.random()*rotationNoise) - (rotationNoise/2)
+                rotation = PollenMath.absoluteMap(rotation, rotationNoise, Math.random())
             }else{
                 rotation = PollenMath.relativeMap(rotation, rotationNoise, Math.random())
             }
-            rotation = rotation 
         }
         this.rotation = rotation;
         this.rotationNoise = rotationNoise;
@@ -28,12 +27,16 @@
 
     /* METHODS */
 
+    applyParticle(particle){}
+
+    reset(){}
 
 
     /**
      * Performs the behavior of the gravityparticlebehavior
      */
-     act(particle, lastUpdateTime, deltaTime) {
+     act(particle, actTime, deltaTime) {
+        console.log( this.rotation)
         this.rotationData.rotation += this.rotation;
     }
 
@@ -53,7 +56,7 @@
         if (copy) {
             return this;
         }
-        return new ParticleRotationBehavior(this.rotation, this.rotationNoise);
+        return new ParticleRotationBehavior(this.rotation, this.rotationNoise, this.allowReverse);
     }
 
 
@@ -61,7 +64,7 @@
      * Creates a default Particlebehavior object
      */
      static createDefault() {
-        return new ParticleRotationBehavior(0.2, null);
+        return new ParticleRotationBehavior(0.2, -1, true);
     }
 
 

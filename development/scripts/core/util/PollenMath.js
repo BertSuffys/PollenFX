@@ -85,14 +85,29 @@ class PollenMath {
     /* Calculate */
     const max = number + (scalar / 2 * number)
     const min = 1/ (scalar + 1) * number
-
-  //  console.log(number, scalar, min, max)
     const range = max - min
     const value = (random * range) + min
-
-   // console.log(value)
     return value;
   }
+
+
+    /**
+  * Maps a positive number to another number between 0 and +infinity, but never 0
+  * Example: relative map the number 2 by 5, will multiply 2 by a random number between [0.2, 5] to receive a number between [0.4, 10]
+  * Example: 7.positiveMap(4) -> random[1.75, 21]
+  */
+    static absoluteMap(number, scalar, random = -1) {
+      /* Some initial setup */
+      random = random == -1 ? Math.random() : random
+      scalar = Math.max(0, scalar)
+      /* Calculate */
+      const maxOffset = (scalar / 2 * number)
+      const max = number + maxOffset
+      const min = number - maxOffset
+      const range = max - min
+      const value = (random * range) + min
+      return value;
+    }
 
 
   /**

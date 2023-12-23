@@ -393,23 +393,19 @@
           <p class="c-80">
             <span class="title">1. ParticleDefaultData</span> <img style="height: 25px;"
               src="./img/icon_defaultData.png"><br>
-            In order for something to just be shown, it requires at least two properties; position and size. This is
+            In order for a particle to just be shown, it requires at least two properties; position and size. This is
             what the ParticleDefaultData object prescribes.<br><br>
 
             <span class="parameter">* width: </span>Width (in pixels) of the particle. <br>
             <span class="parameter">* height: </span>Height (in pixels) of the particle. <br>
             <span class="parameter">* emitterOrigin: </span>The origin object that defines the area in which particles
             are allowed to be created.<br>
-            <span class="parameter">* noiseX (optional): </span>Adds noise/random offset to the posX parameter
-            ultimately derrived from the emitterOrigin parameter. Smaller values [0,1] yield best results. A value of
-            -1
-            means 'unset'.<br>
-            <span class="parameter">* noiseY (optional): </span>Adds noise/random offset to the posY parameter
-            ultimately derrived from the emitterOrigin parameter. Smaller values [0,1] yield best results. A value of
-            -1
-            means 'unset'.<br>
-            <span class="parameter">* uniformNoiseX (optional): </span>Boolean value defining whether the noiseX value
-            should also be applied to the noiseY value in order to keep the size uniform.<br>
+            <span class="parameter">* noiseWidth (optional): </span>Adds/subtracts random noise to the width property in order to apply 
+            randomness to its width. Lower values yield less extreme results. Default is -1, meaning unset.<br>
+            <span class="parameter">* noiseHeight (optional): </span>Adds/subtracts random noise to the height property in order to apply 
+            randomness to its height. Lower values yield less extreme results. Default is -1, meaning unset.<br>
+            <span class="parameter">* uniformSizeWidth (optional): </span>Boolean value defining whether the optionally added size noise, if provided, 
+            should always keep the sizing uniform. If true, the noiseWidth value will be taken as a reference.  Default is false, meaning non-uniform is allowed.<br>
             <span class="parameter">* horizontalPivot (optional): </span>Pivot enum value defining where the pivot
             point
             lies, horizontally, in defining the origin of the particle.<br>
@@ -427,9 +423,9 @@
             particles within the emitter. Beware that multiple stylerules within this string should be
             semicolon-separated.<br>
             <span class="parameter">* minZIndex (optional): </span>Along with the maxZIndex, a random z-index will be
-            assigned between those two values. unset=z-index:2001<br>
+            assigned between those two values. Default is -1, meaning unset and results in a fixed z-index of 2001.<br>
             <span class="parameter">* maxZIndex (optional): </span>Along with the minZIndex, a random z-index will be
-            assigned between those two values. unset=z-index:2001<br>
+            assigned between those two values. Default is -1, meaning unset and results in a fixed z-index of 2001.<br>
           </p>
 
           <p class="c-80">
@@ -458,8 +454,8 @@
             emitter.<br><br>
             <span class="parameter">* rotation: </span>Defines (in degrees) the amound of rotation a particle must
             have.<br>
-            <span class="parameter">* coneNoise (Optional): </span>Adds noise/random offset to the rotation parameter.
-            Smaller values [0,1] yield best results. A value of -1 means 'unset'. <br>
+            <span class="parameter">* coneNoise (Optional): </span>Adds an imaginary cone (in degrees) around the rotation angle  and 
+            randomizes the rotation value by a random angle within this cone. Default = -1 and means no randomization.<br>
           </p>
 
           <p class="c-80">
@@ -564,15 +560,15 @@
             This behavioral type allows for gradual changes in size over the lifetime of the particles and acts upon
             ParticleDefaultData.<br><br>
             <span class="parameter">* sizeMultipliersX: </span>An array of numbers representing the scalars through
-            which the particle is going interpolate and multiply as a scalar to its width defined in the
+            which the particle is going interpolate over its lifetime/provided duration and multiply as a scalar to its width defined in the
             ParticleDefaultData.<br>
             <span class="parameter">* sizeMultipliersY: </span>An array of numbers representing the scalars through
-            which the particle is going interpolate and multiply as a scalar to its height defined in the
+            which the particle is going interpolate over its lifetime/provided duration and multiply as a scalar to its height defined in the
             ParticleDefaultData.<br>
             <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
-            through the sizeMuliplier lists once. -1 means that it runs through it once during its lifetime<br>
+            through the sizeMuliplier lists once. Default = -1, meaning that it runs through those size lists once during its lifetime.<br>
             <span class="parameter">* scalarNoise (optional): </span>Adds noise/random offset to the sizeMuliplier
-            lists. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            lists. Smaller values yield less extreme results. Default = -1 and means no noise.<br>
             <span class="parameter">* uniformNoise (optional): </span>Whether the scalarNoise, if provided, should
             scale
             both lists uniformly. Beware that this parameter can yield odd results for sizeMuliplier lists of unequal
@@ -580,7 +576,7 @@
             <span class="parameter">* sizeIterationCount (optional): </span>Allows for a forced halt in running
             through
             the sizeMuliplier lists after having passed x numbers in those lists. It then remains the size where it
-            halted. <br>
+            halted. Default = -1 and means that no halting should occur. <br>
           </p>
 
 
@@ -600,14 +596,14 @@
           <p class="c-80">
             <span class="title">4. ParticleRotationBehavior</span> <img style="height: 25px;"
               src="./img/icon_rotationData.png"><br>
-            Defines how the particles should be rotating, or for that matter 'spinning'. This behavior object acts on
+            Defines how the particles should be rotating or 'spinning'. This behavior object acts on
             the ParticleRotationData.<br><br>
             <span class="parameter">* rotation: </span>The speed by which the particle will rotate. Positive values
             yield counter clockwise rotation.<br>
             <span class="parameter">* rotationNoise (optional): </span>Adds noise/random offset to the rotation
-            parameter. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            parameter. Lower values yield less extreme results. Default = -1 and means no noise is being added.<br>
             <span class="parameter">* allowReverse (optional): </span>Boolean value defining whether the rotationNoise
-            is allowed to invert the rotation direction.<br>
+            is allowed to invert the rotation direction. Default = true.<br>
           </p>
 
 
