@@ -10,7 +10,7 @@ class FXItemLifeManager extends FXItemManager {
 
   act(deltaTime) {
     super.act(deltaTime)
-    this.checkDeath()
+    this.checkDeath();
   }
 
 
@@ -21,7 +21,7 @@ class FXItemLifeManager extends FXItemManager {
 
   recycle() {
     const revivedFXItem = this.inactiveFXItemPool.shift();
-    revivedFXItem.showCSS()
+    revivedFXItem.showCSS();
     return revivedFXItem
   }
 
@@ -31,9 +31,9 @@ class FXItemLifeManager extends FXItemManager {
    */
   checkDeath() {
     while (!super.activeFXItemPool.isEmpty() && super.activeFXItemPool.peek().isDead()) {
-      const deadFXItem = super.activeFXItemPool.dequeue()
-      this.inactiveFXItemPool.push(deadFXItem)
-      deadFXItem.notifyDead()
+      const deadFXItem = super.activeFXItemPool.dequeue();
+      this.inactiveFXItemPool.push(deadFXItem);
+      deadFXItem.notifyDead();
     }
   }
 
@@ -45,7 +45,7 @@ class FXItemLifeManager extends FXItemManager {
     if (foundFXItem == null) {
       let newAttempt = this.inactiveFXItemPool.collect().filter(it => it.fxItemID == fxItemId);
       if (newAttempt.length == 0) {
-        foundFXItem = null
+        foundFXItem = null;
       }
       else {
         return newAttempt[0];
@@ -60,9 +60,9 @@ class FXItemLifeManager extends FXItemManager {
   */
   killAllFXItems() {
     while (!super.activeFXItemPool.isEmpty()) {
-      const deadFXItem = super.activeFXItemPool.dequeue()
-      this.inactiveFXItemPool.push(deadFXItem)
-      deadFXItem.notifyDead()
+      const deadFXItem = super.activeFXItemPool.dequeue();
+      this.inactiveFXItemPool.push(deadFXItem);
+      deadFXItem.notifyDead();
     }
   }
 

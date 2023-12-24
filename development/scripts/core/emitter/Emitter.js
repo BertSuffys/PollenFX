@@ -32,8 +32,8 @@ class Emitter extends FXItem {
     else {
       this.particleManager = new FXItemLifeManager(this.loop ? -1 : particleCount)
     }
-    this.ensureEmitterContainer()  // the invisible container storing all emitter-boxes within a singe anchor
-    this.createEmitterBox()
+    this.ensureEmitterContainer();  // the invisible container storing all emitter-boxes within a singe anchor
+    this.createEmitterBox();
   }
 
 

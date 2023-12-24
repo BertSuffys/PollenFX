@@ -147,7 +147,6 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
       this.lastYSizeIndexSum = yFromIndex + yToIndex
   
       if ( Math.max(this.xSizeIteration, this.ySizeIteration) + 1 > this.sizeIterationCount  ) {
-
         particle.disableBehavior(super.type)
       }
     }

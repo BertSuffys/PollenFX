@@ -9,9 +9,9 @@ class Particle extends FXItem{
 
   /* Constructor */
   constructor(lifetime) {
-    super(Math.max(0, lifetime))
-    this.dataManager = new ParticleDataManager()
-    this.behaviorManager = new ParticleBehaviorManager()
+    super(Math.max(0, lifetime));
+    this.dataManager = new ParticleDataManager();
+    this.behaviorManager = new ParticleBehaviorManager();
 
   }
 
@@ -21,8 +21,8 @@ class Particle extends FXItem{
  * Coor loop behavior of a particle
  */
   act(deltaTime) {
-    this.behaviorManager.act(this, super.actTime , deltaTime)
-    super.act(deltaTime)        // used to be underneath this.behaviorManager.act(th...
+    this.behaviorManager.act(this, super.actTime , deltaTime);
+    super.act(deltaTime);        // used to be underneath this.behaviorManager.act(th...
     this.updateStyle();
   }
 
@@ -33,9 +33,9 @@ class Particle extends FXItem{
    */
   createParticleBox(emitterBox) {
     if (emitterBox != null && this.particleBox == null) {
-      this.emitterBox = emitterBox
+      this.emitterBox = emitterBox;
       this.particleBox = document.createElement('div');                            // create
-      this.particleBox.classList.add(PollenFXClasses.PARTICLE_BOX_CLASS)           // add class
+      this.particleBox.classList.add(PollenFXClasses.PARTICLE_BOX_CLASS);           // add class
       this.updateStyle();                                                          // start css
       this.emitterBox.appendChild(this.particleBox);                               // empty anchor? just add
     }

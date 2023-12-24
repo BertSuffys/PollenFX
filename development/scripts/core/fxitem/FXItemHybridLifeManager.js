@@ -49,7 +49,7 @@ class FXItemHybridLifeManager extends FXItemManager {
     if (foundFXItem == null) {
       let newAttempt = this.inactiveFXItemPool.filter(it => it.fxItemID == fxItemId);
       if (newAttempt.length == 0) {
-        foundFXItem = null
+        foundFXItem = null;
       }
       else {
         return newAttempt[0];
@@ -60,20 +60,20 @@ class FXItemHybridLifeManager extends FXItemManager {
 
 
   getActiveFXItems() {
-    return this.sharedActivePool
+    return this.sharedActivePool;
   }
 
   checkDeath() {
     while (!this.activeFXItemPool.isEmpty() && this.activeFXItemPool.peek().isDead()) {
-      const deadFXItem = super.activeFXItemPool.dequeue()
-      deadFXItem.notifyDead() // dying FXItem might have to unwind its worldly affaires
-      this.sharedActivePool.splice(this.sharedActivePool.indexOf(deadFXItem), 1)
-      this.inactiveFXItemPool.push(deadFXItem)
+      const deadFXItem = super.activeFXItemPool.dequeue();
+      deadFXItem.notifyDead(); // dying FXItem might have to unwind its worldly affaires
+      this.sharedActivePool.splice(this.sharedActivePool.indexOf(deadFXItem), 1);
+      this.inactiveFXItemPool.push(deadFXItem);
     }
   }
 
   canRecycle() {
-    return this.inactiveFXItemPool.length > 0
+    return this.inactiveFXItemPool.length > 0;
   }
 
 
@@ -87,10 +87,10 @@ class FXItemHybridLifeManager extends FXItemManager {
 */
   killAllFXItems() {
     while (!this.activeFXItemPool.isEmpty()) {
-      const deadFXItem = super.activeFXItemPool.dequeue()
-      deadFXItem.notifyDead() // dying FXItem might have to unwind its worldly affaires
-      this.sharedActivePool.splice(this.sharedActivePool.indexOf(deadFXItem), 1)
-      this.inactiveFXItemPool.push(deadFXItem)
+      const deadFXItem = super.activeFXItemPool.dequeue();
+      deadFXItem.notifyDead(); // dying FXItem might have to unwind its worldly affaires
+      this.sharedActivePool.splice(this.sharedActivePool.indexOf(deadFXItem), 1);
+      this.inactiveFXItemPool.push(deadFXItem);
     }
     for (fxItem in this.permanentlyActiveFXPool) {
       fxItem.notifyDead()                    // hide css requirement

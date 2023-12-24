@@ -34,8 +34,6 @@
 
 
 
-
-
    ------ Final flow ----------
 -> 2. Documentation finished first draft + have someone read + reread fully, spelling and structural corrections
 -> 3. Thorough self-testing + changes documentation, future changes & own changes
@@ -58,6 +56,7 @@
 -> Upon emitter death, actually detach the particle divs from the dom for performance reasons
 -> Full UML creation
 -> Better design for the windbehavior's considerDefault & overrideInitialDirection fields.
+-> Particles keep buffering when another tab is opened, resulting in extreme particle buildups
 
   ----- Terminology ----- 
 -> actTime = time (in ms) something is alive for
