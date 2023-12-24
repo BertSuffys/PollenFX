@@ -12,11 +12,12 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
       super("colorfilter")
       this.colorIteration = 0
       this.randomStartColor = randomStartColor
-      this.startIndex = startIndex
+      this.durationOverride = duration > 0;
+      this.startIndex =  startIndex % colors.length
       this.colors = colors
       this.duration = duration
       if (randomStartColor) {
-        this._startIndex = Math.floor(Math.random() * colors.length)
+        this.startIndex = Math.floor(Math.random() * colors.length)
       }
       this.lastColorIndexSum = this.startIndex + (1 % this.colors.length)
       if (colorIterationCount < 0) {
@@ -24,35 +25,29 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
       } else {
         this.colorIterationCount = colorIterationCount
       }
+      console.log(this.startIndex)
     }
   
   
+
   
     act(particle, actTime, deltaTime) {
+
       const fullRangeProgress = (actTime / this.duration) * (this.colors.length - 1)
       const localProgress = fullRangeProgress % 1
   
-      const fromColorIndex =
-        (Math.floor(fullRangeProgress) + this.startIndex) % this.colors.length
-      const toColorIndex =
-        (Math.floor(fromColorIndex + 1) + this.startIndex) % this.colors.length
-  
-      ColorUtil.lerpColorToTarget(
-        this.particleColorfilterData.color,
-        this.colors[fromColorIndex],
-        this.colors[toColorIndex],
-        localProgress
-      )
+      const fromColorIndex = (~~fullRangeProgress + this.startIndex) % this.colors.length
+      const toColorIndex = ((fromColorIndex + 1)) % this.colors.length
+
+      ColorUtil.lerpColorToTarget( this.particleColorfilterData.color,  this.colors[fromColorIndex], this.colors[toColorIndex], localProgress )
       this.particleColorfilterData.calculateHueShiftForColorTargetFromSepia()
-  
   
       this.checkBehaviorDeath(fromColorIndex, toColorIndex, particle)
     }
   
   
     checkBehaviorDeath(fromColorIndex, toColorIndex, particle) {
-      this.colorIteration +=
-        Math.abs(fromColorIndex + toColorIndex - this.lastColorIndexSum) / 2
+      this.colorIteration +=  Math.abs(fromColorIndex + Math.max(fromColorIndex,toColorIndex) - this.lastColorIndexSum) / 2
       this.lastColorIndexSum = fromColorIndex + toColorIndex
       if (this.colorIteration + 1 > this.colorIterationCount) {
         particle.disableBehavior(super.type)
@@ -80,7 +75,7 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
   
   
     applyParticle(particle) {
-      if (this.duration <= 0) {
+      if (!this.durationOverride) {
         this.duration = particle.lifeTime
       }
     }
@@ -157,6 +152,13 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
     }
     set lastColorIndexSum(value) {
       this._lastColorIndexSum = value
+    }
+
+    get durationOverride() {
+      return this._durationOverride
+    }
+    set durationOverride(value) {
+      this._durationOverride = value
     }
   }
   

@@ -83,10 +83,8 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
   
   
     setSizeMultipliers(initialSizeMultipliersX, initialSizeMultipliersY) {
-      const multipliersXProvided =
-        initialSizeMultipliersX != null && initialSizeMultipliersX.length > 0
-      const multipliersYProvided =
-        initialSizeMultipliersY != null && initialSizeMultipliersY.length > 0
+      const multipliersXProvided = initialSizeMultipliersX != null && initialSizeMultipliersX.length > 0
+      const multipliersYProvided = initialSizeMultipliersY != null && initialSizeMultipliersY.length > 0
       if (!multipliersXProvided) {
         if (multipliersYProvided) {
           this.sizeMultipliersX = this.copyMultipliers(initialSizeMultipliersY)
@@ -144,7 +142,6 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     checkBehaviorDeath(yFromIndex, yToIndex, xFromIndex, xToIndex, particle) {
       this.xSizeIteration += Math.abs(xFromIndex + Math.max(xToIndex, xFromIndex) - this.lastXSizeIndexSum) / 2
       this.ySizeIteration += Math.abs(yFromIndex + Math.max(yToIndex, yFromIndex) - this.lastYSizeIndexSum) / 2
-      console.log(xFromIndex , xToIndex, xFromIndex + xToIndex)
   
       this.lastXSizeIndexSum = xFromIndex + xToIndex
       this.lastYSizeIndexSum = yFromIndex + yToIndex

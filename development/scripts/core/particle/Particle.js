@@ -13,9 +13,6 @@ class Particle extends FXItem{
     this.dataManager = new ParticleDataManager()
     this.behaviorManager = new ParticleBehaviorManager()
 
-    if(lifetime < 200){
-      console.log(lifetime)
-    }
   }
 
       

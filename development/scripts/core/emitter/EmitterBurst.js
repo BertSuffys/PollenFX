@@ -21,7 +21,7 @@ class EmitterBurst extends Emitter {
    * Burst core act method
    */
   act(deltaTime) {
-    super.act(deltaTime)
+
     if (super.active) {
 
       for (let i = 0; i < this.localBurstCount; i++) {
@@ -41,6 +41,11 @@ class EmitterBurst extends Emitter {
         super.active = true
       }
     }
+    // in case of delay: check when to begin
+    else if (super.actTime > super.delay) {
+      super.active = true
+    }
+    super.act(deltaTime)
   }
 
 
@@ -55,8 +60,8 @@ class EmitterBurst extends Emitter {
       let particle;
       /* Recycle ? */
       if (super.particleManager.canRecycle()) {
-        particle = super.particleManager.recycle().reset()
-        particle.lifeTime = newParticleLifetime
+       // console.log('Recycle: burst')
+        particle = super.particleManager.recycle().reset(newParticleLifetime)  
         particle.showCSS(super.emitterBox)                // re-show the HTML element
       }
       /* New particle ? */

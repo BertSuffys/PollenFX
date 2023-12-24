@@ -8,7 +8,7 @@ class ParticleGravityBehavior extends ParticleBehavior {
       super("gravity")
       this.initialFieldStrength = fieldStrength * this.FIELD_SCALAR
       if (fieldStrengthNoise > 0) {
-        fieldStrength = WarMath.relativeMap(
+        fieldStrength = PollenMath.relativeMap(
           this.initialFieldStrength,
           fieldStrengthNoise,
           Math.random()
@@ -51,7 +51,7 @@ class ParticleGravityBehavior extends ParticleBehavior {
     reset() {
       this.acceleration = 0
       if (this.fieldStrengthNoise > 0) {
-        this.fieldStrength = WarMath.relativeMap(
+        this.fieldStrength = PollenMath.relativeMap(
           this.initialFieldStrength,
           this.fieldStrengthNoise,
           Math.random()

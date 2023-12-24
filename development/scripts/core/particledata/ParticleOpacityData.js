@@ -10,7 +10,7 @@ class ParticleOpacityData extends ParticleData {
           1,
           Math.max(
             0,
-            WarMath.relativeMap(opacity, 1 + opacityNoise, Math.random())
+            PollenMath.relativeMap(opacity, 1 + opacityNoise, Math.random())
           )
         )
       } else {

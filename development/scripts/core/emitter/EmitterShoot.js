@@ -3,7 +3,7 @@ class EmitterShoot extends Emitter {
 
   /* Constructor */
   constructor(emitterOrigin, particleCount, emitterDuration, particleLifetime, delay = -1, particleLifetimeNoise = -1, spawnIntervalTime = 500) {
-    super(particleCount, emitterDuration, delay, emitterOrigin, particleLifetime, particleLifetimeNoise)
+    super(emitterDuration < 0 ? 1 : particleCount, emitterDuration, delay, emitterOrigin, particleLifetime, particleLifetimeNoise)
     if (super.loop) {
       this.spawnIntervalTime = spawnIntervalTime
     } else {
@@ -45,7 +45,7 @@ class EmitterShoot extends Emitter {
     let particle;
     // Recycled particle from the inactive pool
     if (super.particleManager.canRecycle()) {
-      console.log('Recycle')
+     // console.log('Recycle: shoot')
       particle = super.particleManager.recycle().reset(newParticleLifetime)
       particle.showCSS(super.emitterBox)                // re-show the HTML element
     }

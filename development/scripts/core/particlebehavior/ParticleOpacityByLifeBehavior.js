@@ -7,14 +7,11 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
   
     constructor( opacityMultipliers, opacityNoise = -1, duration = -1, opacityIterationCount = -1 ) {
       super("opacity")
+      this.durationOverride = duration > 0;
       if (opacityNoise > 0) {
         this.opacityMultipliers = []
         for (let i = 0; i < opacityMultipliers.length; i++) {
-          let noisedOpacity = PollenMath.relativeMap(
-            opacityMultipliers[i],
-            1 + opacityNoise,
-            Math.random()
-          )
+          let noisedOpacity = PollenMath.relativeMap(opacityMultipliers[i], opacityNoise, Math.random() )
           noisedOpacity = Math.max(0, Math.min(1, noisedOpacity))
           this.opacityMultipliers[i] = noisedOpacity
         }
@@ -47,9 +44,6 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
   
   
     act(particle, actTime, deltaTime) {
-
-    //  console.log(particle.actTime, actTime, this.duration);
-
       const fullRangeProgress = (actTime / this.duration) * (this.opacityMultipliers.length - 1)
   
       const fromIndex = ~~fullRangeProgress % this.opacityMultipliers.length
@@ -68,9 +62,10 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
   
   
     checkBehaviorDeath(fromIndex, toIndex, particle) {
-      this.opacityIteration += Math.abs(fromIndex + toIndex - this.lastOpacityIndexSum) / 2
+      this.opacityIteration += Math.abs(fromIndex + Math.max(toIndex, fromIndex) - this.lastOpacityIndexSum) / 2
       this.lastOpacityIndexSum = fromIndex + toIndex
       if (this.opacityIteration + 1 > this.opacityIterationCount) {
+        this.particleOpacityData.opacity = this.opacityMultipliers[this.opacityIterationCount % this.opacityMultipliers.length]
         particle.disableBehavior(super.type)
       }
     }
@@ -84,7 +79,7 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
   
   
     applyParticle(particle) {
-      if (this.duration == -1) {
+      if (!this.durationOverride) {
         this.duration = particle.lifeTime;
       }
     }
@@ -153,5 +148,12 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
     }
     set opacityIteration(value) {
       this._opacityIteration = value
+    }
+
+    get durationOverride() {
+      return this._durationOverride
+    }
+    set durationOverride(value) {
+      this._durationOverride = value
     }
   }

@@ -121,6 +121,9 @@ class PollenMath {
 * The built-in % works as a remainder, and not a true modulo. This modulo allows -1%5 to return a 4.
 */
   static modulo(value, moduloValue) {
+    if(moduloValue == 0){
+      return value
+    }
     return ((value % moduloValue) + moduloValue) % moduloValue
   }
 

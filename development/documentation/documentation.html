@@ -40,22 +40,16 @@
         <div class="topic">
           <h3>1. Introduction</h3>
           <p class="c-80">
-            PollenFX is a lightweight, clientside, code-first, javascript based, DOM-oriented particle engine, used to
-            create a wide variety of
-            visually compelling particle effects. The tool consists out of many
-            different configuration components that allow the developer to create all sorts of visual effects by
-            combining
-            these components without relying on external scripts. In order to use PollenFX, one is expected to have
-            minimal
-            javascript knowledge, although most concepts of PollenFX should be explained sufficiently in this document.
+            PollenFX is a lightweight, clientside, code-first, javascript based, DOM-oriented particle engine. It is used to create a wide variety of visually compelling particle effects within the browser. The tool consists of many different configuration components that allow the developer to dynamically assemble custom particle effects. The engine does not rely on any external css, javascript or JQuery. In order to use PollenFX, one is expected to have minimal (vanilla) javascript knowledge, although the components are fairly simple and well documented along with code snippets and examples.
           </p>
           <nav>
             <ul>
-              <li>One single .js script</li>
-              <li>No CSS files</li>
-              <li>No external scripts/dependencies</li>
               <li>Code-first engine</li>
               <li>Lightweight</li>
+              <li>One single .js file</li>
+              <li>No CSS files included</li>
+              <li>No external scripts/dependencies</li>
+              <li>Modular emitter creation</li>
             </ul>
           </nav>
         </div>
@@ -420,8 +414,7 @@
             The ParticleCustomCSSData allows for custom css stylerules to be added to each particle within an
             emitter.<br><br>
             <span class="parameter">* customCssObject: </span>A string containing x css stylerules, applied to all
-            particles within the emitter. Beware that multiple stylerules within this string should be
-            semicolon-separated.<br>
+            particles within the emitter. Beware that stylerules within this string should end width a semicolon.<br>
             <span class="parameter">* minZIndex (optional): </span>Along with the maxZIndex, a random z-index will be
             assigned between those two values. Default is -1, meaning unset and results in a fixed z-index of 2001.<br>
             <span class="parameter">* maxZIndex (optional): </span>Along with the minZIndex, a random z-index will be
@@ -463,10 +456,9 @@
               src="./img/icon_opacityData.png"><br>
             The ParticleRotationData object defines the transparency of the particle object.<br><br>
             <span class="parameter">* opacity: </span>The transparency/opacity of the particles of the emitter. Values
-            are meaningful between [0,1]<br>
+            are meaningful between [0,1].<br>
             <span class="parameter">* opacityNoise (Optional): </span>Adds noise/random offset to the opacity
-            parameter.
-            Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            parameter. Smaller values yield better results. A value of -1 means 'unset'.<br>
           </p>
 
           <p class="c-80">
@@ -474,14 +466,12 @@
               src="./img/icon_imageData.png"><br>
             The ParticleImageData object allows for particles to be presented as an image.<br><br>
             <span class="parameter">* url: </span>The URL to the image.<br>
-            <span class="parameter">* imgWidth: </span>The physical width of the image file in px.<br>
-            <span class="parameter">* imgHeight: </span>The physical height of the image file in px.<br>
-            <span class="parameter">* imageFitting (optional): </span>The ImageFitting enum value defines how the
-            image
-            is being applied to the particle div element and should usually not be altered.<br>
-            <span class="parameter">* keyOverride (optional): </span>Should not be altered. Flipbookdata extends
+            <span class="parameter">* imgWidth (optional): </span>The physical width of the image file in px. Providing this value might increase performance.<br>
+            <span class="parameter">* imgHeight (optional): </span>The physical height of the image file in px. Providing this value might increase performance.<br>
+            <span class="parameter">* imageFitting (Should not be altered): </span>The ImageFitting enum value defines how the image is applied to the particle div element and should usually not be altered.<br>
+            <span class="parameter">* keyOverride (Should not be altered): </span>Should not be altered. Flipbookdata extends
             Imagedata and overrides this key.<br>
-            <span class="parameter">* imgLoadingCallback (optional): </span>Should not be altered. Represents the
+            <span class="parameter">* imgLoadingCallback (Should not be altered): </span>Should not be altered. Represents the
             callback method processing the image.<br>
           </p>
 
@@ -490,7 +480,7 @@
             <span class="title">7. ParticleFlipbookData</span> <img style="height: 25px;"
               src="./img/icon_flipbookData.png"><br>
             The ParticleFlipbookData object allows for spritesheets/flipbooks to be applied to the particle through
-            which is being flipped in order to display an animation.<br><br>
+            which is being flipped in order to display an animation. This data object has no effect unless an ParticleFlipbookBehavior is added.<br><br>
             <span class="parameter">* url: </span>The URL to the image.<br>
             <span class="parameter">* imgWidth: </span>The physical width of the image file in px.<br>
             <span class="parameter">* imgHeight: </span>The physical height of the image file in px.<br>
@@ -519,7 +509,7 @@
             <span class="parameter">* color (optional): </span>A Color object being overlayed ontop of the particle
             functioning as a colored filter.<br>
             <span class="parameter">* noise (optional): </span>Adds noise/random offset to color/hue shift parameter,
-            depending on which was provided. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            depending on which was provided. Smaller values yield better results. Default = -1 and means 'unset'.<br>
             <span class="parameter">* contrast (optional): </span>Increases the contrast to the appearance of the
             particles. Values between [0,100] are valid.<br>
             <span class="parameter">* saturation (optional): </span>Increases the saturation to the appearance of the
@@ -616,13 +606,12 @@
             scalars through which the particle is going interpolate and multiply with its opacity value defined in the
             ParticleOpacityData.<br>
             <span class="parameter">* opacityNoise (optional): </span>Adds noise/random offset to the
-            opacityMultipliers. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            opacityMultipliers. Smaller values yield better results. Default = -1 and indicates no randomness.<br>
             <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
-            through the opacityMultipliers once. -1 means that it runs through it once during its lifetime<br>
+            through the opacityMultipliers once. Default = -1 and indicates that it runs through the opacity list once during its lifetime<br>
             <span class="parameter">* opacityIterationCount (optional): </span>Allows for a forced halt in running
-            through the opacityMultipliers after having passed x numbers in this list. It then remains the opacity
-            value
-            where it halted. <br>
+            through the opacityMultipliers after having passed x numbers in this opacity list. It then remains the opacity
+            value where it halted. Default = -1 and indicates no halting. <br>
           </p>
 
 
@@ -636,7 +625,7 @@
             <span class="parameter">* angles: </span>An array of angles (numbers, in degrees) representing the angles
             towards the wind blows and through which the particles are going interpolate and be blown towards.<br>
             <span class="parameter">* cycleDuration (optional): </span>Time (in ms) it should take for the particle to
-            run through the angles list once. -1 means that it runs through it once during its lifetime<br>
+            run through the angles list once. Default = -1 and means that it runs through it once during its lifetime<br>
             <span class="parameter">* windSpeed (optional): </span>The power/windspeed by which the wind will blow
             towards the direction the particle is currently at in its angles list. Default value is 1.<br>
             <span class="parameter">* deepRandom (optional): </span>Boolean value that if true, randomizes all angles
@@ -690,22 +679,35 @@
             <span class="parameter">* colors: </span>An array of color-objects through which the particles are going
             interpolate and take on this interpolated color overlay for each moment in time over its life.<br>
             <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
-            through the colors once. -1 means that it runs through it once during its lifetime<br>
+            through the colors once. Default = -1 and means that it runs through it once during its lifetime<br>
             <span class="parameter">* randomStartColor (optional): </span>Boolean value defining whether a random
             color
-            from the colors list is being taken to start from.<br>
-            <span class="parameter">* startIndex (optional): </span>Similar to randomStartColor, a provided startIndex
-            will use the provided color at that index to be the starting color.<br>
+            from the colors list is being taken to start from. Default = false and indicates no randomisation<br>
+            <span class="parameter">* startIndex (optional): </span>Similar to randomStartColor, the color at this index will be taken as start color. Default = -1 and means the first color.<br>
             <span class="parameter">* colorIterationCount (optional): </span>Allows for a forced halt in running
             through
-            the colors after having passed x colors in this list. It then remains the color value where it halted.
+            the colors after having passed x colors in this list. It then remains the color value where it halted. Default = -1 and indicates no halting.
             <br>
 
           </p>
 
 
+
           <p class="c-80">
-            <span class="title">9. ParticleRotationByDirectionBehavior</span> <img style="height: 25px;"
+            <span class="title">9. ParticleFlipbookBehavior</span> <img style="height: 25px;"
+              src="./img/icon_flipbookData.png"><br>
+            The ParticleFlipbookBehavior object allows flipping through the provided spritesheet in the provided ParticleFlipbookData object.<br><br>
+            <span class="parameter">* speed: </span>The speed with which is being flipped through the spritesheet.<br>
+            <span class="parameter">* speedNoise (optiona): </span>Adds randomness/noise to the speed parameter. Lower values yield better results. Default = -1 and indicates no randomness.<br>
+            <span class="parameter">* endingFrameCount (optional): </span>Allows for a forced halt in running
+            through
+            the spritesheet frames after having passed x frames in the image. It then remains stuck on the frame where it halted. Default = -1 and indicates no halting.
+            <br><br>
+          </p>
+
+
+          <p class="c-80">
+            <span class="title">19. ParticleRotationByDirectionBehavior</span> <img style="height: 25px;"
               src="./img/icon_rotationData.png"><br>
             This behavior object allows the rotation to always be set to match the direction that the particle is
             going towards. The object acts on

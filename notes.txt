@@ -34,21 +34,16 @@
 
 
 
-  ----- Todo v1.0 ----- 
-
--> Git & git kraken
 
 
    ------ Final flow ----------
 -> 2. Documentation finished first draft + have someone read + reread fully, spelling and structural corrections
 -> 3. Thorough self-testing + changes documentation, future changes & own changes
--> 4. Write down intresting developer notes. that which i have to remember for myself.
 -> 5. Have someone production test? (Hubert?)
--> 6. UML creation
 -> 7. PDF creation of the html documentation
--> 8. Write introductory text with highlights of the app, features & functions, known bugs, introductory text, contact me for huge errors,
 
   ----- Future updates ----- 
+-> Free github repo client for private repositories
 -> Emitterbehavior change to 1 behavior for all particles, with an assistent data-object for all behavior-specific data items which the behaviors currently have
 -> JS File bundler, minimizer, comment-remover & whiteline-remover
 -> Origin object weg proberen te halen uit default data object
@@ -58,14 +53,11 @@
    sure how an emitter will be visible immediately upon creating it. But this is food for thought.
 -> Perhaps it could be an idea to move the config parameters & enums (found in config.js) to a better location
 -> Include deltatime speed calculation in all behavior objects
--> Reset function move to FXItem?
 -> Origin size & position of the origin are still absolute and does not use PositionUnits. This also counts for properties such as speed, size, .. of the particle
    This could be a huge issue, but can be fixed by setting values based on a calculated device sizes.
-
-
-  ----- Bugs found ----- 
--> When wind is applied, and a particle is being recycled, there is something in the wind behavior that is not being reset, causing some sort of fluttering. Actually has to do with positioning.
--> When no defaultdata is applied, but another element is that requires that dependency, a new one is going to be made with a default origin object that does not match the real one.
+-> Upon emitter death, actually detach the particle divs from the dom for performance reasons
+-> Full UML creation
+-> Better design for the windbehavior's considerDefault & overrideInitialDirection fields.
 
   ----- Terminology ----- 
 -> actTime = time (in ms) something is alive for

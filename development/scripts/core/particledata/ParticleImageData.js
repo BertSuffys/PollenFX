@@ -1,6 +1,6 @@
 class ParticleImageData extends ParticleData {
 
-  constructor(url, imgWidth, imgHeight, imageFitting = ImageFitting.FIT, keyOverride = "image", imgLoadingCallback = response => {
+  constructor(url, imgWidth = null, imgHeight = null, imageFitting = ImageFitting.FIT, keyOverride = "image", imgLoadingCallback = response => {
                                                                                                     this.imgWidth = response[0];
                                                                                                     this.imgHeight = response[1];
                                                                                                   }) {
@@ -9,28 +9,23 @@ class ParticleImageData extends ParticleData {
     this.imageFitting = imageFitting
     let image = new Image()
     image.src = url
-    this.extractImageDimensions(url, imgWidth, imgHeight)
-      .pipe(delay(0))
-      .subscribe(imgLoadingCallback)
+    this.extractImageDimensions(url, imgWidth, imgHeight, imgLoadingCallback)
+
   }
 
 
-  extractImageDimensions(url, imgWidth, imgHeight) {
-    return new Observable(observer => {
-      if (imgWidth != null && imgHeight != null) {
-        observer.next([imgWidth, imgHeight])
-        observer.complete()
-      } else {
-        var image = new Image()
-        image.src = url
-        image.onload = e => {
-          const height = e.target.height
-          const width = e.target.width
-          observer.next([width, height])
-          observer.complete()
-        }
-      }
-    })
+  extractImageDimensions(url, imgWidth, imgHeight, callback) {
+    if (imgWidth != null && imgHeight != null) {
+      callback([imgWidth, imgHeight]);
+    } else {
+      var image = new Image();
+      image.src = url;
+      image.onload = function (e) {
+        const height = e.target.height;
+        const width = e.target.width;
+        callback([width, height]);
+      };
+    }
   }
 
   /**

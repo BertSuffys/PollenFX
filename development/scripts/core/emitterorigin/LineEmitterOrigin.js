@@ -11,8 +11,8 @@ class LineEmitterOrigin extends EmitterOrigin {
   
     generateParticleSpawnPosition() {
       const progress = Math.random()
-      let x = WarMath.lerp(this.posX_2, super.posX, progress)
-      let y = WarMath.lerp(this.posY_2, super.posY, progress)
+      let x = PollenMath.lerp(this.posX_2, super.posX, progress)
+      let y = PollenMath.lerp(this.posY_2, super.posY, progress)
       if (this.offset > 0) {
         const rico = this.getDirectionCoefficient(
           super.posX,

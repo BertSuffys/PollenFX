@@ -36,7 +36,6 @@
      * Performs the behavior of the gravityparticlebehavior
      */
      act(particle, actTime, deltaTime) {
-        console.log( this.rotation)
         this.rotationData.rotation += this.rotation;
     }
 

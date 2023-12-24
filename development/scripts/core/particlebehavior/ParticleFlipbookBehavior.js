@@ -1,16 +1,16 @@
 
 
 class ParticleFlipbookBehavior extends ParticleBehavior {
-    constructor(speed, speedScalar = -1, endingFrameCount = -1) {
+    constructor(speed, speedNoise = -1, endingFrameCount = -1) {
       super("flipbook")
       this.flipCount = 0
       this.initialSpeed = speed
-      this.speedScalar = speedScalar
+      this.speedNoise = speedNoise
       this.timeSinceLastFrameshift = 0
-      if (speedScalar > 0) {
+      if (speedNoise > 0) {
         this.speed = PollenMath.relativeMap(
           this.initialSpeed,
-          1 + speedScalar,
+          1 + speedNoise,
           Math.random()
         )
       } else {
@@ -67,7 +67,7 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
       }
       return new ParticleFlipbookBehavior(
         this.initialSpeed,
-        this.speedScalar,
+        this.speedNoise,
         this.endingFrameCount
       )
     }
@@ -89,11 +89,11 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     set initialSpeed(value) {
       this._initialSpeed = value
     }
-    get speedScalar() {
-      return this._speedScalar
+    get speedNoise() {
+      return this._speedNoise
     }
-    set speedScalar(value) {
-      this._speedScalar = value
+    set speedNoise(value) {
+      this._speedNoise = value
     }
     get timeSinceLastFrameshift() {
       return this._timeSinceLastFrameshift
