@@ -9,10 +9,6 @@
   ----- export documentation to pdf ----- 
 -> In the browser open the html in a tab. press ctrl+p, alter destination to 'Save as pdf', optionally alter the properties, save.
 
-  ----- script bundling----- 
--> For the future, i will maybe develop a js bundling tool that inspects the dependencies and merges them into one file.
--> For now, i bundle manually and the order should not matter due to the hoisting principle within single .js files
-
 
   ----- Developer notes----- 
 1. An FXItem, when it dies, also kills all FXItem children. For example a dying emitter, first kills it particle children. 
@@ -35,10 +31,13 @@
 
 
    ------ Final flow ----------
--> 2. Documentation finished first draft + have someone read + reread fully, spelling and structural corrections
--> 3. Thorough self-testing + changes documentation, future changes & own changes
--> 5. Have someone production test? (Hubert?)
--> 7. PDF creation of the html documentation
+
+-> Flipbook data, colorshiftbehavior, flipbook behavior
+-> Documentatie herlezen, spelling correctie, functionality correct + getFps() + fix code example images + behavior & data screenshots
+-> PDF documentatie
+-> Starterfile
+-> Hubert & peter test
+-> Eigen demo (campfire)
 
   ----- Future updates ----- 
 -> Free github repo client for private repositories
@@ -57,6 +56,7 @@
 -> Full UML creation
 -> Better design for the windbehavior's considerDefault & overrideInitialDirection fields.
 -> Particles keep buffering when another tab is opened, resulting in extreme particle buildups
+-> PositionUnits in the default data sometimes cause a weird jittery/jumpy effect
 
   ----- Terminology ----- 
 -> actTime = time (in ms) something is alive for
