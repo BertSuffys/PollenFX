@@ -1,15 +1,21 @@
 class ParticleImageData extends ParticleData {
 
+
+  /* parameters */
+
+
   constructor(url, imgWidth = null, imgHeight = null, imageFitting = ImageFitting.FIT, keyOverride = "image", imgLoadingCallback = response => {
                                                                                                     this.imgWidth = response[0];
                                                                                                     this.imgHeight = response[1];
+                                                                                                    this.frameWidth = this.imgWidth;
+                                                                                                    this.frameHeight = this.imgHeight;
                                                                                                   }) {
     super(keyOverride)
     this.url = url
     this.imageFitting = imageFitting
-    let image = new Image()
-    image.src = url
-    this.extractImageDimensions(url, imgWidth, imgHeight, imgLoadingCallback)
+    if(imgLoadingCallback != null){
+      this.extractImageDimensions(url, imgWidth, imgHeight, imgLoadingCallback)
+    }
 
   }
 
@@ -74,4 +80,5 @@ class ParticleImageData extends ParticleData {
   set imageFitting(value) {
     this._imageFitting = value
   }
+
 }

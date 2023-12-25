@@ -1,14 +1,31 @@
 
 
 class ParticleFlipbookData extends ParticleImageData {
-    constructor(url, imgWidth, imgHeight, frameCountX, frameCountY, startFrame = 0, imageFitting = ImageFitting.CONTAIN) {
-      super(url, imgWidth, imgHeight, imageFitting, "flipbook", response => {
-        this.imgWidth = imgWidth != null && imgHeight != null ? imgWidth : response[0]
-        this.imgHeight = imgWidth != null && imgHeight != null ? imgHeight : response[1]
-        this.frameWidth = response[0] / frameCountX
-        this.frameHeight = response[1] / frameCountY
+
+  _frameCountY;
+  _frameCountX;
+  _frameCount;
+  _startFrame;
+  _frameWidth;
+  _frameHeight;
+
+  _particleWidth=100;  // altered by flipbook behavior
+  _particleHeight=100; // altered by flipbook behavior
+
+    constructor(url, imgWidth = null, imgHeight = null, frameCountX = 1, frameCountY = 1, startFrame = 0, imageFitting = ImageFitting.CONTAIN) {
+      super(url, imgWidth, imgHeight, imageFitting, "flipbook", null)
+
+      /* This is not ideal, but i had to find a workaround. */
+
+      
+      super.extractImageDimensions(super.url, imgWidth, imgHeight, (response)=>{
+        super.imgWidth = imgWidth != null && imgHeight != null ? imgWidth : response[0]
+        super.imgHeight = imgWidth != null && imgHeight != null ? imgHeight : response[1]
+        this.frameWidth = super.imgWidth / frameCountX;
+        this.frameHeight = super.imgHeight / frameCountY;
+       // console.log( "shobec ",super.imgWidth, super.imgHeight, this.frameWidth, this.frameHeight)
       })
-  
+
       this.startFrame = startFrame
       this.frameCountX = frameCountX
       this.frameCountY = frameCountY
@@ -31,10 +48,10 @@ class ParticleFlipbookData extends ParticleImageData {
     }
   
     getCSS() {
-      return `background-image : url(${this.url})
-              background-size : ${this.getBackgroundimageWidth()}px ${this.getBackgroundimageHeight()}px
-              background-position-x : -${this.left()}px
-              background-position-y: -${this.top()}px`;
+      return `background-image : url(${this.url});
+              background-size : ${this.getBackgroundimageWidth()}px ${this.getBackgroundimageHeight()}px;
+              background-position-x : -${this.left()}px;
+              background-position-y: -${this.top()}px;`;
       
     }
   
@@ -53,17 +70,20 @@ class ParticleFlipbookData extends ParticleImageData {
         return this
       }
       return new ParticleFlipbookData(
+        this.url,
+        super.imgWidth,
+        super.imgHeight,
         this.frameCountX,
         this.frameCountY,
-        this.url,
         this.startFrame,
         super.imageFitting,
-        super.imgWidth,
-        super.imgHeight
       )
     }
   
+
+
     static createDefault() {
+      console.log("heypa")
       return new ParticleFlipbookData(
         1,
         1,
@@ -74,6 +94,19 @@ class ParticleFlipbookData extends ParticleImageData {
       )
     }
   
+
+    get frameHeight() {
+      return this._frameHeight
+    }
+    set frameHeight(value) {
+      this._frameHeight = value
+    }
+    get frameWidth() {
+      return this._frameWidth
+    }
+    set frameWidth(value) {
+      this._frameWidth = value
+    }
     get startFrame() {
       return this._startFrame
     }
@@ -98,18 +131,6 @@ class ParticleFlipbookData extends ParticleImageData {
     }
     set frameCountY(value) {
       this._frameCountY = value
-    }
-    get frameHeight() {
-      return this._frameHeight
-    }
-    set frameHeight(value) {
-      this._frameHeight = value
-    }
-    get frameWidth() {
-      return this._frameWidth
-    }
-    set frameWidth(value) {
-      this._frameWidth = value
     }
     get currentFrameIndex() {
       return this._currentFrameIndex

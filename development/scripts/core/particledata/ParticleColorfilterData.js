@@ -45,7 +45,7 @@ class ParticleColorfilterData extends ParticleData {
   
   
     static createDefault() {
-      return new ParticleColorfilterData(0, null, -1, -1, -1)
+      return new ParticleColorfilterData(0, new Color(ColorUtil.debugColor), -1, -1, -1)
     }
   
   

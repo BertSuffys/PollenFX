@@ -6,12 +6,13 @@ FXManager.devConfig.DEBUG = false;
 (function () {
     fxManager = new FXManager(false);
 
-    fxManager.addEmitter(dataTest_1(), "emitter_1")
-    fxManager.addEmitter(dataTest_2(), "emitter_2")
-    fxManager.addEmitter(dataTest_3(), "emitter_3")
+    //fxManager.addEmitter(dataTest_1(), "emitter_1")
+    //fxManager.addEmitter(dataTest_2(), "emitter_2")
+    //fxManager.addEmitter(dataTest_3(), "emitter_3")
     fxManager.addEmitter(dataTest_4(), "emitter_4")
-    fxManager.addEmitter(dataTest_5(), "emitter_5")
-    fxManager.addEmitter(dataTest_6(), "emitter_6")
+    //fxManager.addEmitter(dataTest_5(), "emitter_5")
+    //fxManager.addEmitter(dataTest_6(), "emitter_6")
+    fxManager.addEmitter(dataTest_7(), "emitter_7")
 
        
     /* Start */
@@ -175,6 +176,34 @@ function dataTest_6() {
     return emitter
 
 }
+
+
+function dataTest_7() {
+
+    let line = new RectangularEmitterOrigin(1000, 1000, -1, -1 , true);
+    let emitter = new EmitterShoot(origin, -1, -1, 2000, 500, 2, 30)
+    // Data
+    const flipbookData = new ParticleFlipbookData("https://cdnb.artstation.com/p/assets/images/images/035/882/457/large/artem-grechko-vfx-fire-spritesheet.jpg?1616148253", -1, -1, 4, 2, -1, ImageFitting.COVER);
+    const css = new ParticleCustomCssData("mix-blend-mode:screen;");
+    const defaultData = new ParticleDefaultData(30, 70, line, 5, 5, true, Pivot.CENTER, Pivot.END);
+    const directionData = new ParticleDirectionData(0, 5, 360, 3)
+    emitter.addParticleData(defaultData);
+    emitter.addParticleData(flipbookData);
+    emitter.addParticleData(css);
+    emitter.addParticleData(directionData);
+    // Behavior
+    const directionBehavior = new ParticleDirectionalBehavior();
+    const flipbookBehavior = new ParticleFlipbookBehavior(100);
+    const wind = new ParticleWindBehavior([120, 360, -45, 38], -1, 40)
+
+    emitter.addParticleBehavior(directionBehavior);
+    emitter.addParticleBehavior(wind);
+    emitter.addParticleBehavior(flipbookBehavior);
+    
+    return emitter
+
+}
+
 
 
 

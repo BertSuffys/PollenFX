@@ -480,10 +480,10 @@
             <span class="title">7. ParticleFlipbookData</span> <img style="height: 25px;"
               src="./img/icon_flipbookData.png"><br>
             The ParticleFlipbookData object allows for spritesheets/flipbooks to be applied to the particle through
-            which is being flipped in order to display an animation. This data object has no effect unless an ParticleFlipbookBehavior is added.<br><br>
+            which is being flipped in order to display an animation. This data object should be used along with ParticleFlipbookBehavior, in order to to achieve a meaningful animation.<br><br>
             <span class="parameter">* url: </span>The URL to the image.<br>
-            <span class="parameter">* imgWidth: </span>The physical width of the image file in px.<br>
-            <span class="parameter">* imgHeight: </span>The physical height of the image file in px.<br>
+            <span class="parameter">* imgWidth (optional): </span>The physical width of the image file in px. Providing this value might increase performance.<br>
+            <span class="parameter">* imgHeight (optional): </span>The physical height of the image file in px. Providing this value might increase performance.<br>
             <span class="parameter">* frameCountX: </span>The amount of images within the provided spritesheet over
             the
             x axis.<br>
@@ -697,7 +697,7 @@
             <span class="title">9. ParticleFlipbookBehavior</span> <img style="height: 25px;"
               src="./img/icon_flipbookData.png"><br>
             The ParticleFlipbookBehavior object allows flipping through the provided spritesheet in the provided ParticleFlipbookData object.<br><br>
-            <span class="parameter">* speed: </span>The speed with which is being flipped through the spritesheet.<br>
+            <span class="parameter">* speed: </span>The time (in ms) between each frame jump.<br>
             <span class="parameter">* speedNoise (optiona): </span>Adds randomness/noise to the speed parameter. Lower values yield better results. Default = -1 and indicates no randomness.<br>
             <span class="parameter">* endingFrameCount (optional): </span>Allows for a forced halt in running
             through
