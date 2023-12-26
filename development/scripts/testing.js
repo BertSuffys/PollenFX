@@ -183,7 +183,7 @@ function dataTest_7() {
     let line = new RectangularEmitterOrigin(1000, 1000, -1, -1 , true);
     let emitter = new EmitterShoot(origin, -1, -1, 2000, 500, 2, 30)
     // Data
-    const flipbookData = new ParticleFlipbookData("./img/fire.png", -1, -1, 4, 2, -1, ImageFitting.COVER);
+    const flipbookData = new ParticleFlipbookData("./img/smoke.png", -1, -1, 6, 5, -1, ImageFitting.COVER);
     const css = new ParticleCustomCssData("mix-blend-mode:screen;");
     const defaultData = new ParticleDefaultData(30, 40, line, 5, 5, true, Pivot.CENTER, Pivot.END);
     const directionData = new ParticleDirectionData(0, 5, 360, 3)
