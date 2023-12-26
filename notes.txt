@@ -29,16 +29,6 @@
    to be set in this behavior as duration. this makes particleLifetimeNoise possible.
 
 
-
-   ------ Final flow ----------
-
--> Flipbook data, colorshiftbehavior, flipbook behavior
--> Documentatie herlezen, spelling correctie, functionality correct + getFps() + fix code example images + behavior & data screenshots
--> PDF documentatie
--> Starterfile
--> Hubert & peter test
--> Eigen demo (campfire)
-
   ----- Future updates ----- 
 -> Free github repo client for private repositories
 -> Emitterbehavior change to 1 behavior for all particles, with an assistent data-object for all behavior-specific data items which the behaviors currently have
