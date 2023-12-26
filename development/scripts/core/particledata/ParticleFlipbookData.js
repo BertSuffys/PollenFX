@@ -8,7 +8,6 @@ class ParticleFlipbookData extends ParticleImageData {
   _startFrame;
   _frameWidth;
   _frameHeight;
-
   _particleWidth=100;  // altered by flipbook behavior
   _particleHeight=100; // altered by flipbook behavior
 
@@ -23,6 +22,8 @@ class ParticleFlipbookData extends ParticleImageData {
         super.imgHeight = imgWidth != null && imgHeight != null ? imgHeight : response[1]
         this.frameWidth = super.imgWidth / frameCountX;
         this.frameHeight = super.imgHeight / frameCountY;
+        this.particleWidth = super.imgWidth;
+        this.particleHeight = super.imgHeight;
        // console.log( "shobec ",super.imgWidth, super.imgHeight, this.frameWidth, this.frameHeight)
       })
 
