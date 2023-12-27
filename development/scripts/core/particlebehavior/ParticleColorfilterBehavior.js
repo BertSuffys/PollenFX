@@ -25,7 +25,6 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
       } else {
         this.colorIterationCount = colorIterationCount
       }
-      console.log(this.startIndex)
     }
   
   

@@ -8,11 +8,7 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
       this.speedNoise = speedNoise
       this.timeSinceLastFrameshift = 0
       if (speedNoise > 0) {
-        this.speed = PollenMath.relativeMap(
-          this.initialSpeed,
-          1 + speedNoise,
-          Math.random()
-        )
+        this.speed = PollenMath.relativeMap(this.initialSpeed, 1 + speedNoise,Math.random())
       } else {
         this.speed = this.initialSpeed
       }
@@ -25,13 +21,13 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
   
   
     act(particle, actTime, deltaTime) {
-      this.flipbookData.particleWidth = this.defaultData.width
-      this.flipbookData.particleHeight = this.defaultData.height
-      this.timeSinceLastFrameshift += deltaTime
-      const imageShift = ~~(this.timeSinceLastFrameshift / this.speed)
-      this.flipbookData.currentFrameIndex =
-        (this.flipbookData.currentFrameIndex + imageShift) %
-        this.flipbookData.frameCount
+      // image dimension in respect to its size
+      this.flipbookData.particleWidth = this.defaultData.width;
+      this.flipbookData.particleHeight = this.defaultData.height;
+      // image shifting
+      this.timeSinceLastFrameshift += deltaTime;
+      const imageShift = ~~(this.timeSinceLastFrameshift / this.speed);
+      this.flipbookData.currentFrameIndex = (this.flipbookData.currentFrameIndex + imageShift) %  this.flipbookData.frameCount;
       this.timeSinceLastFrameshift = this.timeSinceLastFrameshift % this.speed
   
       this.checkBehaviorDeath(imageShift, particle)
@@ -41,12 +37,18 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     checkBehaviorDeath(imageShift, particle) {
       this.flipCount += imageShift
       if (this.flipCount + 1 > this.endingFrameCount) {
-        particle.disableBehavior(super.type)
+        this.speed = Number.MAX_VALUE;
       }
     }
   
     reset() {
       this.flipCount = 0
+      this.timeSinceLastFrameshift = 0
+      if (this.speedNoise > 0) {
+        this.speed = PollenMath.relativeMap( this.initialSpeed, 1 + this.speedNoise,  Math.random() )
+      } else {
+        this.speed = this.initialSpeed
+      }
     }
   
     applyParticle(particle) { }

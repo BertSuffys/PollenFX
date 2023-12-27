@@ -6,12 +6,12 @@ FXManager.devConfig.DEBUG = false;
 (function () {
     fxManager = new FXManager(false);
 
-    //fxManager.addEmitter(dataTest_1(), "emitter_1")
-    //fxManager.addEmitter(dataTest_2(), "emitter_2")
-    //fxManager.addEmitter(dataTest_3(), "emitter_3")
+    fxManager.addEmitter(dataTest_1(), "emitter_1")
+    fxManager.addEmitter(dataTest_2(), "emitter_2")
+    fxManager.addEmitter(dataTest_3(), "emitter_3")
     fxManager.addEmitter(dataTest_4(), "emitter_4")
-    //fxManager.addEmitter(dataTest_5(), "emitter_5")
-    //fxManager.addEmitter(dataTest_6(), "emitter_6")
+    fxManager.addEmitter(dataTest_5(), "emitter_5")
+    fxManager.addEmitter(dataTest_6(), "emitter_6")
     fxManager.addEmitter(dataTest_7(), "emitter_7")
 
        
@@ -180,25 +180,28 @@ function dataTest_6() {
 
 function dataTest_7() {
 
-    let line = new RectangularEmitterOrigin(1000, 1000, -1, -1 , true);
+    let line = new RectangularEmitterOrigin(500, 600, -1, -1 , true);
     let emitter = new EmitterShoot(origin, -1, -1, 2000, 500, 2, 30)
     // Data
     const flipbookData = new ParticleFlipbookData("./img/smoke.png", -1, -1, 6, 5, -1, ImageFitting.COVER);
-    const css = new ParticleCustomCssData("mix-blend-mode:screen;");
-    const defaultData = new ParticleDefaultData(30, 40, line, 5, 5, true, Pivot.CENTER, Pivot.END);
-    const directionData = new ParticleDirectionData(0, 5, 360, 3)
+    const css = new ParticleCustomCssData("mix-blend-mode:luminosity;");
+    const defaultData = new ParticleDefaultData(50, 50, line, 1, 1, true, Pivot.CENTER, Pivot.END);
+    const directionData = new ParticleDirectionData(90, 2, 45, 3)
     emitter.addParticleData(defaultData);
     emitter.addParticleData(flipbookData);
-    //emitter.addParticleData(css);
     emitter.addParticleData(directionData);
+    emitter.addParticleData(css);
     // Behavior
     const directionBehavior = new ParticleDirectionalBehavior();
-    const flipbookBehavior = new ParticleFlipbookBehavior(60);
-    const wind = new ParticleWindBehavior([120, 360, -45, 38], -1, 40)
+    const flipbookBehavior = new ParticleFlipbookBehavior(60, -1, 20);
+    const opacity = new ParticleOpacityByLifeBehavior([0,1,0]);
+    const sizeByLife = new ParticleSizeByLifeBehavior([0,5],[0,5])
 
+    emitter.addParticleBehavior(opacity);
     emitter.addParticleBehavior(directionBehavior);
-    emitter.addParticleBehavior(wind);
     emitter.addParticleBehavior(flipbookBehavior);
+    emitter.addParticleBehavior(sizeByLife);
+
     
     return emitter
 

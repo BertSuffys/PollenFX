@@ -40,7 +40,13 @@
         <div class="topic">
           <h3>1. Introduction</h3>
           <p class="c-80">
-            PollenFX is a lightweight, clientside, code-first, javascript based, DOM-oriented particle engine. It is used to create a wide variety of visually compelling particle effects within the browser. The tool consists of many different configuration components that allow the developer to dynamically assemble custom particle effects. The engine does not rely on any external css, javascript or JQuery. In order to use PollenFX, one is expected to have minimal (vanilla) javascript knowledge, although the components are fairly simple and well documented along with code snippets and examples.
+            PollenFX is a lightweight, clientside, code-first, javascript based, DOM-oriented particle engine. It is
+            used to create a wide variety of visually compelling particle effects within the browser. The tool consists
+            of many different configuration components that allow the developer to dynamically assemble custom particle
+            effects. The engine does not rely on any external css, javascript or JQuery. In order to use PollenFX, one
+            is expected to have minimal (vanilla) javascript knowledge, although the components are fairly simple and
+            well documented along with code snippets and examples. The order of the listed properties of the common objects of PollenFX
+            are also the the order in which they are expected to be provided.
           </p>
           <nav>
             <ul>
@@ -50,6 +56,7 @@
               <li>No CSS files included</li>
               <li>No external scripts/dependencies</li>
               <li>Modular emitter creation</li>
+              <li>Well documented with code examples</li>
             </ul>
           </nav>
         </div>
@@ -153,10 +160,8 @@
             upon by any behavioral
             objects.
           </p>
-          <p class="c-80">
-            <span class="title">5. Initial setup</span> <br>
-            todo: code snippet show renderloop of browser
-          </p>
+
+ 
 
         </div>
 
@@ -284,24 +289,34 @@
             <span class="parameter">* containerUnitHeight (optional): </span>A positionUnit enum value representing
             whether the 'height' value of this emitterbox that is optionally provided should be expressed
             as a percentage of the anchorElement's height, absolutely in pixels, or as a css vh value.<br>
-            <span class="parameter">* containerWidth (optional): </span>The width of the emitterbox, mimicing the anchorElement,
+            <span class="parameter">* containerWidth (optional): </span>The width of the emitterbox, mimicing the
+            anchorElement,
             if
             provided. The width value is expressed through the containerUnitWidth field.<br>
             <span class="parameter">* containerHeight (optional): </span>The height of the emitterbox, mimicing the
             anchorElement,
             if provided. The height value is expressed through the containerUnitHeight field.<br>
-            <span class="parameter">* positionUnitWidth (optional): </span>A positionUnit enum value representing whether the
+            <span class="parameter">* positionUnitWidth (optional): </span>A positionUnit enum value representing
+            whether the
             'left' value of this emitterbox that is optionally provided should be expressed
             as a percentage of the anchorElement's width, absolutely in pixels, or as a css vw value.<br>
-            <span class="parameter">* positionUnitHeight (optional): </span>A positionUnit enum value representing whether the
+            <span class="parameter">* positionUnitHeight (optional): </span>A positionUnit enum value representing
+            whether the
             'top' value of this emitterbox that is optionally provided should be expressed
             as a percentage of the anchorElement's height, absolutely in pixels, or as a css vw value.<br>
             <span class="parameter">* left (optional): </span>Optional x-offset added to the emitterbox, mimicing the
             anchorElement, if provided. The left value is expressed through the positionUnitWidth field.<br>
-            <span class="parameter">* top (optional): </span>Optional y-offset added to the emitterbox, mimicing the anchorElement, if provided. The top value is expressed through the positionUnitHeight field.<br>
-            <span class="parameter">* includeMargin (optional): </span>Whether the emitterbox is also going to get the same margin as the anchor element applied or not. procentual width,height,top and left will be calculated with margin in/excluded depending on this value. Default is false.<br>
-            <span class="parameter">* includePadding (optional): </span>Whether the emitterbox is also going to get the same padding as the anchor element applied or not. procentual width,height,top and left will be calculated with padding in/excluded depending on this value Default is true.<br>
-            <span class="parameter">* includeBorder (optional): </span>Whether the emitterbox is also going to get the same border as the anchor element applied or not. procentual width,height,top and left will be calculated with border in/excluded depending on this value Default is true.<br>
+            <span class="parameter">* top (optional): </span>Optional y-offset added to the emitterbox, mimicing the
+            anchorElement, if provided. The top value is expressed through the positionUnitHeight field.<br>
+            <span class="parameter">* includeMargin (optional): </span>Whether the emitterbox is also going to get the
+            same margin as the anchor element applied or not. procentual width,height,top and left will be calculated
+            with margin in/excluded depending on this value. Default is false.<br>
+            <span class="parameter">* includePadding (optional): </span>Whether the emitterbox is also going to get the
+            same padding as the anchor element applied or not. procentual width,height,top and left will be calculated
+            with padding in/excluded depending on this value Default is true.<br>
+            <span class="parameter">* includeBorder (optional): </span>Whether the emitterbox is also going to get the
+            same border as the anchor element applied or not. procentual width,height,top and left will be calculated
+            with border in/excluded depending on this value Default is true.<br>
           </p>
         </div>
 
@@ -394,12 +409,16 @@
             <span class="parameter">* height: </span>Height (in pixels) of the particle. <br>
             <span class="parameter">* emitterOrigin: </span>The origin object that defines the area in which particles
             are allowed to be created.<br>
-            <span class="parameter">* noiseWidth (optional): </span>Adds/subtracts random noise to the width property in order to apply 
+            <span class="parameter">* noiseWidth (optional): </span>Adds/subtracts random noise to the width property in
+            order to apply
             randomness to its width. Lower values yield less extreme results. Default is -1, meaning unset.<br>
-            <span class="parameter">* noiseHeight (optional): </span>Adds/subtracts random noise to the height property in order to apply 
+            <span class="parameter">* noiseHeight (optional): </span>Adds/subtracts random noise to the height property
+            in order to apply
             randomness to its height. Lower values yield less extreme results. Default is -1, meaning unset.<br>
-            <span class="parameter">* uniformSizeWidth (optional): </span>Boolean value defining whether the optionally added size noise, if provided, 
-            should always keep the sizing uniform. If true, the noiseWidth value will be taken as a reference.  Default is false, meaning non-uniform is allowed.<br>
+            <span class="parameter">* uniformSizeWidth (optional): </span>Boolean value defining whether the optionally
+            added size noise, if provided,
+            should always keep the sizing uniform. If true, the noiseWidth value will be taken as a reference. Default
+            is false, meaning non-uniform is allowed.<br>
             <span class="parameter">* horizontalPivot (optional): </span>Pivot enum value defining where the pivot
             point
             lies, horizontally, in defining the origin of the particle.<br>
@@ -447,8 +466,10 @@
             emitter.<br><br>
             <span class="parameter">* rotation: </span>Defines (in degrees) the amound of rotation a particle must
             have.<br>
-            <span class="parameter">* coneNoise (Optional): </span>Adds an imaginary cone (in degrees) around the rotation angle  and 
-            randomizes the rotation value by a random angle within this cone. Default = -1 and means no randomization.<br>
+            <span class="parameter">* coneNoise (Optional): </span>Adds an imaginary cone (in degrees) around the
+            rotation angle and
+            randomizes the rotation value by a random angle within this cone. Default = -1 and means no
+            randomization.<br>
           </p>
 
           <p class="c-80">
@@ -466,12 +487,17 @@
               src="./img/icon_imageData.png"><br>
             The ParticleImageData object allows for particles to be presented as an image.<br><br>
             <span class="parameter">* url: </span>The URL to the image.<br>
-            <span class="parameter">* imgWidth (optional): </span>The physical width of the image file in px. Providing this value might increase performance.<br>
-            <span class="parameter">* imgHeight (optional): </span>The physical height of the image file in px. Providing this value might increase performance.<br>
-            <span class="parameter">* imageFitting (Should not be altered): </span>The ImageFitting enum value defines how the image is applied to the particle div element and should usually not be altered.<br>
-            <span class="parameter">* keyOverride (Should not be altered): </span>Should not be altered. Flipbookdata extends
+            <span class="parameter">* imgWidth (optional): </span>The physical width of the image file in px. Providing
+            this value might increase performance.<br>
+            <span class="parameter">* imgHeight (optional): </span>The physical height of the image file in px.
+            Providing this value might increase performance.<br>
+            <span class="parameter">* imageFitting (Should not be altered): </span>The ImageFitting enum value defines
+            how the image is applied to the particle div element and should usually not be altered.<br>
+            <span class="parameter">* keyOverride (Should not be altered): </span>Should not be altered. Flipbookdata
+            extends
             Imagedata and overrides this key.<br>
-            <span class="parameter">* imgLoadingCallback (Should not be altered): </span>Should not be altered. Represents the
+            <span class="parameter">* imgLoadingCallback (Should not be altered): </span>Should not be altered.
+            Represents the
             callback method processing the image.<br>
           </p>
 
@@ -480,10 +506,13 @@
             <span class="title">7. ParticleFlipbookData</span> <img style="height: 25px;"
               src="./img/icon_flipbookData.png"><br>
             The ParticleFlipbookData object allows for spritesheets/flipbooks to be applied to the particle through
-            which is being flipped in order to display an animation. This data object should be used along with ParticleFlipbookBehavior, in order to to achieve a meaningful animation.<br><br>
+            which is being flipped in order to display an animation. This data object should be used along with
+            ParticleFlipbookBehavior, in order to to achieve a meaningful animation.<br><br>
             <span class="parameter">* url: </span>The URL to the image.<br>
-            <span class="parameter">* imgWidth (optional): </span>The physical width of the image file in px. Providing this value might increase performance.<br>
-            <span class="parameter">* imgHeight (optional): </span>The physical height of the image file in px. Providing this value might increase performance.<br>
+            <span class="parameter">* imgWidth (optional): </span>The physical width of the image file in px. Providing
+            this value might increase performance.<br>
+            <span class="parameter">* imgHeight (optional): </span>The physical height of the image file in px.
+            Providing this value might increase performance.<br>
             <span class="parameter">* frameCountX: </span>The amount of images within the provided spritesheet over
             the
             x axis.<br>
@@ -550,13 +579,16 @@
             This behavioral type allows for gradual changes in size over the lifetime of the particles and acts upon
             ParticleDefaultData.<br><br>
             <span class="parameter">* sizeMultipliersX: </span>An array of numbers representing the scalars through
-            which the particle is going interpolate over its lifetime/provided duration and multiply as a scalar to its width defined in the
+            which the particle is going interpolate over its lifetime/provided duration and multiply as a scalar to its
+            width defined in the
             ParticleDefaultData.<br>
             <span class="parameter">* sizeMultipliersY: </span>An array of numbers representing the scalars through
-            which the particle is going interpolate over its lifetime/provided duration and multiply as a scalar to its height defined in the
+            which the particle is going interpolate over its lifetime/provided duration and multiply as a scalar to its
+            height defined in the
             ParticleDefaultData.<br>
             <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
-            through the sizeMuliplier lists once. Default = -1, meaning that it runs through those size lists once during its lifetime.<br>
+            through the sizeMuliplier lists once. Default = -1, meaning that it runs through those size lists once
+            during its lifetime.<br>
             <span class="parameter">* scalarNoise (optional): </span>Adds noise/random offset to the sizeMuliplier
             lists. Smaller values yield less extreme results. Default = -1 and means no noise.<br>
             <span class="parameter">* uniformNoise (optional): </span>Whether the scalarNoise, if provided, should
@@ -608,9 +640,11 @@
             <span class="parameter">* opacityNoise (optional): </span>Adds noise/random offset to the
             opacityMultipliers. Smaller values yield better results. Default = -1 and indicates no randomness.<br>
             <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
-            through the opacityMultipliers once. Default = -1 and indicates that it runs through the opacity list once during its lifetime<br>
+            through the opacityMultipliers once. Default = -1 and indicates that it runs through the opacity list once
+            during its lifetime<br>
             <span class="parameter">* opacityIterationCount (optional): </span>Allows for a forced halt in running
-            through the opacityMultipliers after having passed x numbers in this opacity list. It then remains the opacity
+            through the opacityMultipliers after having passed x numbers in this opacity list. It then remains the
+            opacity
             value where it halted. Default = -1 and indicates no halting. <br>
           </p>
 
@@ -625,7 +659,8 @@
             <span class="parameter">* angles: </span>An array of angles (numbers, in degrees) representing the angles
             towards the wind blows and through which the particles are going interpolate and be blown towards.<br>
             <span class="parameter">* cycleDuration (optional): </span>Time (in ms) it should take for the particle to
-            run through the angles list once. Default = -1 and means that it runs through it once during its lifetime<br>
+            run through the angles list once. Default = -1 and means that it runs through it once during its
+            lifetime<br>
             <span class="parameter">* windSpeed (optional): </span>The power/windspeed by which the wind will blow
             towards the direction the particle is currently at in its angles list. Default value is 1.<br>
             <span class="parameter">* deepRandom (optional): </span>Boolean value that if true, randomizes all angles
@@ -683,10 +718,12 @@
             <span class="parameter">* randomStartColor (optional): </span>Boolean value defining whether a random
             color
             from the colors list is being taken to start from. Default = false and indicates no randomisation<br>
-            <span class="parameter">* startIndex (optional): </span>Similar to randomStartColor, the color at this index will be taken as start color. Default = -1 and means the first color.<br>
+            <span class="parameter">* startIndex (optional): </span>Similar to randomStartColor, the color at this index
+            will be taken as start color. Default = -1 and means the first color.<br>
             <span class="parameter">* colorIterationCount (optional): </span>Allows for a forced halt in running
             through
-            the colors after having passed x colors in this list. It then remains the color value where it halted. Default = -1 and indicates no halting.
+            the colors after having passed x colors in this list. It then remains the color value where it halted.
+            Default = -1 and indicates no halting.
             <br>
 
           </p>
@@ -696,12 +733,15 @@
           <p class="c-80">
             <span class="title">9. ParticleFlipbookBehavior</span> <img style="height: 25px;"
               src="./img/icon_flipbookData.png"><br>
-            The ParticleFlipbookBehavior object allows flipping through the provided spritesheet in the provided ParticleFlipbookData object.<br><br>
+            The ParticleFlipbookBehavior object allows flipping through the provided spritesheet in the provided
+            ParticleFlipbookData object.<br><br>
             <span class="parameter">* speed: </span>The time (in ms) between each frame jump.<br>
-            <span class="parameter">* speedNoise (optional): </span>Adds randomness/noise to the speed parameter. Lower values yield better results. Default = -1 and indicates no randomness.<br>
+            <span class="parameter">* speedNoise (optional): </span>Adds randomness/noise to the speed parameter. Lower
+            values yield better results. Default = -1 and indicates no randomness.<br>
             <span class="parameter">* endingFrameCount (optional): </span>Allows for a forced halt in running
             through
-            the spritesheet frames after having passed x frames in the image. It then remains stuck on the frame where it halted. Default = -1 and indicates no halting.
+            the spritesheet frames after having passed x frames in the image. It then remains stuck on the frame where
+            it halted. Default = -1 and indicates no halting.
             <br><br>
           </p>
 
@@ -790,24 +830,42 @@
 
         </div>
 
-                <!-- 9. Additional functionality -->
-                <div class="topic">
-                  <h3>
-                    <hr>9. Additional functionality
-                  </h3>
 
-                  <span class="title">1. FXItemID</span><br>
-                  When adding an emitter to the FXManager, one can add an ID. Later, perhaps in order to add extra custom functionality, one can request this emitter by its ID in order 
-                  to modify it.<br><br>
-                  <img src="./img/snippet_03.JPG" style="width:600px;" alt="">
-                </div>
+        <!-- 9. Tips -->
+        <div class="topic">
+          <h3>
+            <hr>9. Tips
+          </h3>
+          <p class="c-80">
+            <span class="title">1. Anchor styling</span><br> It could be wise to not apply too much exotic styling to
+            the anchor element.
+          </p>
+          <p class="c-80">
+            <span class="title">1. cascading css</span><br> Ultimately, particle effects are just transformed divs, so
+            beware of any cascading css. These might ruin the
+            particle configurations due to cascading styling.
+          </p>
+        </div>
+
+        <!-- 9. Additional functionality -->
+        <div class="topic">
+          <h3>
+            <hr>10. Additional functionality
+          </h3>
+
+          <span class="title">1. FXItemID</span><br>
+          When adding an emitter to the FXManager, one can add an ID. Later, perhaps in order to add extra custom
+          functionality, one can request this emitter by its ID in order
+          to modify it.<br><br>
+          <img src="./img/snippet_03.JPG" style="width:600px;" alt="">
+        </div>
 
 
 
         <!-- 10. Extensive code snippet -->
         <div class="topic">
           <h3>
-            <hr>10. An extensive code snippet
+            <hr>11. An extensive code snippet
           </h3>
           <p class="c-80">
             Finally, here is a more in-depth example of the creation of a particle effect.
