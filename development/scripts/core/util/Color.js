@@ -54,6 +54,11 @@ class Color {
     this.r = parseInt(this.hex.substring(1, 3), 16)
     this.g = parseInt(this.hex.substring(3, 5), 16)
     this.b = parseInt(this.hex.substring(5, 7), 16)
+    this.setRgb_norm()
+
+  }
+
+  setRgb_norm(){
     this.r_norm = this.r/255;
     this.g_norm = this.g/255;
     this.b_norm = this.b/255;
@@ -76,7 +81,6 @@ class Color {
     this.b = rgb[2]
     this.hexFromRGB()
   }
-
 
 
 

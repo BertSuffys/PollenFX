@@ -19,7 +19,7 @@ class ParticleColorfilterData extends ParticleData {
       this.helperStringCSS = "grayscale(100%) sepia(100%) "
      // this.(color)   // sets hue-rotate
       const hsb = color.getHSB();
-      this.hueRotate = this.getHueShiftForColorTargetFromSepia(this.color, hsb, this.initHueRotate(hueRotate));
+      this.hueRotate = this.getHueShiftForColorTargetFromSepia(hsb, this.initHueRotate(hueRotate), this.color);
       this.saturation = saturation > -1 ? this.initSaturation(saturation) : hsb[1];
       this.brightness = brightness > -1 ? this.initBrightness(brightness) : hsb[2];
     } else {
@@ -70,7 +70,7 @@ class ParticleColorfilterData extends ParticleData {
   /**
    * Sets the hue-rotation to the required value for sepia to be rotated towards the provided color.
    */
-  getHueShiftForColorTargetFromSepia(colorTarget = this.color, hsb = null, offset = 0) {
+  getHueShiftForColorTargetFromSepia(hsb = null, offset = 0, colorTarget = this.color) {
     hsb = hsb == null? colorTarget.getHSB() : hsb;
     return hsb[0] - Color.SEPIA_HUE + offset;
   }

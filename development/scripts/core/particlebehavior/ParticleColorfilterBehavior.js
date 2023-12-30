@@ -38,10 +38,20 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
       const fromColorIndex = (~~fullRangeProgress + this.startIndex) % this.colors.length
       const toColorIndex = ((fromColorIndex + 1)) % this.colors.length
 
+      /* Color adjusting */
       ColorUtil.lerpColorToTarget( this.particleColorfilterData.color,  this.colors[fromColorIndex], this.colors[toColorIndex], localProgress )
-      this.particleColorfilterData.calculateHueShiftForColorTargetFromSepia()
-  
+      this.alterColoring();
+
+
       this.checkBehaviorDeath(fromColorIndex, toColorIndex, particle)
+    }
+
+    alterColoring(){
+      this.particleColorfilterData.color.setRgb_norm();
+      const hsb = this.particleColorfilterData.color.getHSB();
+      this.particleColorfilterData.hueRotate = this.particleColorfilterData.getHueShiftForColorTargetFromSepia(hsb, this.particleColorfilterData.initialHueRotate);
+      this.particleColorfilterData.saturation = hsb[1];
+      this.particleColorfilterData.brightness = hsb[2];
     }
   
   
@@ -57,13 +67,8 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
     reset() {
       this.colorIteration = 0
       this.lastColorIndexSum = this.startIndex + (1 % this.colors.length)
-      ColorUtil.lerpColorToTarget(
-        this.particleColorfilterData.color,
-        this.colors[0],
-        this.colors[1 % this.colors.length],
-        0
-      )
-      this.particleColorfilterData.calculateHueShiftForColorTargetFromSepia()
+      ColorUtil.lerpColorToTarget(this.particleColorfilterData.color, this.colors[0], this.colors[1 % this.colors.length],0)
+      this.alterColoring();
     }
   
   
