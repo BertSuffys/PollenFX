@@ -46,7 +46,7 @@
             effects. The engine does not rely on any external css, javascript or JQuery. In order to use PollenFX, one
             is expected to have minimal (vanilla) javascript knowledge, although the components are fairly simple and
             well documented along with code snippets and examples. The order of the listed properties of the common objects of PollenFX
-            are also the the order in which they are expected to be provided.
+            are also the the order in which they are expected to be provided to the constructor.
           </p>
           <nav>
             <ul>
@@ -70,21 +70,22 @@
 
           <!-- Image 1 : initial setup -->
           <p class="c-80">
-            In the first image we like to offer you an easy template to get started with the engine. Firstly, we create
-            a self-executing function which serves as the entry point
-            for the configuration of our particle setup. Another way could be by making use of a document on-load
-            handler. Next up we create a method 'start', which is going to take the time that has
-            past in milliseconds, which is 0 at the moment of startup. Within the start method we are going to make use
-            of the window.requestAnimationFrame() method, which is the browser's built-in
-            loop method, and is going to continuously be called by the browser depending on how fast your cpu functions.
-            To this requestAnimationFrame we are going to subscribe with one of our own methods.
-            In this case this is the start() method again. What this essentially means is that we have created an
-            endless loop of the start() method, with the difference that each iteration of start(), we receive
-            an updated nowTime, being the time that has passed in milliseconds. We need this value for our engine.
+            In the first image we like to offer you an easy template to get started with the engine. Firstly, we subscribe to
+            the DOMContentLoaded event with a callback. This means that our provided callback will be executed once the DOM is built.
+            Within this callback we call the start function.
+            The start function resembles a single iteration of our particle effect core loop. It requests one parameter which resembles the 
+            milliseconds that have passed since the application started. We call this 'nowTime' in this example. This function is called with a 0
+            provided since 0 milliseconds have passed when the DOM is only just built.
+            Within the start function we are going to make use
+            of the window.requestAnimationFrame() function, which is the browser's built-in
+            loop function, and is going to continuously be called by the browser depending on how fast your CPU functions.
+            To this requestAnimationFrame we are going to subscribe once again with the start function but in this case the nowTime
+            will be provided by the browser and is going to be the updated passed time in milliseconds. What this essentially means is that we have created an
+            endless loop of the start() function. It this within this function we are going to have our particle emitters do their work.
           </p>
           <img src="./img/snippet_01.JPG" style="width:450px;">
           <p class="c-80">
-            First, we quickly gloss over the different concepts, after which they will be explained in more depth. First
+            Next, we quickly gloss over the different concepts, after which they will be explained in more depth. First
             an FXManager is created, which serves as an object that bundles different emitters.
             Next, we retrieve the element we want to attach our particle effect to. Then we create an origin object in
             order to define the area in which particles can spawn. An emitter is then created,
@@ -92,17 +93,9 @@
             emitter, and then applied to this emitter. The emitter is then inserted into the FXManager,
             we start the looping function and subscribe to this function by having our fxmanager perform the act()
             function. This is the general flow of how to use the engine and one will mostly add/alter
-            more data and behavior objects. Bear in mind that in the above image not all constructor parameters are
+            more data and behavior objects. Bear in mind that in the image below not all constructor parameters are
             provided and there is alot more to cover. In the next segments these concepts will be explained
-            in more depth, and the full extend of those parameters will be explained. The order in which constructor
-            parameters will be noted is also the order in which they have to be coded.
-          </p>
-
-
-
-          <p class="c-80">
-            In the next image we demonstrate how a real, yet simple particle is being created. Make sure the DOM in
-            which you are working contains a body element.
+            in more depth, and the full extend of those parameters will be explained.
           </p>
 
           <img src="./img/snippet_02.JPG" style="width:900px;" alt="">
@@ -125,7 +118,7 @@
           </p>
           <p class="c-80">
             <span class="title">2. Origins</span> <br>
-            Regardless of the type of emitter one picks, it is required to also configure an origin object. Origins can
+            Regardless of the type of emitter one picks, it is required to also configure an origin object. An origin can
             be seen as an imaginary or invisible region of space in which particles are allowed
             to spawn. Upon creation of an emitter, one is required to pass the origin object to the emitter for it to
             function correctly.
@@ -133,14 +126,14 @@
           <p class="c-80">
             <span class="title">3. Behavior objects</span> <br>
             Behavior objects are being created and provided to the emitters. These behavior objects define the way an
-            individual particle within a certain emitter should
+            individual particles of a certain emitter should
             behave, and once applied to an emitter, this behavior will be taking effect on all of the particles created
-            from this emitter. As an example, lets consider snowfall.
+            from this emitter. As an example, lets consider a blizzard.
             When snow falls it is obviously affected by gravity and in order to model this, we will add a
             gravitybehavior object. Secondly, the falling snow is also affected by wind,
-            which can be achieved by adding windbehavior also. Finally, in case we want the snow to melt whilest falling
-            we could add size-by-life behavior which allows to change the size
-            of the particle over time. It is important to note that behavior objects function independantly of eachother
+            which can be achieved by adding windbehavior on top. Finally, in case we want the snow to melt whilest falling
+            we could add size-by-life behavior which will change the size
+            of the particle over a certain period of time. It is important to note that behavior objects function independantly of eachother
             and the endresult is a summation of these individual behaviors combined.
           </p>
           <p class="c-80">
@@ -152,7 +145,7 @@
             is however important to note that you can apply behavior without its respective data object, in which case a
             default data object will be created for this behavior type. Applying data
             objects without their respective behavior objects is also possible and will result in giving the particle an
-            initial, and unchanging property. Finally and most intrestingly, data
+            initial, and unchanging property or state. Finally and most intrestingly, data
             objects and their respective behavior objects can be used in combination and result in an initial configured
             state for this particle, which is then being altered over time by the
             behavior object. It is important to note that when talking about 'its respective behavior'-object, that each
@@ -162,7 +155,13 @@
             objects.
           </p>
 
- 
+          <p class="c-80">
+            In the next chaptors we discuss the individual components of PollenFX. Some of them occur in the image shown above, but for those that
+            do not, the way they are being used is very similar. It is important to note that the order in which the properties of those components are listed, is the same order
+            in which you are required to provide them to the constructors upon creating those components. At the end of this document you will find a more extensive code example in which 
+            more of these components will be used.
+          </p>
+
 
         </div>
 
@@ -178,10 +177,10 @@
           </p>
 
 
-          <span class="parameter">* allowDOMOverflow: </span>Defines whether particles will be hidden upon overflowing
+          <span class="parameter">* allowDOMOverflow (optional): </span>Defines whether particles will be hidden upon overflowing
           the body, or whether scrolling will be enabled. If for some reason one would need
           two FXManager objects, the last FXManager object created will define which allowDOMOverflow value will take
-          action. The default is set to false, meaning overflow:hidden.<br>
+          action. Default = false which indicates that particles overflowing the body will not be visible.<br>
           </p>
 
 
@@ -195,13 +194,11 @@
             <hr>4. Origins
           </h3>
           <p class="c-80">
-            An origin is considered an area in which particles can be defined and have to be passed on to a future
+            An origin is considered an area in which particles can spawn and have to be passed on to a future
             emitter in order to function.
-            There are 4 types of origin. It is important to note that when an origin is created, somewhere within the
-            DOM, an element is going to be created which we refer to as the
-            emitterbox. This emitterbox can be interpreted as the area in which the origin object can exists. As a
-            default, the emitterbox will mimic the body so that the origin can
-            exist anywhere on the webpage.
+            There are four types of origins.<br> It is important to note that an origin object can be provided with an optional anchor element. This is a html element 
+            to which the emitter and origin become attached. When no anchor is provided, this becomes the body, so make sure the DOM contains one. When the emitter recieves its origin object, this anchor element will be copied
+            and set to mimic this anchor element. We refer to this copy as the emitterbox. This emitterbox can be interpreted as the container in which the origin objects reside. 
           </p>
 
           <p class="c-80">
@@ -209,39 +206,36 @@
               src="./img/icon_circularEmitterOrigin.png"><br>
             Allows particles to come to life somewhere within an elliptical/circular area.<br><br>
 
-            <span class="parameter">* posX: </span>Center x coordinate of the circular/elliptical area.<br>
-            <span class="parameter">* posY: </span>Center y coordinate of the circular/elliptical area.<br>
-            <span class="parameter">* width: </span>Width of the circular/elliptical area.<br>
-            <span class="parameter">* height: </span>Height of the circular/elliptical area.<br>
-            <span class="parameter">* posXNoise (optional): </span>Adds noise/random offset to the posX parameter.
-            Smaller values [0,1] yield best results<br>
-            <span class="parameter">* posYNoise (optional): </span>Adds noise/random offset to the posY parameter.
-            Smaller values [0,1] yield best results<br>
-            <span class="parameter">* overflow (optional): </span>Boolean value defining whether the particles will be
-            shown when they go beyond the bounds of its emitterbox. This is usually irrelevant
-            for origins without anchorElement.<br>
+            <span class="parameter">* posX: </span>Numeric value representing the center x coordinate of the circular/elliptical area.<br>
+            <span class="parameter">* posY: </span>Numeric value representing the center y coordinate of the circular/elliptical area.<br>
+            <span class="parameter">* width: </span>Numeric value representing the width of the circular/elliptical area.<br>
+            <span class="parameter">* height: </span>Numeric value representing the height of the circular/elliptical area.<br>
+            <span class="parameter">* posXNoise (optional): </span>Numeric value adding noise/random offset to the posX parameter.
+            Smaller values yield better results. Default = -1 and indicates no noise.<br>
+            <span class="parameter">* posYNoise (optional): </span>Numeric value adding noise/random offset to the posY parameter.
+            Smaller values yield better results. Default = -1 and indicates no noise.<br>
           </p>
 
 
           <p class="c-80">
             <span class="title">2. LineEmitterOrigin</span> <img style="height: 25px;"
               src="./img/icon_lineEmitterOrigin.png"><br>
-            Allows particles to come to life at some point or around a defined line segment.<br><br>
+            Allows particles to come to life at some point on, or around a defined line segment.<br><br>
 
-            <span class="parameter">* posX_1: </span>The x position coordinate of first point defining the line
+            <span class="parameter">* posX_1: </span>Numeric value representing the x position coordinate of first point defining the line
             segment.<br>
-            <span class="parameter">* posX_2: </span>The x position coordinate of second point defining the line
+            <span class="parameter">* posY_1: </span>Numeric value representing the y position coordinate of first point defining the line
             segment.<br>
-            <span class="parameter">* posY_1: </span>The y position coordinate of first point defining the line
+            <span class="parameter">* posX_2: </span>Numeric value representing the x position coordinate of second point defining the line
             segment.<br>
-            <span class="parameter">* posY_2: </span>The y position coordinate of second point defining the line
+            <span class="parameter">* posY_2: </span>Numeric value representing the y position coordinate of second point defining the line
             segment.<br>
-            <span class="parameter">* posXNoise (optional): </span>Adds noise/random offset to the posX_1 & posX_2
-            parameters. Smaller values [0,1] yield best results. value -1 means 'unset'.<br>
-            <span class="parameter">* posYNoise (optional): </span>Adds noise/random offset to the posY_1 & posY_2
-            parameters. Smaller values [0,1] yield best results. value -1 means 'unset'.<br>
-            <span class="parameter">* offset (optional): </span>Allows particles to spawn some distance 'óffset' away
-            from the line segment, perpendicularly. value -1 means 'unset.'<br>
+            <span class="parameter">* posXNoise (optional): </span>Numeric value which adds noise/random offset to the posX_1 & posX_2
+            parameters. Smaller values yield better results. Default = -1 and indicates no noise.<br>
+            <span class="parameter">* posYNoise (optional): </span>Numeric value which adds noise/random offset to the posY_1 & posY_2
+            parameters. Smaller values yield better results. Default = -1 and indicates no noise.<br>
+            <span class="parameter">* offset (optional): </span>Numeric value which allows particles to spawn some distance 'offset' away
+            from the line segment, perpendicularly. Default = -1 indicates no offset.<br>
           </p>
 
 
@@ -250,74 +244,73 @@
             <span class="title">3. PointEmitterOrigin</span> <img style="height: 25px;"
               src="./img/icon_pointEmitterOrigin.png"><br>
             Allows particles to come to life on a point.<br><br>
-            <span class="parameter">* posX: </span>The x position coordinate of the point defining where particles can
+            <span class="parameter">* posX: </span>Numeric value representing the x position coordinate of the point defining where particles can
             spawn.<br>
-            <span class="parameter">* posY: </span>The y position coordinate of the point defining where particles can
+            <span class="parameter">* posY: </span>Numeric value representing the y position coordinate of the point defining where particles can
             spawn.<br>
             <span class="parameter">* posXNoise (optional): </span>Adds noise/random offset to the posX parameter.
-            Smaller values [0,1] yield best results<br>
+            Smaller values yield better results. Default = -1 and indicates no noise.<br>
             <span class="parameter">* posYNoise (optional): </span>Adds noise/random offset to the posY parameter.
-            Smaller values [0,1] yield best results<br>
+            Smaller values yield better results. Default = -1 and indicates no noise.<br>
           </p>
 
 
           <p class="c-80">
             <span class="title">4. RectangularEmitterOrigin</span> <img style="height: 25px;"
               src="./img/icon_rectangularEmitterOrigin.png"><br>
-            Allows particles to come to life somewhere within an rectangular area.<br><br>
+            Allows particles to come to life somewhere within a rectangular area.<br><br>
 
-            <span class="parameter">* posX: </span>The x position coordinate of the top left corner of the
-            rectangle/square in which the particles can spawn.<br>
-            <span class="parameter">* posY: </span>The y position coordinate of the top left corner of the
-            rectangle/square in which the particles can spawn.<br>
-            <span class="parameter">* width: </span>Width of the rectangle/square area.<br>
-            <span class="parameter">* height: </span>Height of the rectangle/square area.<br>
-            <span class="parameter">* posXNoise (optional): </span>Adds noise/random offset to the posX
-            parameter. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
-            <span class="parameter">* posYNoise (optional): </span>Adds noise/random offset to the posY
-            parameter. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
+            <span class="parameter">* posX: </span>Numeric value representing the x position coordinate of the top left corner of the
+            rectangular/square in which the particles can spawn.<br>
+            <span class="parameter">* posY: </span>Numeric value representing the y position coordinate of the top left corner of the
+            rectangular/square in which the particles can spawn.<br>
+            <span class="parameter">* width: </span>Numeric value representing width of the rectangular/square area.<br>
+            <span class="parameter">* height: </span>Numeric value representing height of the rectangular/square area.<br>
+            <span class="parameter">* posXNoise (optional): </span>Numeric value which adds noise/random offset to the posX
+            parameter. Smaller values yield better results. Default = -1 means indicates no noise.<br>
+            <span class="parameter">* posYNoise (optional): </span>Numeric value which adds noise/random offset to the posY
+            parameter. Smaller values yield better results. Default = -1 means indicates no noise.<br>
           </p>
 
           <p class="c-80">
             <span class="title">Additional origin parameters</span> <br>
-            Regardless of the chosen origin type, all origins share these parameter options.<br><br>
+            Regardless of the chosen origin type, all origins share these parameter options and are provided after the parameters as described above. These parameters
+            will rarely be modified, but allows for more precise alterations. The order remains respected.<br><br>
 
+            <span class="parameter">* overflow (optional): </span>Boolean value defining whether the particles will be
+            shown when they go beyond the bounds of its emitterbox. This is usually irrelevant
+            for origins without anchorElement. Default = true and indicates visible overflow.<br>
             <span class="parameter">* anchorElement (optional): </span>A native HTMLElement object to which the origin
-            is going to be attached. If initialized, the emitterbox will mimic this anchor element.<br>
+            is going to be attached. If initialized, the emitterbox will mimic this anchor element. Default = the body-element.<br>
             <span class="parameter">* containerUnitWidth (optional): </span>A positionUnit enum value representing
-            whether the 'width' value of this emitterbox that is optionally provided should be expressed
-            as a percentage of the anchorElement's width, absolutely in pixels, or as a css vw value.<br>
+            whether the 'width' value of this emitterbox should be expressed
+            as a percentage of the anchorElement's width, absolutely in pixels, or as a css vw value. Read further for PositionUnit options. Default = PositionUnit.PERCENTAGE.<br>
             <span class="parameter">* containerUnitHeight (optional): </span>A positionUnit enum value representing
-            whether the 'height' value of this emitterbox that is optionally provided should be expressed
-            as a percentage of the anchorElement's height, absolutely in pixels, or as a css vh value.<br>
-            <span class="parameter">* containerWidth (optional): </span>The width of the emitterbox, mimicing the
-            anchorElement,
-            if
-            provided. The width value is expressed through the containerUnitWidth field.<br>
-            <span class="parameter">* containerHeight (optional): </span>The height of the emitterbox, mimicing the
-            anchorElement,
-            if provided. The height value is expressed through the containerUnitHeight field.<br>
+            whether the 'height' value of this emitterbox should be expressed
+            as a percentage of the anchorElement's height, absolutely in pixels, or as a css vh value. Read further for PositionUnit options. Default = PositionUnit.PERCENTAGE.<br>
+            <span class="parameter">* containerWidth (optional): </span>Numeric value representing the width of the emitterbox, mimicing the
+            anchorElement. The width value is expressed through the containerUnitWidth field. Default = 100.<br>
+            <span class="parameter">* containerHeight (optional): </span>Numeric value representing the height of the emitterbox, mimicing the
+            anchorElement. The height value is expressed through the containerUnitHeight field. Default = 100.<br>
             <span class="parameter">* positionUnitWidth (optional): </span>A positionUnit enum value representing
             whether the
-            'left' value of this emitterbox that is optionally provided should be expressed
-            as a percentage of the anchorElement's width, absolutely in pixels, or as a css vw value.<br>
+            'left' value of this emitterbox should be expressed
+            as a percentage of the anchorElement's width, absolutely in pixels, or as a css vw value. Default = PositionUnit.PIXEL.<br>
             <span class="parameter">* positionUnitHeight (optional): </span>A positionUnit enum value representing
             whether the
-            'top' value of this emitterbox that is optionally provided should be expressed
-            as a percentage of the anchorElement's height, absolutely in pixels, or as a css vw value.<br>
-            <span class="parameter">* left (optional): </span>Optional x-offset added to the emitterbox, mimicing the
-            anchorElement, if provided. The left value is expressed through the positionUnitWidth field.<br>
-            <span class="parameter">* top (optional): </span>Optional y-offset added to the emitterbox, mimicing the
-            anchorElement, if provided. The top value is expressed through the positionUnitHeight field.<br>
-            <span class="parameter">* includeMargin (optional): </span>Whether the emitterbox is also going to get the
-            same margin as the anchor element applied or not. procentual width,height,top and left will be calculated
+            'top' value of this emitterbox should be expressed
+            as a percentage of the anchorElement's height, absolutely in pixels, or as a css vw value. Default = PositionUnit.PIXEL.<br>
+            <span class="parameter">* left (optional): </span>Optional numeric value representing x-offset added to the emitterbox. The left value is expressed through the positionUnitWidth field. Default = 0.<br>
+            <span class="parameter">* top (optional): </span>Optional numeric value representing y-offset added to the emitterbox. The top value is expressed through the positionUnitHeight field. Default = 0.<br>
+            <span class="parameter">* includeMargin (optional): </span>Boolean value defining whether the emitterbox is also going to get the
+            same margin as the anchor element applied or not. Procentual width,height,top and left will be calculated
             with margin in/excluded depending on this value. Default is false.<br>
-            <span class="parameter">* includePadding (optional): </span>Whether the emitterbox is also going to get the
-            same padding as the anchor element applied or not. procentual width,height,top and left will be calculated
-            with padding in/excluded depending on this value Default is true.<br>
-            <span class="parameter">* includeBorder (optional): </span>Whether the emitterbox is also going to get the
-            same border as the anchor element applied or not. procentual width,height,top and left will be calculated
-            with border in/excluded depending on this value Default is true.<br>
+            <span class="parameter">* includePadding (optional): </span>Boolean value defining whether the emitterbox is also going to get the
+            same padding as the anchor element applied or not. Procentual width,height,top and left will be calculated
+            with padding in/excluded depending on this value. Default is true.<br>
+            <span class="parameter">* includeBorder (optional): </span>Boolean value defining whether the emitterbox is also going to get the
+            same border as the anchor element applied or not. Procentual width,height,top and left will be calculated
+            with border in/excluded depending on this value. Default is true.<br>
           </p>
         </div>
 
@@ -837,15 +830,16 @@
         <!-- 9. Tips -->
         <div class="topic">
           <h3>
-            <hr>9. Tips
+            <hr>9. Tips& tricks
           </h3>
 
           <p class="c-80">
-            <span class="title">1. Anchor choice</span><br> It could be wise not to use obscure html elements as an anchor element.
+            <span class="title">1. Anchor choice</span><br> When choosing an element to function as an anchor, it is recommended to make a dedicated, unaltered div element. Obscure, non-div 
+            elements might yield unwanted results.
           </p>
           <p class="c-80">
-            <span class="title">2. Anchor styling</span><br> It could be wise to not apply too much exotic styling to
-            the anchor element. 
+            <span class="title">2. Anchor styling</span><br> It is recommended to not pick an anchorelement with lots of exotic styling applied to it or that is positioned relative/absolute. Doing this 
+            could yield unwanted results.
           </p>
           <p class="c-80">
             <span class="title">3. Cascading css</span><br> Ultimately, particle effects are just transformed divs, so

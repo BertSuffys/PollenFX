@@ -8,7 +8,7 @@ class FXManager {
   _runtime;
   _lastTime = 0;
   _currentFPS = 0;
-  _allowDOMOvervlow;
+  _allowDOMOverflow;
   static _IDEAL_FPS = 60;
   static _devConfig = {
      DEBUG: false
@@ -16,13 +16,13 @@ class FXManager {
 
 
 
-  constructor(allowDOMOvervlow = false) {
+  constructor(allowDOMOverflow = false) {
     /* emitters can be permanently active or temporarily active emitters, so always hybrid */
     this.emitterManager = new FXItemHybridLifeManager(1)
     this.documentOpened = !document.hidden
     this.setDocumentOpenHideHandler()
     /* Allow overflow out of the whole document or allow scrollbar */
-    document.body.style.overflow = allowDOMOvervlow === true ? "scroll" : 'hidden';
+    document.body.style.overflow = allowDOMOverflow === true ? "auto" : 'hidden';
   }
 
   setDocumentOpenHideHandler() {
@@ -95,11 +95,11 @@ class FXManager {
     this._currentFPS = value;
   }
 
-  get allowDOMOvervlow() {
-    return this._allowDOMOvervlow;
+  get allowDOMOverflow() {
+    return this._allowDOMOverflow;
   }
-  set allowDOMOvervlow(value) {
-    this._allowDOMOvervlow = value;
+  set allowDOMOverflow(value) {
+    this._allowDOMOverflow = value;
   }
 
   static get devConfig() {
