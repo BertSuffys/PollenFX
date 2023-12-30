@@ -35,7 +35,7 @@ class ParticleImageData extends ParticleData {
   }
 
   /**
-   * Retrieve particle CSS
+   * Retrieve particle CSSs
    */
   getCSS() {
     return `background-image: url(\'${this.url}\'); background-size : ${this.imageFitting};`;

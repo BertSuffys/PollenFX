@@ -48,6 +48,7 @@
 -> Particles keep buffering when another tab is opened, resulting in extreme particle buildups
 -> PositionUnits in the default data sometimes cause a weird jittery/jumpy effect
 -> Emittershoot without death will only shoot max 1 particle per (+-)16ms cos thats the framerate. it does not calculate for faster particles
+-> An option to render the emitterOrigins
 
   ----- Terminology ----- 
 -> actTime = time (in ms) something is alive for

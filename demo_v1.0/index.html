@@ -1,16 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PollenFX v1.0 demo</title>
-  </head>
-  <body>
-    <main>
 
-    </main>
-	<script src="script.js"></script>
-    <script src="pollenFX.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>PollenFX v1.0 demo</title>
+</head>
+
+<body>
+  <main>
+    <!-- Logs -->
+
+    <div id="logWrapper">
+      <img id="logs" src="./img/logs.png"/>
+    </div>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="pollenFX.js"></script>
+  <script src="script.js"></script>
+
+</body>
+
 </html>
+
+<style>
+  body {
+    background-color: rgb(120, 120, 124);
+  }
+
+
+  #logWrapper{
+    width: fit-content;
+    margin-top: calc(50vh + 130px);
+    margin-left: calc(50vw - 200px);
+  }
+
+  #logs {
+    width: 400px;
+  }
+</style>

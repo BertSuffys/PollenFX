@@ -57,6 +57,7 @@
               <li>No external scripts/dependencies</li>
               <li>Modular emitter creation</li>
               <li>Well documented with code examples</li>
+              <li>Flexible for programatical extensions</li>
             </ul>
           </nav>
         </div>
@@ -528,23 +529,25 @@
 
 
           <p class="c-80">
-            <span class="title">8. ParticleColorfilterData</span> <img style="height: 25px;"
+            <span class="title">8. ParticleColorfilterData (experimental)</span> <img style="height: 25px;"
               src="./img/icon_colorfilterBehavior.png"><br>
-            The ParticleColorfilterData object allows for altering or adding color to the look of the particle aswel
+            The ParticleColorfilterData object allows for altering or adding color to the look of the particle as well
             as
-            modifying hue, saturation and brightness.<br><br>
+            modifying hue, saturation and brightness. This is an experimental component. Be aware that some cases might yield odd results.<br><br>
             <span class="parameter">* hueRotate (optional): </span>The amount (in degrees) of hue shifting that must
-            occur to the particle's appearance.<br>
+            occur to the particle's appearance. Default = 0 and indicates no hue-shift.<br>
             <span class="parameter">* color (optional): </span>A Color object being overlayed ontop of the particle
-            functioning as a colored filter.<br>
-            <span class="parameter">* noise (optional): </span>Adds noise/random offset to color/hue shift parameter,
-            depending on which was provided. Smaller values yield better results. Default = -1 and means 'unset'.<br>
-            <span class="parameter">* contrast (optional): </span>Increases the contrast to the appearance of the
-            particles. Values between [0,100] are valid.<br>
-            <span class="parameter">* saturation (optional): </span>Increases the saturation to the appearance of the
-            particles. Values between [0,100] are valid.<br>
-            <span class="parameter">* brightness (optional): </span>Increases the brightness to the appearance of the
-            particles. Values between [0,1000] are valid.<br>
+            functioning as a colored filter. Due to difficult color calculations on greyscale images/colors, there might be a slight offset in hue, saturation and brightness. However,
+            this offset can be accounted for by providing an offsetted color, or tweaking the hue, saturation and brightness values.<br>
+            <span class="parameter">* noise (optional): </span>If a color was provided, random offset/noise will be applied to the color and values can range [0, 360]. If no color was provided, but 
+            hueRotate was, this noise will be applied to the hueRotate field. Smaller values yield better results in this case. Default = -1 and indicates no noise.<br>
+            <span class="parameter">* contrast (optional): </span>Alters the contrast of the appearance of the
+            particles. Values between [0,100] are valid. Default = -1 and indicates no contrast alterations.<br>
+            <span class="parameter">* saturation (optional): </span>Alters the saturation of the appearance of the
+            particles. Beware that this value takes effect on the provided base color/image so lower values [0,2] are most meaningful. However, values between [0,100] are valid. Default = -1 
+            and indicates no altered saturation.<br>
+            <span class="parameter">* brightness (optional): </span>Alters the brightness of the appearance of the
+            particles. Values between [0,1000] are valid. Default = -1 and indicates no altered brightness.<br>
 
 
           </p>
@@ -836,12 +839,16 @@
           <h3>
             <hr>9. Tips
           </h3>
+
           <p class="c-80">
-            <span class="title">1. Anchor styling</span><br> It could be wise to not apply too much exotic styling to
-            the anchor element.
+            <span class="title">1. Anchor choice</span><br> It could be wise not to use obscure html elements as an anchor element.
           </p>
           <p class="c-80">
-            <span class="title">1. cascading css</span><br> Ultimately, particle effects are just transformed divs, so
+            <span class="title">2. Anchor styling</span><br> It could be wise to not apply too much exotic styling to
+            the anchor element. 
+          </p>
+          <p class="c-80">
+            <span class="title">3. Cascading css</span><br> Ultimately, particle effects are just transformed divs, so
             beware of any cascading css. These might ruin the
             particle configurations due to cascading styling.
           </p>
@@ -868,7 +875,7 @@
             <hr>11. An extensive code snippet
           </h3>
           <p class="c-80">
-            Finally, here is a more in-depth example of the creation of a particle effect.
+            Finally, here is a more in-depth example of the creation of a particle effect. Beware that the examples below might make use of resources such as images that are not provided in the demos.
           </p>
           <img src="./img/pollenfx_logo.png" style="width:400px;" alt="">
         </div>
