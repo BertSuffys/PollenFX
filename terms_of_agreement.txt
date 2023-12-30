@@ -1,0 +1,47 @@
+/*
+=========================================================================
+                            TERMS OF USE
+=========================================================================
+
+All rights reserved. This JavaScript particle engine script (PollenFX)
+is the intellectual property of Bert Suffys. By accessing
+and using this script, you agree to the following terms:
+
+1. Ownership and Copyright:
+   - The script is owned by Bert Suffys.
+   - Copyright © 2024 Bert Suffys. All rights reserved.
+
+2. Permitted Use:
+   - You are granted a non-exclusive, non-transferable license to use the
+     script for personal or non-commercial purposes.
+
+3. Prohibited Activities:
+   - You may not reproduce, distribute, sell, or otherwise exploit the script
+     for commercial purposes without the express written consent of Bert Suffys.
+   - Any unauthorized use of the script is strictly prohibited and in case of violation 
+     legal actions might follow. Bert Suffys reserves the right to pursue all available
+     legal remedies.
+
+4. No Warranty:
+   - The script is provided "as is" without any warranty of any kind,
+     express or implied. Bert Suffys makes no representations
+     or warranties regarding the accuracy or completeness of the script. Although,
+     once legally obtained, updated versions will always be granted upon requesting.
+
+5. Limitation of Liability:
+   - Bert Suffys can never be liable for any direct, indirect,
+     incidental, special, or consequential damages resulting from the use or
+     inability to use the script.
+
+6. Modifications:
+   - Bert Suffyes reserves the right to modify, suspend, or
+     discontinue the script at any time.
+
+By using the script, you acknowledge that you have read, understood, and agree
+to be bound by these terms. Any violation of these terms may result in legal
+action.
+
+For licensing inquiries or other questions, contact bert-suffys@hotmail.com.
+
+=========================================================================
+*/
