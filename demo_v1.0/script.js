@@ -51,16 +51,18 @@ function getLightSmoke() {
     let directionData = new ParticleDirectionData(90, 6, 10, 2)
     let rotationData = new ParticleRotationData(127, 45)
     let flipbookData = new ParticleFlipbookData("./img/smoke.png", -1, -1, 6, 5);
+    let colorData = new ParticleColorfilterData(-30, new Color("#b05500"), -1, -1, -1, -1)
     emitter.addParticleData(defaultData);
     emitter.addParticleData(directionData);
     emitter.addParticleData(rotationData);
     emitter.addParticleData(flipbookData);
+    emitter.addParticleData(colorData);
     // Behavior
-    const opacityByLifeBehavior = new ParticleOpacityByLifeBehavior([0, 0.01, 0.1, 0.4, 0]);
+    const opacityByLifeBehavior = new ParticleOpacityByLifeBehavior([0, 0.6, 0.4, 0]);
     const sizeByLifeBehavior = new ParticleSizeByLifeBehavior([0.5, 1, 1.3]);
     const flipbookBehavior = new ParticleFlipbookBehavior(100)
     const directionBehavior = new ParticleDirectionalBehavior()
-    const colorFilterBehavior = new ParticleColorfilterBehavior([new Color("#eb5f1a"), new Color('#888833')])
+    const colorFilterBehavior = new ParticleColorShiftBehavior(null, [1,0], [10,2,0,0])
     emitter.addParticleBehavior(opacityByLifeBehavior);
     emitter.addParticleBehavior(flipbookBehavior);
     emitter.addParticleBehavior(sizeByLifeBehavior);

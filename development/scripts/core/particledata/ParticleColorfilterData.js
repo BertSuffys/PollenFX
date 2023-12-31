@@ -65,9 +65,7 @@ class ParticleColorfilterData extends ParticleData {
   }
 
 
-  static createDefault() {
-    return new ParticleColorfilterData(-1, new Color(ColorUtil.debugColor), -1, -1, -1)
-  }
+
 
 
   /**
@@ -107,6 +105,10 @@ class ParticleColorfilterData extends ParticleData {
       return this;
     }
     return new ParticleColorfilterData(this.initialHueRotate, Color.copy(this.color), this.noise, this.contrast, this.saturation, this.brightness)
+  }
+
+  static createDefault() {
+    return new ParticleColorfilterData(-1, null, -1, -1, -1, -1)
   }
 
   get color() {
