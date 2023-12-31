@@ -5,6 +5,10 @@ class ParticleColorfilterData extends ParticleData {
     this.noise = noise
     this.helperStringCSS = ""
     this.initialHueRotate = hueRotate;
+    this.initialSaturation = saturation;
+    this.initialBrightness = brightness;
+    this.initialContrast = contrast;
+
     this.color = color
     this.contrast = this.initContrast(contrast);
 
@@ -12,12 +16,11 @@ class ParticleColorfilterData extends ParticleData {
       /* Noise effect to color */
       if (noise > 0) {
         const hueShiftNoiseHalf = noise / 2;
-        noise = PollenMath.randomBetween(hueShiftNoiseHalf, hueShiftNoiseHalf * -1, true);
-        hueRotate += noise;
+        const noised = PollenMath.randomBetween(hueShiftNoiseHalf, hueShiftNoiseHalf * -1, true);
+        hueRotate += noised;
       }
       /* Turn sepia. Beware that the brightness of the original color/image remains expressed in this sepia color. the saturation is entirely lost.*/
       this.helperStringCSS = "grayscale(100%) sepia(100%) "
-     // this.(color)   // sets hue-rotate
       const hsb = color.getHSB();
       this.hueRotate = this.getHueShiftForColorTargetFromSepia(hsb, this.initHueRotate(hueRotate), this.color);
       this.saturation = saturation > -1 ? this.initSaturation(saturation) : hsb[1];
@@ -56,7 +59,7 @@ class ParticleColorfilterData extends ParticleData {
 
 
   getCSS() {
-    console.log(`filter: ${this.helperStringCSS} saturate(${this.saturation}) contrast(${this.contrast}) brightness(${this.brightness}%) hue-rotate(${this.hueRotate}deg);`)
+   // console.log(`filter: ${this.helperStringCSS} saturate(${this.saturation}) contrast(${this.contrast}) brightness(${this.brightness}%) hue-rotate(${this.hueRotate}deg);`)
     return `filter: ${this.helperStringCSS} saturate(${this.saturation}) contrast(${this.contrast}) brightness(${this.brightness}%) hue-rotate(${this.hueRotate}deg);`
 
   }
@@ -77,7 +80,27 @@ class ParticleColorfilterData extends ParticleData {
 
 
 
-  reset() { }
+  reset() {
+    if (this.color != null) {
+      if (this.noise > 0) {
+        const hueShiftNoiseHalf = this.noise / 2;
+        const noised = PollenMath.randomBetween(hueShiftNoiseHalf, hueShiftNoiseHalf * -1, true);
+        this.hueRotate += noised;
+      }
+      const hsb = this.color.getHSB();
+      this.hueRotate = this.getHueShiftForColorTargetFromSepia(hsb, this.initHueRotate(this.initialHueRotate), this.color);
+      this.saturation = this.initialSaturation > -1 ? this.initSaturation(this.initialSaturation) : hsb[1];
+      this.brightness = this.initialBrightness > -1 ? this.initBrightness(this.initialBrightness) : hsb[2];
+    } else {
+      if (this.noise > 0) {
+        this.hueRotate = PollenMath.relativeMap(this.initHueRotate(this.initialHueRotate), this.noise, Math.random());
+      }else{
+        this.hueRotate = this.initHueRotate(this.initialHueRotate);
+      }
+      this.saturation = this.initSaturation(this.initialSaturation);
+      this.brightness = this.initBrightness(this.initialBrightness);
+    }
+   }
 
   createNew(copy) {
     if (copy) {
@@ -104,11 +127,11 @@ class ParticleColorfilterData extends ParticleData {
   set hueRotate(value) {
     this._hueRotate = value
   }
-  get initialHueRotate() {
-    return this._initialHueRotate
+  get initialSaturation() {
+    return this._initialSaturation
   }
-  set initialHueRotate(value) {
-    this._initialHueRotate = value
+  set initialSaturation(value) {
+    this._initialSaturation = value
   }
   get helperStringCSS() {
     return this._helperStringCSS
@@ -133,6 +156,20 @@ class ParticleColorfilterData extends ParticleData {
   }
   set brightness(value) {
     this._brightness = value
+  }
+
+  get initialBrightness() {
+    return this._initialBrightness
+  }
+  set initialBrightness(value) {
+    this._initialBrightness = value
+  }
+
+  get initialContrast() {
+    return this._initialHueRotate
+  }
+  set initialContrast(value) {
+    this._initialContrast = value
   }
 }
 

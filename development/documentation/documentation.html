@@ -650,7 +650,7 @@
             directionalbehavior
             for movement to the particle, but the wind behavior allows for wavey movement.
             It acts upon the ParticleDefaultData.<br><br>
-            <span class="parameter">* angles: </span>An array of angles (numbers, in degrees) representing the angles
+            <span class="parameter">* angles: </span>A numeric array of angles (in degrees) representing the angles
             towards the wind blows and through which the particles are going interpolate and be blown towards.<br>
             <span class="parameter">* cycleDuration (optional): </span>Time (in ms) it should take for the particle to
             run through the angles list once. Default = -1 and means that it runs through it once during its
@@ -676,26 +676,30 @@
 
 
           <p class="c-80">
-            <span class="title">7. ParticleColorShiftBehavior</span> <img style="height: 25px;"
+            <span class="title">7. ParticleColorShiftBehavior (Experimental)</span> <img style="height: 25px;"
               src="./img/icon_colorshiftBehavior.png"><br>
             The ParticleColorShiftBehavior allows for a gradual change in what the ColorFilterData only initializes
-            once, when it comes to hue, saturation and brightness. This behavior object acts on the
-            ColorFilterData.<br><br>
-            <span class="parameter">* hues: </span>An array of hue-values between [0,360] through which the particles
-            are going interpolate and take on this interpolated hue value for each moment in time over its life.<br>
-            <span class="parameter">* contrasts: </span>An array of contrast-values between [0,100] through which the
+            once, when it comes to hue, saturation, brightness and contrast. This behavior object acts on the
+            ColorFilterData. This is an experimental component and some configurations might yield odd results. This component can be used alongside the ParticleColorfilterBehavior in order to
+            tweak results.<br><br>
+            <span class="parameter">* hues (optional): </span>An array of hue-values between [0,360] through which the particles
+            are going interpolate and an updates value is going to be assigned to the ColorFilterData. Beware that These
+            updates hues are going to be added/subtracted from what was already configured in the ColorFilterData.<br>
+            <span class="parameter">* contrasts (optional): </span>An array of contrast-values between [0,100] through which the
             particles are going interpolate and take on this interpolated contrast value for each moment in time over
-            its life.<br>
-            <span class="parameter">* saturations: </span>An array of saturation-values between [0,100] through which
+            its life. Smaller values [0,2] yield better results.<br>
+            <span class="parameter">* saturations (optional): </span>A numeric array of saturation-values between [0,100] through which
             the particles are going interpolate and take on this interpolated saturation value for each moment in time
-            over its life.<br>
-            <span class="parameter">* brightnesses: </span>An array of brightness-values between [0,1000 through which
+            over its life. Smaller values [0,2] yield better results.<br>
+            <span class="parameter">* brightnesses (optional): </span>An array of brightness-values between [0,1000] through which
             the particles are going interpolate and take on this interpolated brightness value for each moment in time
-            over its life.<br>
-            <span class="parameter">* forceForwardHue: </span>Given that hue is expressed as an angle, this boolean
+            over its life. Smaller values [0,2] yield better results.<br>
+            <span class="parameter">* forceForwardHue (optional): </span>Given that hue is expressed as an angle, this boolean
             value will make sure a hue shift from 290 to 30 will not count downwards, but internally upwards from 290
             to
-            360+30.<br>
+            360+30. Default = true and indicates an upwards shift only.<br>
+            <span class="parameter">* duration (optional): </span>Numeric value describing the duration over which these transformations are supposed to occur. Default = -1 and indicates
+            that the transformations will occur over the lifetime of the particle.
           </p>
 
 
