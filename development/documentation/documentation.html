@@ -563,7 +563,7 @@
               src="./img/icon_directionData.png"><br>
             The particledirectionalbehavior allows for particle movement in a certain direction. It acts on the
             ParticleDefaultData and has no constructor parameters as all data it requires
-            is already stored in the data object. It does however still need to be applied<br><br>
+            is already stored in the data object. It does however still need to be created and applied to the emitter.<br><br>
           </p>
 
 
@@ -580,16 +580,16 @@
             which the particle is going interpolate over its lifetime/provided duration and multiply as a scalar to its
             height defined in the
             ParticleDefaultData.<br>
-            <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
+            <span class="parameter">* duration (optional): </span>Numeric value indicating the Time (in ms) it should take for the particle to run
             through the sizeMuliplier lists once. Default = -1, meaning that it runs through those size lists once
             during its lifetime.<br>
-            <span class="parameter">* scalarNoise (optional): </span>Adds noise/random offset to the sizeMuliplier
-            lists. Smaller values yield less extreme results. Default = -1 and means no noise.<br>
-            <span class="parameter">* uniformNoise (optional): </span>Whether the scalarNoise, if provided, should
+            <span class="parameter">* scalarNoise (optional): </span>Numeric value which adds noise/random offset to the sizeMuliplier
+            lists. Smaller values yield better results. Default = -1 and indicates no noise.<br>
+            <span class="parameter">* uniformNoise (optional): </span>Boolean value defining whether the scalarNoise, if provided, should
             scale
             both lists uniformly. Beware that this parameter can yield odd results for sizeMuliplier lists of unequal
             length.<br>
-            <span class="parameter">* sizeIterationCount (optional): </span>Allows for a forced halt in running
+            <span class="parameter">* sizeIterationCount (optional): </span>Numeric value which allows for a forced halt in running
             through
             the sizeMuliplier lists after having passed x numbers in those lists. It then remains the size where it
             halted. Default = -1 and means that no halting should occur. <br>
@@ -600,12 +600,11 @@
             <span class="title">3. ParticleGravityBehavior</span> <img style="height: 25px;"
               src="./img/icon_gravityBehavior.png"><br>
             The ParticleGravityBehavior allows for adding gravity and acts upon ParticleDefaultData.<br><br>
-            <span class="parameter">* fieldStrength: </span>The force by which the particles are being pulled
+            <span class="parameter">* fieldStrength: </span>Numeric value representing the force by which the particles are being pulled
             downwards.
             Negative values allow for inverted gravity.<br>
-            <span class="parameter">* fieldStrengthNoise (optional): </span>Adds noise/random offset to the
-            fieldStrength parameter. Smaller values [0,1] yield best results. A value of -1 means 'unset'.<br>
-
+            <span class="parameter">* fieldStrengthNoise (optional): </span>Numeric value which adds noise/random offset to the
+            fieldStrength parameter. Smaller values yield better results. Default = -1 and indicates no noise.<br>
           </p>
 
 
@@ -614,10 +613,10 @@
               src="./img/icon_rotationData.png"><br>
             Defines how the particles should be rotating or 'spinning'. This behavior object acts on
             the ParticleRotationData.<br><br>
-            <span class="parameter">* rotation: </span>The speed by which the particle will rotate. Positive values
+            <span class="parameter">* rotation: </span>Numeric value representing the speed by which the particle should rotate. Positive values
             yield counter clockwise rotation.<br>
-            <span class="parameter">* rotationNoise (optional): </span>Adds noise/random offset to the rotation
-            parameter. Lower values yield less extreme results. Default = -1 and means no noise is being added.<br>
+            <span class="parameter">* rotationNoise (optional): </span>Numeric value which adds noise/random offset to the rotation
+            parameter. Lower values yield better results. Default = -1 and means no noise is being added.<br>
             <span class="parameter">* allowReverse (optional): </span>Boolean value defining whether the rotationNoise
             is allowed to invert the rotation direction. Default = true.<br>
           </p>
@@ -631,12 +630,12 @@
             <span class="parameter">* opacityMultipliers: </span>An array of numbers between [0,1] representing the
             scalars through which the particle is going interpolate and multiply with its opacity value defined in the
             ParticleOpacityData.<br>
-            <span class="parameter">* opacityNoise (optional): </span>Adds noise/random offset to the
+            <span class="parameter">* opacityNoise (optional): </span>Numeric value whichn adds noise/random offset to the
             opacityMultipliers. Smaller values yield better results. Default = -1 and indicates no randomness.<br>
-            <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
+            <span class="parameter">* duration (optional): </span>Numeric value representing the time (in ms) it should take for the particle to run
             through the opacityMultipliers once. Default = -1 and indicates that it runs through the opacity list once
-            during its lifetime<br>
-            <span class="parameter">* opacityIterationCount (optional): </span>Allows for a forced halt in running
+            during its lifetime.<br>
+            <span class="parameter">* opacityIterationCount (optional): </span>Numeric value which allows for a forced halt in running
             through the opacityMultipliers after having passed x numbers in this opacity list. It then remains the
             opacity
             value where it halted. Default = -1 and indicates no halting. <br>
@@ -646,31 +645,31 @@
           <p class="c-80">
             <span class="title">6. ParticleWindBehavior</span> <img style="height: 25px;"
               src="./img/icon_windBehavior.png"><br>
-            The ParticleWindBehavior object allows to mimic articleDefaultData effects of wind. It allows just like
+            The ParticleWindBehavior object allows to mimic the effects of wind. It allows just like
             directionalbehavior
             for movement to the particle, but the wind behavior allows for wavey movement.
             It acts upon the ParticleDefaultData.<br><br>
             <span class="parameter">* angles: </span>A numeric array of angles (in degrees) representing the angles
             towards the wind blows and through which the particles are going interpolate and be blown towards.<br>
-            <span class="parameter">* cycleDuration (optional): </span>Time (in ms) it should take for the particle to
+            <span class="parameter">* cycleDuration (optional): </span>Numeric value representing the time (in ms) it should take for the particle to
             run through the angles list once. Default = -1 and means that it runs through it once during its
-            lifetime<br>
-            <span class="parameter">* windSpeed (optional): </span>The power/windspeed by which the wind will blow
-            towards the direction the particle is currently at in its angles list. Default value is 1.<br>
+            lifetime.<br>
+            <span class="parameter">* windSpeed (optional): </span>Numeric value representing the power/windspeed by which the wind will blow
+            towards the direction the particle is currently at in its angles list. Default = 1.<br>
             <span class="parameter">* deepRandom (optional): </span>Boolean value that if true, randomizes all angles
             by
-            an angle between the biggest and smallest angle provided in the angles list.<br>
+            an angle between the biggest and smallest angle provided in the angles list. Default = false.<br>
             <span class="parameter">* shallowRandom (optional): </span>Boolean value that if true, randomizes each
             angle
-            by a new random angle between its provided neighbouring angles.<br>
+            by a new random angle between its provided neighbouring angles. Default = false.<br>
             <span class="parameter">* considerDefault (optional): </span>Boolean value that if true, the initial
-            direction as defined in the ParticleDirectionData will not be discarded.<br>
+            direction as defined in the ParticleDirectionData will not be discarded. Default = false.<br>
             <span class="parameter">* overrideInitialDirection (optional): </span>Boolean value that if true, the
             initial direction as defined in the ParticleDirectionData is overridden by the first angle in the angle
             list.
             If false, the initial direction will be appended to the angles list. Note that this parameter is only
             valid
-            when the considerDefault parameter is true.<br>
+            when the considerDefault parameter is true. Default = false.<br>
           </p>
 
 
@@ -682,45 +681,47 @@
             once, when it comes to hue, saturation, brightness and contrast. This behavior object acts on the
             ColorFilterData. This is an experimental component and some configurations might yield odd results. This component can be used alongside the ParticleColorfilterBehavior in order to
             tweak results.<br><br>
-            <span class="parameter">* hues (optional): </span>An array of hue-values between [0,360] through which the particles
+            <span class="parameter">* hues (optional): </span>A numeric array of hue-values between [0,360] through which the particles
             are going interpolate and an updates value is going to be assigned to the ColorFilterData. Beware that These
             updates hues are going to be added/subtracted from what was already configured in the ColorFilterData.<br>
-            <span class="parameter">* contrasts (optional): </span>An array of contrast-values between [0,100] through which the
+            <span class="parameter">* contrasts (optional): </span>A numeric array of contrast-values between [0,100] through which the
             particles are going interpolate and take on this interpolated contrast value for each moment in time over
             its life. Smaller values [0,2] yield better results.<br>
             <span class="parameter">* saturations (optional): </span>A numeric array of saturation-values between [0,100] through which
             the particles are going interpolate and take on this interpolated saturation value for each moment in time
             over its life. Smaller values [0,2] yield better results.<br>
-            <span class="parameter">* brightnesses (optional): </span>An array of brightness-values between [0,1000] through which
+            <span class="parameter">* brightnesses (optional): </span>A numeric array of brightness-values between [0,1000] through which
             the particles are going interpolate and take on this interpolated brightness value for each moment in time
             over its life. Smaller values [0,2] yield better results.<br>
             <span class="parameter">* forceForwardHue (optional): </span>Given that hue is expressed as an angle, this boolean
             value will make sure a hue shift from 290 to 30 will not count downwards, but internally upwards from 290
             to
             360+30. Default = true and indicates an upwards shift only.<br>
-            <span class="parameter">* duration (optional): </span>Numeric value describing the duration over which these transformations are supposed to occur. Default = -1 and indicates
+            <span class="parameter">* duration (optional): </span>A numeric value describing the duration over which these transformations are supposed to occur. Default = -1 and indicates
             that the transformations will occur over the lifetime of the particle.
           </p>
 
 
           <p class="c-80">
-            <span class="title">8. ParticleColorfilterBehavior</span> <img style="height: 25px;"
+            <span class="title">8. ParticleColorfilterBehavior (Experimental)</span> <img style="height: 25px;"
               src="./img/icon_colorfilterBehavior.png"><br>
             The ParticleColorfilterBehavior allows for a gradual change in what the ColorFilterData only initializes
-            once, when it comes to color. This behavior object acts on the ColorFilterData.<br><br>
+            once, when it comes to color. This behavior object acts on the ColorFilterData. This is an experimental component, and when it
+            comes to providing colors, there might be some incorrect offset occuring due to difficult css color calculations upon
+            already colored surfaces. These values can be tweaked using the ParticleColorShiftBehavior.<br><br>
 
-            <span class="parameter">* colors: </span>An array of color-objects through which the particles are going
+            <span class="parameter">* colors: </span>An array of color-objects (See colors further) through which the particles are going
             interpolate and take on this interpolated color overlay for each moment in time over its life.<br>
-            <span class="parameter">* duration (optional): </span>Time (in ms) it should take for the particle to run
-            through the colors once. Default = -1 and means that it runs through it once during its lifetime<br>
+            <span class="parameter">* duration (optional): </span>Numeric value representing the time (in ms) it should take for the particle to run
+            through the colors once. Default = -1 and means that it runs through those colors once during its lifetime.<br>
             <span class="parameter">* randomStartColor (optional): </span>Boolean value defining whether a random
             color
-            from the colors list is being taken to start from. Default = false and indicates no randomisation<br>
+            from the colors list is being taken to start from. Default = false and indicates no randomisation.<br>
             <span class="parameter">* startIndex (optional): </span>Similar to randomStartColor, the color at this index
             will be taken as start color. Default = -1 and means the first color.<br>
             <span class="parameter">* colorIterationCount (optional): </span>Allows for a forced halt in running
             through
-            the colors after having passed x colors in this list. It then remains the color value where it halted.
+            the colors after having passed n colors in this list. It then remains the color value where it halted.
             Default = -1 and indicates no halting.
             <br>
 
@@ -732,13 +733,13 @@
             <span class="title">9. ParticleFlipbookBehavior</span> <img style="height: 25px;"
               src="./img/icon_flipbookData.png"><br>
             The ParticleFlipbookBehavior object allows flipping through the provided spritesheet in the provided
-            ParticleFlipbookData object.<br><br>
-            <span class="parameter">* speed: </span>The time (in ms) between each frame jump.<br>
-            <span class="parameter">* speedNoise (optional): </span>Adds randomness/noise to the speed parameter. Lower
+            ParticleFlipbookData object in order to display an animation.<br><br>
+            <span class="parameter">* speed: </span>Numeric value representing the time (in ms) between each frame jump.<br>
+            <span class="parameter">* speedNoise (optional): </span>Numeric value which adds randomness/noise to the speed parameter. Lower
             values yield better results. Default = -1 and indicates no randomness.<br>
-            <span class="parameter">* endingFrameCount (optional): </span>Allows for a forced halt in running
+            <span class="parameter">* endingFrameCount (optional): </span>Numeric value which allows for a forced halt in running
             through
-            the spritesheet frames after having passed x frames in the image. It then remains stuck on the frame where
+            the spritesheet frames after having passed n frames in the image. It then remains stuck on the frame where
             it halted. Default = -1 and indicates no halting.
             <br><br>
           </p>
@@ -751,9 +752,9 @@
             going towards. The object acts on
             the rotation data object and does not function in combination with the ParticleRotationBehavior.<br><br>
 
-            <span class="parameter">* offset (optional): </span>Adds an additional offset (in degrees) to the rotation
+            <span class="parameter">* offset (optional): </span>Numeric value which adds an additional offset (in degrees) to the rotation
             which is being matched to the
-            particle's direction.<br>
+            particle's direction. Default = -1 and indicates no offset.<br>
 
           </p>
         </div>
@@ -770,7 +771,7 @@
             There are several constants that are worth adressing. These are Color, Pivot, PositionUnit and
             ImageFitting.
             These are enums that hold constant values and are sometimes required
-            during configuration of data objects and or behavioral objects
+            during configuration of data objects and or behavioral objects.
           </p>
 
 
@@ -784,13 +785,13 @@
 
           <p class="c-80">
             <span class="title">2. Pivot</span><br>
-            When a Pivot enum is required, this will allow the user to configure the origin of the particle. For
+            When a Pivot enum is required, this will allow the user to configure the pivotpoint of the particle. For
             example, a pivot placed in the bottom-right corner will scale the particle outwards to the upper left
             corner
             when scaling.<br><br>
             <span class="parameter">* Pivot.BEGIN: </span>Means either top, or very left border of the particle
             container.<br>
-            <span class="parameter">* Pivot.CENTER: </span>Means either vertical, or horizonta center of the particle
+            <span class="parameter">* Pivot.CENTER: </span>Means either vertical, or horizontal center of the particle
             container.<br>
             <span class="parameter">* Pivot.END: </span>Means either bottom, or very right end of the particle
             container.<br>
@@ -836,7 +837,7 @@
           </h3>
 
           <p class="c-80">
-            <span class="title">1. Anchor choice</span><br> When choosing an element to function as an anchor, it is recommended to make a dedicated, unaltered div element. Obscure, non-div 
+            <span class="title">1. Anchor choice</span><br> When choosing an element to function as an anchor, it is recommended to make a dedicated div element. Obscure, non-div 
             elements might yield unwanted results.
           </p>
           <p class="c-80">
@@ -847,6 +848,10 @@
             <span class="title">3. Cascading css</span><br> Ultimately, particle effects are just transformed divs, so
             beware of any cascading css. These might ruin the
             particle configurations due to cascading styling.
+          </p>
+          <p class="c-80">
+            <span class="title">4. PollenFX script inclusion</span><br> When linking to the pollenFX script in order to use it, make sure it is inserted above the script in which you 
+            are going to use it.
           </p>
         </div>
 
@@ -877,7 +882,7 @@
           <p class="c-80">
             Finally, here is a more in-depth example of the creation of a particle effect. Beware that the examples below might make use of resources such as images that are not provided in the demos.
           </p>
-          <img src="./img/pollenfx_logo.png" style="width:400px;" alt="">
+          <img src="./img/snippet_05.JPG" style="width:1200px;" alt="">
         </div>
 
 
