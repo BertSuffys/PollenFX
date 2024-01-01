@@ -11,7 +11,7 @@ class FXManager {
   _allowDOMOverflow;
   static _IDEAL_FPS = 60;
   static _devConfig = {
-     DEBUG: false
+    DEBUG: false
   }
 
 
@@ -54,6 +54,13 @@ class FXManager {
 */
   getFxItemById(fxItemId) {
     return this.emitterManager.getFxItemById(fxItemId);
+  }
+
+  /**
+  * Returns the current FPS
+  */
+  getFPS() {
+    return this._currentFPS;
   }
 
 

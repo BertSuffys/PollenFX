@@ -6,6 +6,7 @@ class Emitter extends FXItem {
   _particleData = new Map()
   _emitterContainer;
   _emitterBox;
+  static _unstableAnchorTypes = ['img', 'button', 'address', 'h1','h2','h3','h4','h5','h6', 'p', 'span', 'em'];
 
 
 
@@ -61,7 +62,32 @@ class Emitter extends FXItem {
    */
   ensureEmitterContainer() {
     let emitterContainer;
-    let anchor = this.emitterOrigin.anchorElement != null ? this.emitterOrigin.anchorElement : document.body;
+
+    let anchor
+    if(this.emitterOrigin.anchorElement != null){
+      /* Valid anchor element? */
+      const invalidAnchor = Emitter.unstableAnchorTypes.includes(this.emitterOrigin.anchorElement.tagName.toLowerCase());
+      if(invalidAnchor){
+        /* Wrapper element already made? */
+        if(this.emitterOrigin.anchorElement.parentNode.classList.contains(PollenFXClasses.EMITTER_CONTAINER_WRAPPER_CLASS)){
+          anchor = this.emitterOrigin.anchorElement.parentNode
+        }else{
+          anchor = this.emitterOrigin.anchorElement;
+          var anchorParent = document.createElement('div');
+          let parent = anchor.parentNode;
+          parent.replaceChild(anchorParent, anchor);
+          anchorParent.appendChild(anchor);
+          anchorParent.style.width = 'fit-content';
+          anchorParent.style.height = 'fit-content';
+          anchor = anchorParent
+        }
+      }else{
+        // valid anchor
+        anchor = this.emitterOrigin.anchorElement
+      }
+    }else{
+      anchor = document.body
+    }
 
     // Create container
     emitterContainer = document.createElement('div');
@@ -455,5 +481,12 @@ class Emitter extends FXItem {
   }
   set spawnedCountAddend(value) {
     this._spawnedCountAddend = value
+  }
+
+  static get unstableAnchorTypes(){
+    return Emitter._unstableAnchorTypes;
+  }
+  static set unstableAnchorTypes(value){
+    Emitter._unstableAnchorTypes = value;
   }
 }

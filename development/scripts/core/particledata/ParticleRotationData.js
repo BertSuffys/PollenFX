@@ -23,11 +23,11 @@ class ParticleRotationData extends ParticleData {
       if (copy) {
         return this
       }
-      return new ParticleRotationData(this.rotation, this.coneNoise)
+      return new ParticleRotationData(this.rotation, this.coneNoise);
     }
   
     static createDefault() {
-      return new ParticleRotationData(0)
+      return new ParticleRotationData(0);
     }
   
     get coneNoise() {

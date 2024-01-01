@@ -7,6 +7,7 @@ const Pivot = {
 }
 
 const PollenFXClasses = {
+    EMITTER_CONTAINER_WRAPPER_CLASS: "pollenfx_emitter_wrapper",
     EMITTER_CONTAINER_CLASS: "pollenfx_emitter_container",
     EMITTER_BOX_CLASS: "pollenfx_emitter_box",
     PARTICLE_BOX_CLASS: "pollenfx_particle_box"

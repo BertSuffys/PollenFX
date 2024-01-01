@@ -196,6 +196,12 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     }
   
 
+    get duration() {
+      return this._duration
+    }
+    set duration(value) {
+      this._duration = value
+    }
     get durationOverride() {
       return this._durationOverride
     }
@@ -246,12 +252,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     set sizeMultipliersY(value) {
       this._sizeMultipliersY = value
     }
-    get duration() {
-      return this._duration
-    }
-    set duration(value) {
-      this._duration = value
-    }
+
     get scalarNoise() {
       return this._scalarNoise
     }

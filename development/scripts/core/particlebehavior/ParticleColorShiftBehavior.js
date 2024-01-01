@@ -27,7 +27,6 @@ class ParticleColorShiftBehavior extends ParticleBehavior {
     this.forceForwardHue = forceForwardHue
     this.duration = duration;
     this.durationOverride = duration > 0;
-    console.log(this.duration)
 
 
     /* init Hues */
@@ -87,8 +86,6 @@ class ParticleColorShiftBehavior extends ParticleBehavior {
 
       const alteredValue = PollenMath.lerp(value[fromIndex], value[toIndex], localProgress) % this.maxValueMap.get(key);
       const upadatedValue = alteredValue - this.lastAlteredValueMap.get(key)
-
-      console.log(upadatedValue, alteredValue);
 
       this.actionMap.get(key)(alteredValue, upadatedValue);
 
