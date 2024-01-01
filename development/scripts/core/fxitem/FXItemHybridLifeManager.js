@@ -17,8 +17,10 @@ class FXItemHybridLifeManager extends FXItemManager {
   }
 
 
+
   addFXItem(fxItem, fxItemId = null) {
-    if (fxItem.loop) {
+    // Not only looping emitters are going on forever, but also those whose particles live forever
+    if (fxItem.loop || fxItem.lifeTime === -1 ) {
       this.permanentlyActiveFXPool.push(fxItem)
       super.fxItemCount += 1;
       fxItem.fxItemId = (fxItemId == null || fxItemId == '') ? fxItem.getClassName()+'_'+ this.fxItemCount : fxItemId;
@@ -92,11 +94,11 @@ class FXItemHybridLifeManager extends FXItemManager {
       this.sharedActivePool.splice(this.sharedActivePool.indexOf(deadFXItem), 1);
       this.inactiveFXItemPool.push(deadFXItem);
     }
-    for (fxItem in this.permanentlyActiveFXPool) {
+    for (fxItem of this.permanentlyActiveFXPool) {
       fxItem.notifyDead()                    // hide css requirement
     }
     this.permanentlyActiveFXPool.length = 0;
-    for (fxItem in this.sharedActivePool) {
+    for (fxItem of this.sharedActivePool) {
       fxItem.notifyDead()                    // hide css requirement
     }
     this.sharedActivePool.length = 0;

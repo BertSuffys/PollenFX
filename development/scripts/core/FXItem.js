@@ -16,6 +16,7 @@ class FXItem {
         this.spawnTime = Date.now()
         this.liveTime = this.spawnTime;
         this.actTime = 0;
+        console.log(this.lifeTime);
     }
 
     /**

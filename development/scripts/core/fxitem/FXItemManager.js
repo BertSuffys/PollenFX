@@ -42,7 +42,7 @@ class FXItemManager {
    * Empties the whole of the active FXItem pool
    */
   killAllFXItems() {
-    for (fxItem in this.activeFXItemPool) {
+    for (const fxItem of this.activeFXItemPool.collect()) {
       fxItem.notifyDead()                    // hide css requirement
     }
     this.activeFXItemPool.empty()

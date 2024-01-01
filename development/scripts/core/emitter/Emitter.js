@@ -52,11 +52,21 @@ class Emitter extends FXItem {
   /**
    * Calculates the final lifetime opf an emitter object taking into account possible delay, maximum lifetime of the particle and the duration of the emitter
    */
-  calculateFinalDuration(delay, particleLifetime, particleLifetimeNoise, emitterDuration) {
-    const maxParticleLifetime = particleLifetimeNoise > 0 ? PollenMath.relativeMap(particleLifetime, 1 + particleLifetimeNoise, 1) : particleLifetime
-    return (emitterDuration + maxParticleLifetime + Math.max(0, particleLifetimeNoise) + Math.max(0, delay))
+  static calculateFinalDuration(particleLifetime, particleLifetimeNoise, emitterDuration, delay) {
+    if(particleLifetime < 0 || emitterDuration < 0){
+      return -1;
+    }
+    let finalEmitterDuration = Math.max(0, delay) + emitterDuration;
+    if(particleLifetimeNoise > 0){
+      let maxParticleLifetime = PollenMath.relativeMap(particleLifetime, particleLifetimeNoise, 1);
+      finalEmitterDuration += maxParticleLifetime;
+    }else{
+      finalEmitterDuration += particleLifetime;
+    }
+    return finalEmitterDuration
   }
 
+  
   /**
    * When anchoring to an element, We add an imploded, sizeless container in which the emitterbox is going to then ultimately reside
    */
@@ -321,19 +331,6 @@ class Emitter extends FXItem {
   }
 
 
-  /**
-   * Calculates the final lifetime opf an emitter object taking into account possible delay, maximum lifetime of the particle and the duration of the emitter
-   */
-  static calculateFinalDuration(particleLifetime, particleLifetimeNoise, emitterDuration, delay) {
-    let finalEmitterDuration = Math.max(0, delay) + emitterDuration;
-    if(particleLifetimeNoise > 0){
-      let maxParticleLifetime = PollenMath.relativeMap(particleLifetime, particleLifetimeNoise, 1);
-      finalEmitterDuration += maxParticleLifetime;
-    }else{
-      finalEmitterDuration += particleLifetime;
-    }
-    return finalEmitterDuration
-  }
 
 
   /**
