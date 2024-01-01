@@ -77,6 +77,13 @@ class Emitter extends FXItem {
           let parent = anchor.parentNode;
           parent.replaceChild(anchorParent, anchor);
           anchorParent.appendChild(anchor);
+          anchorParent.classList.add(PollenFXClasses.EMITTER_CONTAINER_WRAPPER_CLASS);
+          /* Modify styling */
+          var computedStyles = window.getComputedStyle(anchor);
+          anchorParent.style.margin = computedStyles.margin;
+          anchorParent.style.padding = computedStyles.padding;
+          anchor.style.margin = '0';
+          anchor.style.padding = '0';
           anchorParent.style.width = 'fit-content';
           anchorParent.style.height = 'fit-content';
           anchor = anchorParent

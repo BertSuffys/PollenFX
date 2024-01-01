@@ -23,6 +23,8 @@
       within the EmitterContainer, an EmitterBox is being created. this element mimics the anchor element within which the particles will reside. Its in some sense a sort of clone
       of the anchorelement because we do not have control over its styling. We do have control over the EmitterBox. Each emitter has one emitterbox, it is position:relative, its 
       styling is important, has class="pollenfx_emitter_box", and can only be seen when DevConfig.DEBUG=true.
+   -> EmitterWrapper: When the provided anchor element is an invalid element type such as img ot then insert divs into, a div wrapper is created around this invalid anchor element
+      and then set to be the new anchor element.
    -> ParticleBox: The particleBox is the true HTMLElement representing the particle. It is being created from an emitter-implementation upon a particle spawn. The particle 
       is position:absolute which is defined as a default style in the ParticleDataManager. This element carries the final particle styling.
 5. The applyParticle() method is used upon particle creation to provide the particle itself to the behaviormanager and thus all behaviors for its potential noised-lifetime
@@ -45,7 +47,6 @@
 -> Upon emitter death, actually detach the particle divs from the dom for performance reasons
 -> Full UML creation
 -> Better design for the windbehavior's considerDefault & overrideInitialDirection fields.
--> Particles keep buffering when another tab is opened, resulting in extreme particle buildups
 -> PositionUnits in the default data sometimes cause a weird jittery/jumpy effect
 -> Emittershoot without death will only shoot max 1 particle per (+-)16ms cos thats the framerate. it does not calculate for faster particles
 -> An option to render the emitterOrigins
