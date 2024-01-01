@@ -5,10 +5,14 @@ class FXManager {
   /* Parameters */
   _emitterManager;
   _documentOpened;    // allows for pausing when on different tab
-  _runtime;
+  _runtime = 0;
   _lastTime = 0;
   _currentFPS = 0;
   _allowDOMOverflow;
+
+  _totalDocumentClosedRuntime = 0;
+  _closeTime = 0;
+
   static _IDEAL_FPS = 60;
   static _devConfig = {
     DEBUG: false
@@ -28,9 +32,11 @@ class FXManager {
   setDocumentOpenHideHandler() {
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
-        this.documentOpened = false
+        this.documentOpened = false;
+        this.closeTime = performance.now();
       } else {
-        this.documentOpened = true
+        this.documentOpened = true;
+        this.totalDocumentClosedRuntime += performance.now() - this.closeTime;
       }
     })
   }
@@ -40,18 +46,18 @@ class FXManager {
   }
 
   act(runtime) {
-    this.runtime = runtime;
-    const deltaTime = this.runtime - this.lastTime;
-    this.currentFPS = 1000 / deltaTime;
     if (this.documentOpened) {
+      this.runtime = runtime - this.totalDocumentClosedRuntime;
+      const deltaTime = this.runtime - this.lastTime;
+      this.currentFPS = 1000 / deltaTime;
       this.emitterManager.act(deltaTime)
     }
     this.lastTime = this.runtime;
   }
 
   /**
-* Attempts to collect and fxItem from the active pool by its provided ID
-*/
+  * Attempts to collect and fxItem from the active pool by its provided ID
+  */
   getFxItemById(fxItemId) {
     return this.emitterManager.getFxItemById(fxItemId);
   }
@@ -114,6 +120,22 @@ class FXManager {
   }
   static set devConfig(value) {
     this._devConfig = value;
+  }
+
+
+  get totalDocumentClosedRuntime() {
+    return this._totalDocumentClosedRuntime;
+  }
+  set totalDocumentClosedRuntime(value) {
+    this._totalDocumentClosedRuntime = value;
+  }
+
+
+  get closeTime() {
+    return this._closeTime;
+  }
+  set closeTime(value) {
+    this._closeTime = value;
   }
 
 }

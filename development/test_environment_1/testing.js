@@ -1,6 +1,6 @@
 
 let fxManager;
-FXManager.devConfig.DEBUG = false;
+
 
 
 (function () {
@@ -183,7 +183,7 @@ function dataTest_7() {
     let line = new RectangularEmitterOrigin(500, 600, -1, -1 , true);
     let emitter = new EmitterShoot(origin, -1, -1, 2000, 500, 2, 30)
     // Data
-    const flipbookData = new ParticleFlipbookData("./img/smoke.png", -1, -1, 6, 5, -1, ImageFitting.COVER);
+    const flipbookData = new ParticleFlipbookData("../img/smoke.png", -1, -1, 6, 5, -1, ImageFitting.COVER);
     const css = new ParticleCustomCssData("mix-blend-mode:luminosity;");
     const defaultData = new ParticleDefaultData(50, 50, line, 1, 1, true, Pivot.CENTER, Pivot.END);
     const directionData = new ParticleDirectionData(90, 2, 45, 3)
