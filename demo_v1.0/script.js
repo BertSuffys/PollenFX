@@ -29,7 +29,7 @@ function getBigSmoke() {
     // Tools
     let anchor = document.getElementById("logWrapper");
     let origin = new CircularEmitterOrigin(200, 110, 140, 100, -1, -1, true, anchor);
-    let emitter = new EmitterShoot(origin, -1, -1, 3000, 7000, -1, 30)
+    let emitter = new EmitterShoot(origin, -1, -1, 3000, 8600, -1, 30)
     // Data
     const defaultData = new ParticleDefaultData(200, 200, origin, 0.5, 0.5, true);
     const directionData = new ParticleDirectionData(90, 6, 10, 2)
@@ -78,7 +78,7 @@ function getFlames() {
     // Behavior
     const flipbookBehavior = new ParticleFlipbookBehavior(60)
     const sizeBehavior = new ParticleSizeByLifeBehavior([0, 2], [0, 2], -1, 5, true, -1);
-    const opacityByLifeBehavior = new ParticleOpacityByLifeBehavior(([0, 0, 0.3, 1, 0]));
+    const opacityByLifeBehavior = new ParticleOpacityByLifeBehavior(([0, 0, 0.5, 1, 0]));
 
     emitter.addParticleBehavior(flipbookBehavior);
     emitter.addParticleBehavior(sizeBehavior);
@@ -170,7 +170,7 @@ function getEmbers() {
     // Tools
     let anchor = document.getElementById("logWrapper");
     let origin = new CircularEmitterOrigin(200, 110, 140, 100, -1, -1, true, anchor);
-    let emitter = new EmitterShoot(origin, 50, 10000, 3000, 1000, 2)
+    let emitter = new EmitterShoot(origin, 100, 10000, 3000, 1000, 2)
     // Data
     let defaultData = new ParticleDefaultData(10, 10, origin, 0.5, 0.5, true);
     let cssData = new ParticleCustomCssData("background-color:#eb5f1a; border-radius:30px; mix-blend-mode: overlay; box-shadow: 0px 0px 10px 16px #eb5f1a;", 30, 500);
