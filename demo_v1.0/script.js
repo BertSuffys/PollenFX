@@ -14,9 +14,82 @@ document.addEventListener('DOMContentLoaded', function () {
     fxManager.addEmitter(getSparks(), "sparks");
     /* 4. Add lighting */
     fxManager.addEmitter(getLight(), "light");
+    /* 5. Add fire */
+    fxManager.addEmitter(getFlames(), "flames");
+    /* 6. Add fire */
+    fxManager.addEmitter(getBigSmoke(), "big_smoke");
 
     start(0);
 });
+
+
+
+
+function getBigSmoke() {
+    // Tools
+    let anchor = document.getElementById("logWrapper");
+    let origin = new CircularEmitterOrigin(200, 110, 140, 100, -1, -1, true, anchor);
+    let emitter = new EmitterShoot(origin, -1, -1, 3000, 7000, -1, 30)
+    // Data
+    const defaultData = new ParticleDefaultData(200, 200, origin, 0.5, 0.5, true);
+    const directionData = new ParticleDirectionData(90, 6, 10, 2)
+    const rotationData = new ParticleRotationData(127, 45)
+    const cssData = new ParticleCustomCssData("mix-blend-mode: plus-darker;", 90, 105);
+    const flipbookData = new ParticleFlipbookData("./img/smoke.png", -1, -1, 6, 5);
+    const colorData = new ParticleColorfilterData(-30, new Color("#b05500"), -1, -1, -1, -1)
+    emitter.addParticleData(defaultData);
+    emitter.addParticleData(directionData);
+    emitter.addParticleData(cssData);
+    emitter.addParticleData(rotationData);
+    emitter.addParticleData(flipbookData);
+    emitter.addParticleData(colorData);
+    // Behavior
+    const opacityByLifeBehavior = new ParticleOpacityByLifeBehavior([0, 1, 0.7, 0]);
+    const sizeByLifeBehavior = new ParticleSizeByLifeBehavior([0.5, 1, 1.3]);
+    const flipbookBehavior = new ParticleFlipbookBehavior(100)
+    const directionBehavior = new ParticleDirectionalBehavior()
+    const colorFilterBehavior = new ParticleColorShiftBehavior(null, [1, 0], [10, 2, 0, 0])
+    const windBehavior = new ParticleWindBehavior([90, 180], -1, 10)
+    emitter.addParticleBehavior(opacityByLifeBehavior);
+    emitter.addParticleBehavior(flipbookBehavior);
+    emitter.addParticleBehavior(sizeByLifeBehavior);
+    emitter.addParticleBehavior(directionBehavior);
+    emitter.addParticleBehavior(colorFilterBehavior);
+    emitter.addParticleBehavior(windBehavior);
+
+    // Return
+    return emitter
+}
+
+
+
+function getFlames() {
+    // Tools
+    let anchor = document.getElementById("logWrapper");
+    let origin = new CircularEmitterOrigin(200, 150, 200, 70, -1, -1, true, anchor);
+    let emitter = new EmitterShoot(origin, 0, -1, 2500, 7000, -1, 100);
+    // Data
+    const cssData = new ParticleCustomCssData("mix-blend-mode: overlay;", 100, 120);
+    const defaultData = new ParticleDefaultData(40, 40, origin, -1, -1, -1, Pivot.CENTER, Pivot.END);
+    const flipbookData = new ParticleFlipbookData("./img/fire.png", -1, -1, 4, 2);
+    emitter.addParticleData(defaultData);
+    emitter.addParticleData(flipbookData);
+    emitter.addParticleData(cssData);
+    // Behavior
+    const flipbookBehavior = new ParticleFlipbookBehavior(60)
+    const sizeBehavior = new ParticleSizeByLifeBehavior([0, 2], [0, 2], -1, 5, true, -1);
+    const opacityByLifeBehavior = new ParticleOpacityByLifeBehavior(([0, 0, 0.3, 1, 0]));
+
+    emitter.addParticleBehavior(flipbookBehavior);
+    emitter.addParticleBehavior(sizeBehavior);
+    emitter.addParticleBehavior(opacityByLifeBehavior);
+
+    return emitter;
+}
+
+
+
+
 
 function getLight() {
     // Tools
@@ -24,14 +97,14 @@ function getLight() {
     let origin = new PointEmitterOrigin(200, 60, -1, -1, true, anchor);
     let emitter = new EmitterShoot(origin, 1, 20, -1, -1, -1);
     // Data
-    let cssData = new ParticleCustomCssData("background-color:#ff6f21; border-radius : 50px; mix-blend-mode: darker color; box-shadow: 0px 0px 92px 92px #ff6f21;", 800, 802);
-    let defaultData = new ParticleDefaultData(100, 40, origin, -1 , -1 , true);
-    let opacity = new ParticleOpacityData(0.3);
+    const cssData = new ParticleCustomCssData("background-color:#ff6f21; border-radius : 50px; mix-blend-mode: darker color; box-shadow: 0px 0px 92px 92px #ff6f21;", 800, 802);
+    const defaultData = new ParticleDefaultData(100, 40, origin, -1, -1, true);
+    const opacity = new ParticleOpacityData(0.3);
     emitter.addParticleData(defaultData);
     emitter.addParticleData(opacity);
     emitter.addParticleData(cssData);
 
-    let sizeBehavior = new ParticleSizeByLifeBehavior([0,1], null, 7000, -1, -1, 2)
+    const sizeBehavior = new ParticleSizeByLifeBehavior([0, 1], null, 7000, -1, -1, 2)
     emitter.addParticleBehavior(sizeBehavior);
     // Behavior
     return emitter;

@@ -11,10 +11,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
       this.duration = duration
       this.scalarNoise = scalarNoise
       this.uniformNoise = uniformNoise
-      this.setSizeMultipliers(
-        this.initialSizeMultipliersX,
-        this.initialSizeMultipliersY
-      )
+      this.setSizeMultipliers(this.initialSizeMultipliersX, this.initialSizeMultipliersY )
       this.xSizeIteration = 0
       this.ySizeIteration = 0
       this.lastXSizeIndexSum = Math.min(this.sizeMultipliersX.length, 1)
@@ -104,15 +101,8 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
       if (this.scalarNoise > 0) {
         let randoms = []
         if (this.uniformNoise) {
-          for (
-            let i = 0;
-            i <
-            Math.max(
-              initialSizeMultipliersX.length,
-              initialSizeMultipliersY.length
-            );
-            i++
-          ) {
+          const countTill = Math.max( initialSizeMultipliersY !=null ? initialSizeMultipliersY.length : 0, initialSizeMultipliersX.length )
+          for ( let i = 0; i < countTill; i++ ) {
             randoms[i] = Math.random()
           }
         }
