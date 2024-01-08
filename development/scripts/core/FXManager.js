@@ -50,7 +50,7 @@ class FXManager {
       this.runtime = runtime - this.totalDocumentClosedRuntime;
       const deltaTime = this.runtime - this.lastTime;
       this.currentFPS = 1000 / deltaTime;
-      this.emitterManager.act(deltaTime)
+      this.emitterManager.act(deltaTime);
     }
     this.lastTime = this.runtime;
   }
