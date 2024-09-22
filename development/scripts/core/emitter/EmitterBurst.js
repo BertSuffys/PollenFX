@@ -60,7 +60,6 @@ class EmitterBurst extends Emitter {
       let particle;
       /* Recycle ? */
       if (super.particleManager.canRecycle()) {
-       // console.log('Recycle: burst')
         particle = super.particleManager.recycle().reset(newParticleLifetime)  
         particle.showCSS(super.emitterBox)                // re-show the HTML element
       }

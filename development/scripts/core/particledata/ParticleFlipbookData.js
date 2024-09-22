@@ -24,7 +24,6 @@ class ParticleFlipbookData extends ParticleImageData {
         this.frameHeight = super.imgHeight / frameCountY;
         this.particleWidth = super.imgWidth;
         this.particleHeight = super.imgHeight;
-       // console.log( "shobec ",super.imgWidth, super.imgHeight, this.frameWidth, this.frameHeight)
       })
 
       this.startFrame = startFrame
@@ -84,7 +83,6 @@ class ParticleFlipbookData extends ParticleImageData {
 
 
     static createDefault() {
-      console.log("heypa")
       return new ParticleFlipbookData(
         1,
         1,

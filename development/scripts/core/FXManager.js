@@ -20,11 +20,15 @@ class FXManager {
 
 
 
-  constructor(allowDOMOverflow = false) {
+  constructor(allowDOMOverflow = false, debug = null) {
     /* emitters can be permanently active or temporarily active emitters, so always hybrid */
     this.emitterManager = new FXItemHybridLifeManager(1)
     this.documentOpened = !document.hidden
     this.setDocumentOpenHideHandler()
+    /* Debug settable from FXManager */
+    if(debug == true || debug == false){
+      FXManager.devConfig.DEBUG = debug;
+    }
     /* Allow overflow out of the whole document or allow scrollbar */
     document.body.style.overflow = allowDOMOverflow === true ? "auto" : 'hidden';
   }

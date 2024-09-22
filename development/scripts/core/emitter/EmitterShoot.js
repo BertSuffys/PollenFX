@@ -45,7 +45,6 @@ class EmitterShoot extends Emitter {
     let particle;
     // Recycled particle from the inactive pool
     if (super.particleManager.canRecycle()) {
-     // console.log('Recycle: shoot')
       particle = super.particleManager.recycle().reset(newParticleLifetime)
       particle.showCSS(super.emitterBox)                // re-show the HTML element
     }

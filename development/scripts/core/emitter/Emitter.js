@@ -74,6 +74,7 @@ class Emitter extends FXItem {
     let emitterContainer;
 
     let anchor
+    let computedStyles;
     if(this.emitterOrigin.anchorElement != null){
       /* Valid anchor element? */
       const invalidAnchor = Emitter.unstableAnchorTypes.includes(this.emitterOrigin.anchorElement.tagName.toLowerCase());
@@ -81,6 +82,7 @@ class Emitter extends FXItem {
         /* Wrapper element already made? */
         if(this.emitterOrigin.anchorElement.parentNode.classList.contains(PollenFXClasses.EMITTER_CONTAINER_WRAPPER_CLASS)){
           anchor = this.emitterOrigin.anchorElement.parentNode
+          computedStyles = window.getComputedStyle(anchor);
         }else{
           anchor = this.emitterOrigin.anchorElement;
           var anchorParent = document.createElement('div');
@@ -89,7 +91,7 @@ class Emitter extends FXItem {
           anchorParent.appendChild(anchor);
           anchorParent.classList.add(PollenFXClasses.EMITTER_CONTAINER_WRAPPER_CLASS);
           /* Modify styling */
-          var computedStyles = window.getComputedStyle(anchor);
+          computedStyles = window.getComputedStyle(anchor);
           anchorParent.style.margin = computedStyles.margin;
           anchorParent.style.padding = computedStyles.padding;
           anchor.style.margin = '0';
@@ -101,9 +103,11 @@ class Emitter extends FXItem {
       }else{
         // valid anchor
         anchor = this.emitterOrigin.anchorElement
+        computedStyles = window.getComputedStyle(anchor);
       }
     }else{
       anchor = document.body
+      computedStyles = window.getComputedStyle(anchor);
     }
 
     // Create container
@@ -121,6 +125,9 @@ class Emitter extends FXItem {
     emitterContainer.style.top = "0px";                          // make larger to see where it is positioned
     emitterContainer.style.left = "0px";                         // make larger to see where it is positioned
     emitterContainer.style.position = "relative";                // been playing around with this relative/absolute item. uncertain
+    if (computedStyles.display == 'flex') {
+      emitterContainer.style.alignSelf = 'start';
+    }
     if (FXManager.devConfig.DEBUG == true) {
       emitterContainer.style.backgroundColor = "red";
     }

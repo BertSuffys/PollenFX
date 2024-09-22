@@ -49,7 +49,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
   
       const scalarX = PollenMath.lerp( this.sizeMultipliersX[xFromIndex], this.sizeMultipliersX[xToIndex], xLocalProgress );
       const scalarY = PollenMath.lerp( this.sizeMultipliersY[yFromIndex], this.sizeMultipliersY[yToIndex], yLocalProgress );
-  
+ 
       const newWidth = this.initialWidth * scalarX;
       const newHeight = this.initialHeight * scalarY;
   

@@ -59,14 +59,8 @@ class ParticleColorfilterData extends ParticleData {
 
 
   getCSS() {
-   // console.log(`filter: ${this.helperStringCSS} saturate(${this.saturation}) contrast(${this.contrast}) brightness(${this.brightness}%) hue-rotate(${this.hueRotate}deg);`)
     return `filter: ${this.helperStringCSS} saturate(${this.saturation}) contrast(${this.contrast}) brightness(${this.brightness}%) hue-rotate(${this.hueRotate}deg);`
-
   }
-
-
-
-
 
   /**
    * Sets the hue-rotation to the required value for sepia to be rotated towards the provided color.
@@ -75,8 +69,6 @@ class ParticleColorfilterData extends ParticleData {
     hsb = hsb == null? colorTarget.getHSB() : hsb;
     return hsb[0] - Color.SEPIA_HUE + offset;
   }
-
-
 
   reset() {
     if (this.color != null) {

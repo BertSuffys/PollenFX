@@ -9,6 +9,9 @@
   ----- export documentation to pdf ----- 
 -> In the browser open the html in a tab. press ctrl+p, alter destination to 'Save as pdf', optionally alter the properties, save.
 
+  ----- Known bugs ----- 
+1. When the particlelifetime is set to -1, and in a behaviortype the duration is set to -1, there is no way to know over which time the behavior is going to play out.
+   In case of a particlellifetime of -1, this behavior duration must be provided. Solve by throwing error.
 
   ----- Developer notes----- 
 1. An FXItem, when it dies, also kills all FXItem children. For example a dying emitter, first kills it particle children. 

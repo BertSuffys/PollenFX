@@ -176,13 +176,15 @@
             active and a one time.
           </p>
 
-
           <span class="parameter">* allowDOMOverflow (optional): </span>Defines whether particles will be hidden upon overflowing
           the body, or whether scrolling will be enabled. If for some reason one would need
           two FXManager objects, the last FXManager object created will define which allowDOMOverflow value will take
           action. Default = false which indicates that particles overflowing the body will not be visible.<br>
           </p>
-
+          <span class="parameter">* debug (optional): </span>When set to true, this will set FXManager.devConfig.DEBUG to true, in a similar manner as one would statically
+          set the variable. Beware that for multiple FXManagers, the field will be set to the value that the latest created FXManager picked, which was not null. Default = null and 
+          means that no true nor false will be set. It will be ignored.<br>
+          </p>
 
         </div>
 
