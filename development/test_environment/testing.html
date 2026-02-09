@@ -14,13 +14,11 @@
   <main>
     
     <!-- Clouds -->
-    <div id="cloudWrapper">
-      
-    </div>
+    <div id="core"></div>
 
   </main>
 
-
+  <script src="../scripts/core/util/FXUtil.js"></script>
   <script src="../scripts/core/FXItem.js"></script>
 
   <script src="../scripts/core/emitter/Emitter.js"></script>
@@ -66,7 +64,8 @@
   <script src="../scripts/core/util/PollenMath.js"></script>
   <script src="../scripts/core/util/Color.js"></script>
   <script src="../scripts/core/util/ColorUtil.js"></script>
-  <script src="../scripts/core/util/Config.js"></script>
+  <script src="../scripts/core/util/FXConfig.js"></script>
+  <script src="../scripts/core/util/FXDom.js"></script>
   <script src="../scripts/core/util/PriorityQueue.js"></script>
 
   <script src="../scripts/core/FXManager.js"></script>
@@ -87,12 +86,14 @@
   }
 
 
-  #cloudWrapper{
-    width: 300px;
-    height: 300px;
-    margin-top: calc(10vh );
-    margin-left: calc(50vw - 200px);
-    
+  #core{
+    width: 40px;
+    height: 40px;
+    margin-top: calc(50vh - 20px);
+    margin-left: calc(50vw - 20px);
+    background-color: rgb(116, 221, 226);
+    border-radius: 30px;
+    border: 2px solid blue;
   }
 
 

@@ -1,65 +1,58 @@
-
-
 class ParticleCustomCssData extends ParticleData {
 
-  _customCssObject;  // string of multiple css stylelines
-  _minZIndex;        // lowest ZIndex value possible
-  _maxZIndex;        // lowest ZIndex value possible
-  _zIndex;           // final zIndex
+  /* FIELDS */
+  customCssObject;
+  minZIndex = 2001;
+  maxZIndex = 2001;
+  zIndex = 2001;
 
-  constructor(customCssObject, minZIndex=2001, maxZIndex=2001) {
-    super("customCSS")
+
+
+  /* CONSTRUCTOR */
+  constructor(customCssObject) {
+    super("customCSS");
     this.customCssObject = customCssObject;
+  }
+
+
+
+  /* FLUENT */
+  zIndex(zIndex) {
+    this.minZIndex = zIndex;
+    this.maxZIndex = zIndex;
+    return this;
+  }
+  
+  zIndexRange(minZIndex = 2001, maxZIndex = 2001) {
     this.minZIndex = minZIndex;
     this.maxZIndex = maxZIndex;
-    this.zIndex = PollenMath.randomBetween(minZIndex, maxZIndex, false);
+    return this;
   }
 
+  reset() {
+    return this;
+  }
+
+  build() {
+    this.zIndex = PollenMath.randomBetween(this.minZIndex, this.maxZIndex, false);
+    return this;
+  }
+
+
+
+  /* METHODS */
   getCSS() {
-    return `${this.customCssObject}z-index:${this.zIndex}!important;`
+    return `${this.customCssObject}z-index:${this.zIndex}!important;`;
   }
-
-  reset() { }
 
   static createDefault() {
-    return new ParticleCustomCssData("background-color:red;")
+    return new ParticleCustomCssData("background-color:red;");
   }
 
   createNew(copy) {
     if (copy) {
-      return this
+      return this;
     }
-    return new ParticleCustomCssData(this.customCssObject, this.minZIndex, this.maxZIndex);
-  }
-
-  get customCssObject() {
-    return this._customCssObject
-  }
-  set customCssObject(value) {
-    this._customCssObject = value
-  }
-
-
-  get minZIndex() {
-    return this._minZIndex
-  }
-  set minZIndex(value) {
-    this._minZIndex = value
-  }
-
-
-  get maxZIndex() {
-    return this._maxZIndex
-  }
-  set maxZIndex(value) {
-    this._maxZIndex = value
-  }
-
-
-  get zIndex() {
-    return this._zIndex
-  }
-  set zIndex(value) {
-    this._zIndex = value
+    return new ParticleCustomCssData(this.customCssObject).zIndexRange(this.minZIndex, this.maxZIndex);
   }
 }

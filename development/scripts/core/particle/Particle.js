@@ -1,4 +1,4 @@
-class Particle extends FXItem{
+class Particle extends FXItem {
 
   /* Parameters */
   _dataManager;
@@ -12,7 +12,6 @@ class Particle extends FXItem{
     super(Math.max(0, lifetime));
     this.dataManager = new ParticleDataManager();
     this.behaviorManager = new ParticleBehaviorManager();
-
   }
 
       
@@ -32,7 +31,7 @@ class Particle extends FXItem{
    * Creates the html element representing the particle and attaches it to the emitterBox
    */
   createParticleBox(emitterBox) {
-    if (emitterBox != null && this.particleBox == null) {
+    if (emitterBox != null && !this.particleBox) {
       this.emitterBox = emitterBox;
       this.particleBox = document.createElement('div');                            // create
       this.particleBox.classList.add(PollenFXClasses.PARTICLE_BOX_CLASS);           // add class
@@ -100,10 +99,7 @@ class Particle extends FXItem{
     this.behaviorManager.enableBehavior(type)
   }
 
-  /**
-  * Particle FXItems do not carry FXItems as a child -> DO nothing
-  */
-  notifyDead(){
+  die(){
     this.hideCSS()
   }
 

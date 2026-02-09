@@ -34,6 +34,10 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     }
   
   
+      build() {
+        // TODO
+    }
+
     checkBehaviorDeath(imageShift, particle) {
       this.flipCount += imageShift
       if (this.flipCount + 1 > this.endingFrameCount) {

@@ -1,111 +1,73 @@
 class FXItem {
 
+    /* PARAMETERS */
+    spawnTime;              // Moment/date (in ms) when spawning
+    actTime;                // Time (in ms) something is alive for
+    lifeTime;               // Time (in ms) something should in total be alive for
+    liveTime;               // spawnTime + actTime, in essence.
+    fxItemId;               // Unique identifier
 
-    _spawnTime;              // Moment/date (in ms) when spawning
-    _actTime;                // Time (in ms) something is alive for
-    _lifeTime;               // Time (in ms) something should in total be alive for
-    _liveTime;               // spawnTime + actTime, in essence.
-    _fxItemId;               // Unique identifier
 
 
-    /**
-     * Constructor
-     */
+    /* CONSTRUCTOR */
     constructor(lifeTime) {
-        this.lifeTime = lifeTime;
-        this.spawnTime = Date.now()
+        this.setLifetime(lifeTime);
+        this.spawnTime = Date.now();
         this.liveTime = this.spawnTime;
         this.actTime = 0;
     }
 
-    /**
-     * Core FXItem Logic
-     */
+
+
+    /* METHODS */
     act(deltaTime) {
         this.actTime += deltaTime;
         this.liveTime += deltaTime;
     }
 
-    /**
-    * Checks whether an FXItem has come to the end of its life
-    */
     isDead() {
         return (this.actTime >= this.lifeTime);
     }
 
     reset(lifeTime) {
         this.lifeTime = lifeTime;
-        this.spawnTime = Date.now()
+        this.spawnTime = Date.now();
         this.liveTime = this.spawnTime;
-        this.actTime = 0
+        this.actTime = 0;
     }
 
-    /**
-     * When an FXItem dies, it might have to kill underlying child FX Items if neccesairy. This method is considered abstract and must be implemented
-     */
-    notifyDead() {
-        pollenFXError("The notifyDead method is considered abstract and was not implemented by an FXItem subclass.");
+    isPermanent() {
+        return this.lifeTime == -1;
     }
 
-
+    die() {
+        FXUtil.pollenFXError("The die method is considered abstract and was not implemented by an FXItem subclass.");
+    }
 
     hideCSS() {
-        pollenFXError("The hideCSS method is considered abstract and was not implemented by an FXItem subclass.");
+        FXUtil.pollenFXError("The hideCSS method is considered abstract and was not implemented by an FXItem subclass.");
     }
-
 
     showCSS() {
-        pollenFXError("The showCSS method is considered abstract and was not implemented by an FXItem subclass.");
+        FXUtil.pollenFXError("The showCSS method is considered abstract and was not implemented by an FXItem subclass.");
     }
-
 
     getClassName() {
-        pollenFXError("The getClassName method is considered abstract and was not implemented by an FXItem subclass.");
+        FXUtil.pollenFXError("The getClassName method is considered abstract and was not implemented by an FXItem subclass.");
     }
 
-
-
-    get liveTime() {
-        return this._liveTime;
+    /* FLUENT */
+    withId(id){
+        if(FXUtil.valid(id)){
+            this.fxItemId = id;
+        }else{
+            FXUtil.pollenFXError("An invalid fxItemId was provided in the withId() method.");
+        }
+        return this;
     }
 
-    set liveTime(value) {
-        this._liveTime = value;
+    /* GETTERS AND SETTERS */
+    setLifetime(lifeTime){
+        this.lifeTime = lifeTime ?? -1;
     }
-
-    get lifeTime() {
-        return this._lifeTime;
-    }
-
-    set lifeTime(value) {
-        this._lifeTime = value;
-    }
-
-    get FXItemId() {
-        return this._fxItemId;
-    }
-
-    set FXItemId(value) {
-        this._fxItemId = value;
-    }
-
-
-    get spawnTime() {
-        return this._spawnTime;
-    }
-
-    set spawnTime(value) {
-        this._spawnTime = value
-    }
-
-
-    get actTime() {
-        return this._actTime;
-    }
-
-    set actTime(value) {
-        this._actTime = value
-    }
-
-
 }

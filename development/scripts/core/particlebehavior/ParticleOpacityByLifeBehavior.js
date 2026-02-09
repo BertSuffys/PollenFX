@@ -35,6 +35,10 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
       return new ParticleOpacityByLifeBehavior([0, 1], -1, -1)
     }
   
+      build() {
+        // TODO
+    }
+
   
     ensureDependencies(particleDataManager, particleBehaviorManager) {
       this.particleOpacityData = particleDataManager.ensureData("opacity")

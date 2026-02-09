@@ -17,7 +17,7 @@ function getEmitter() {
     
     /* Anchor, origin and emitter */
     let anchor = document.getElementById("my_element");
-    let origin = new CircularEmitterOrigin(50, 0, 100, 20, -1, -1, true, anchor);
+    let origin = new CircularEmitterOrigin(50, 0, 100, 100, -1, -1, true, anchor);
     let emitter = new EmitterShoot(origin, 400, 2000, 700, 1000, 2);
 
     /* Data */

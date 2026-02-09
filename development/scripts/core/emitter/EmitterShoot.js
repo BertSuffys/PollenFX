@@ -1,81 +1,94 @@
 class EmitterShoot extends Emitter {
+  /* FIELDS */
+  spawnIntervalTime; // amount of time between each particle
 
-
-  /* Constructor */
-  constructor(emitterOrigin, particleCount, emitterDuration, particleLifetime, delay = -1, particleLifetimeNoise = -1, spawnIntervalTime = 500) {
-    super(emitterDuration < 0 ? 1 : particleCount, emitterDuration, delay, emitterOrigin, particleLifetime, particleLifetimeNoise)
-    if (super.loop) {
-      this.spawnIntervalTime = spawnIntervalTime
-    } else {
-      this.spawnIntervalTime = emitterDuration / particleCount
-    }
-    this.timeSinceLastParticle = 0
+  /* CONSTRUCTOR */
+  constructor(emitterOrigin) {
+    super(emitterOrigin);
   }
 
+  /* FLUENT */
+  build() {
+    super.build();
+    return this;
+  }
 
-  /**
-   * Core logic loop of the shoot emitter
-   */
+  finite(particleCount, emitterDuration, particleLifetime, particleLifetimeNoise = -1) {
+    super.initFinite(particleCount, emitterDuration, particleLifetime, particleLifetimeNoise);
+    this.spawnIntervalTime = this.lifeTime / this.particleCount;
+    return this;
+  }
+
+  infinite(spawnIntervalTime, particleLifetime, particleLifetimeNoise = -1) {
+    super.initInfinite(particleLifetime, particleLifetimeNoise);
+    this.spawnIntervalTime = spawnIntervalTime;
+    return this;
+  }
+
+  /* METHODS */
   act(deltatime) {
     // Spawn logic
-    if (super.active) {
-      let spawnCount = (deltatime + this.cutOff) / this.spawnIntervalTime
-      this.cutOff = (spawnCount % 1) * this.spawnIntervalTime
-      spawnCount = Math.trunc(spawnCount)
-      spawnCount = Math.min(spawnCount, super.particleCount - super.spawnedCount)
+    if (this.active) {
+      let spawnCount = (deltatime + this.cutOff) / this.spawnIntervalTime;
+      this.cutOff = (spawnCount % 1) * this.spawnIntervalTime;
+      spawnCount = Math.trunc(spawnCount);
+      const maxSpawnCount = this.loop ? Infinity : this.particleCount - this.spawnedCount;
+      spawnCount = Math.min(spawnCount, maxSpawnCount);
       for (let i = 0; i < spawnCount; i++) {
-        this.spawn()
-        this.timeSinceLastParticle = this.timeSinceLastParticle % this.spawnIntervalTime;
+        this.spawn();
       }
     }
-    // in case of delay: check when to begin
-    else if (super.actTime > super.delay) {
-        super.active = true
-    }
-    super.act(deltatime)
+    super.act(deltatime);
   }
 
-
-  /**
-   * Spawns a new particle
-   */
   spawn() {
-    this.spawnedCount += super.spawnedCountAddend
-    let newParticleLifetime = super.generateNextParticleLifetime()
+    this.spawnedCount++;
+    let newParticleLifetime = super.generateNextParticleLifetime();
     let particle;
     // Recycled particle from the inactive pool
-    if (super.particleManager.canRecycle()) {
-      particle = super.particleManager.recycle().reset(newParticleLifetime)
-      particle.showCSS(super.emitterBox)                // re-show the HTML element
+    if (this.particleManager.canRecycle()) {
+      particle = this.particleManager.recycle().reset(newParticleLifetime);
+      particle.showCSS(this.emitterBox); // re-show the HTML element
     }
     // Newly created particle
     else {
-      particle = new Particle(newParticleLifetime)
-      for (let [key, value] of super.particleData) {
-        particle.addParticleData(value.createNew(false))
+      particle = new Particle(newParticleLifetime);
+      for (let [key, value] of this.particleData) {
+        particle.addParticleData(value.createNew(false).build());
       }
-      for (let [key, value] of super.particleBehavior) {
-        particle.addParticleBehavior(value.createNew(false))
+      for (let [key, value] of this.particleBehavior) {
+        particle.addParticleBehavior(value.createNew(false).build());
       }
     }
-    super.particleManager.activeFXItemPool.enqueue(particle)
-    particle.createParticleBox(super.emitterBox);
+    this.particleManager.activeFXItemPool.enqueue(particle);
+    particle.createParticleBox(this.emitterBox);
   }
 
+  getAverigeAliveParticleCount() {
+    if (!this.spawnIntervalTime || this.particleLifetime <= 0) return 0;
 
+    let avgLifetime = this.particleLifetime;
 
+    // Compute average lifetime considering noise
+    if (this.particleLifetimeNoise > 0) {
+      const min = this.particleLifetime / (1 + this.particleLifetimeNoise);
+      const max = this.particleLifetime + (this.particleLifetimeNoise / 2) * this.particleLifetime;
+      avgLifetime = (min + max) / 2;
+    }
 
-  get spawnIntervalTime() {
-    return this._spawnIntervalTime
+    // Compute average alive for continuous spawning
+    let avgAlive = Math.round(avgLifetime / this.spawnIntervalTime);
+
+    // Cap for finite emitters
+    if (!this.loop) {
+      avgAlive = Math.min(avgAlive, this.particleCount - this.spawnedCount);
+    }
+
+    return avgAlive;
   }
-  set spawnIntervalTime(value) {
-    this._spawnIntervalTime = value
-  }
-  get timeSinceLastParticle() {
-    return this._timeSinceLastParticle
-  }
-  set timeSinceLastParticle(value) {
-    this._timeSinceLastParticle = value
+
+  getCurrentAliveParticleCount() {
+    // todo
   }
 
 }

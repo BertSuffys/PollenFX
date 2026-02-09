@@ -1,173 +1,126 @@
 class EmitterOrigin {
+  /* FIELDS */
+  // position
+  originalPosX;
+  originalPosY;
+  posX;
+  posY;
+  posXNoise = -1;
+  posYNoise = -1;
+  // overflow from container
+  overflow = true;
+  // anchor as container
+  anchorElement = null;
+  // origin metric system
+  originUnitWidth = PositionUnit.PIXEL;
+  originUnitHeight = PositionUnit.PIXEL;
+  originUnitPosX = PositionUnit.PIXEL;
+  originUnitPosY = PositionUnit.PIXEL;
+  // container scaling
+  containerWidth = 100;
+  containerHeight = 100;
+  containerUnitWidth = PositionUnit.PERCENTAGE;
+  containerUnitHeight = PositionUnit.PERCENTAGE;
+  // container offset
+  top = 0;
+  left = 0;
+  containerUnitPosX = PositionUnit.PERCENTAGE;
+  containerUnitPosY = PositionUnit.PERCENTAGE;
+  // emitterbox
+  mimicShape = false;         // whether the emitterBox mimics shape or transform influencing properties from the anchorElement
+  includeMargin = false;      // whether the emitterBox' width & height should also take into account the anchorElement's margin
+  includePadding = true;      // whether the emitterBox' width & height should also take into account the anchorElement's padding
+  includeBorder = true;       // whether the emitterBox' width & height should also take into account the anchorElement's margin
 
+  /* CONSTRUCTOR */
+  constructor(posX, posY) {
+    this.originalPosX = Math.round(posX);
+    this.originalPosY = Math.round(posY);
+  }
 
-   /* Fields */
-  _includeMargin;    // whether the emitterBox' width & height should also take into account the anchorElement's margin
-  _includePadding;   // whether the emitterBox' width & height should also take into account the anchorElement's padding
-  _includeBorder;    // whether the emitterBox' width & height should also take into account the anchorElement's margin
+  /* FLUENT */
+  withDomProperties(includeMargin, includePadding, includeBorder) {
+    this.includeMargin = includeMargin;
+    this.includePadding = includePadding;
+    this.includeBorder = includeBorder;
+    return this;
+  }
 
+  withMimicShape(mimicShape = true) {
+    this.mimicShape = mimicShape; // todo
+    return this;
+  }
 
-  /* Constructor */
-    constructor(posX, posY, posXNoise = -1, posYNoise = -1,overflow=true, anchorElement = null, containerUnitWidth = PositionUnit.PERCENTAGE, containerUnitHeight = PositionUnit.PERCENTAGE , containerWidth = 100, containerHeight = 100, positionUnitWidth = PositionUnit.PIXEL, positionUnitHeight = PositionUnit.PIXEL, left = 0, top = 0, includeMargin = false, includePadding = true, includeBorder = true) {
-      this.originalPosX = Math.round(posX);
-      this.originalPosY = Math.round(posY);
-      this.overflow = overflow;
-      this.posXNoise = posXNoise;
-      this.posYNoise = posYNoise;
-      this.anchorElement = anchorElement;
-      this.containerWidth = containerWidth;
-      this.containerHeight = containerHeight;
-      this.containerUnitWidth = containerUnitWidth;
-      this.containerUnitHeight = containerUnitHeight;
-      this.top = (top == null ? 0 : top);
-      this.left = (left == null ? 0 : left);
-      this.positionUnitWidth = positionUnitWidth;
-      this.positionUnitHeight = positionUnitHeight;
-      this.includeMargin = includeMargin;
-      this.includePadding = includePadding;
-      this.includeBorder = includeBorder;
-      this.initializePosition();
-    }
-  
-  
-    initializePosition() {
-      if (this.posXNoise > 0) {
-        this.posX =
-          this.originalPosX +
-          (this.posXNoise / -2 + this.posXNoise * Math.random())
-      } else {
-        this.posX = this.originalPosX
-      }
-      if (this.posYNoise > 0) {
-        this.posY =
-          this.originalPosY +
-          (this.posYNoise / -2 + this.posYNoise * Math.random())
-      } else {
-        this.posY = this.originalPosY
-      }
-    }
-  
+  withContainerProperties(
+    containerWidth,
+    containerHeight,
+    left,
+    top,
+    containerUnitWidth = PositionUnit.PERCENTAGE,
+    containerUnitHeight = PositionUnit.PERCENTAGE,
+    containerUnitPosX = PositionUnit.PERCENTAGE,
+    containerUnitPosY = PositionUnit.PERCENTAGE,
+  ) {
+    this.containerWidth = containerWidth ?? 100;
+    this.containerHeight = containerHeight ?? 100;
+    this.containerUnitWidth = containerUnitWidth ?? PositionUnit.PERCENTAGE;
+    this.containerUnitHeight = containerUnitHeight ?? PositionUnit.PERCENTAGE;
+    this.top = top == null ? 0 : top;
+    this.left = left == null ? 0 : left;
+    this.containerUnitPosX = containerUnitPosX ?? PositionUnit.PERCENTAGE;
+    this.containerUnitPosY = containerUnitPosY ?? PositionUnit.PERCENTAGE;
+    return this;
+  }
 
-    get includeMargin() {
-      return this._includeMargin
-    }
-    set includeMargin(value) {
-      this._includeMargin = value
-    }
-    get includePadding() {
-      return this._includePadding
-    }
-    set includePadding(value) {
-      this._includePadding = value
-    }
-    get includeBorder() {
-      return this._includeBorder
-    }
-    set includeBorder(value) {
-      this._includeBorder = value
-    }
-    get containerWidth() {
-      return this._containerWidth
-    }
-    set containerWidth(value) {
-      this._containerWidth = value
-    }
-    get containerHeight() {
-      return this._containerHeight
-    }
-    set containerHeight(value) {
-      this._containerHeight = value
-    }
-    get top() {
-      return this._top
-    }
-    set top(value) {
-      this._top = value
-    }
-    get left() {
-      return this._left
-    }
-    set left(value) {
-      this._left = value
-    }
-    get posX() {
-      return this._posX
-    }
-    set posX(value) {
-      this._posX = value
-    }
-    get posY() {
-      return this._posY
-    }
-    set posY(value) {
-      this._posY = value
-    }
-    get posYNoise() {
-      return this._posYNoise
-    }
-    set posYNoise(value) {
-      this._posYNoise = value
-    }
-    get posXNoise() {
-      return this._posXNoise
-    }
-    set posXNoise(value) {
-      this._posXNoise = value
-    }
-    get originalPosY() {
-      return this._originalPosY
-    }
-    set originalPosY(value) {
-      this._originalPosY = value
-    }
-    get originalPosX() {
-      return this._originalPosX
-    }
-    set originalPosX(value) {
-      this._originalPosX = value
-    }
+  withOriginProperties(originUnitWidth = PositionUnit.PIXEL, originUnitHeight = PositionUnit.PIXEL, originUnitPosX = PositionUnit.PIXEL, originUnitPosY = PositionUnit.PIXEL) {
+    this.originUnitWidth = originUnitWidth ?? PositionUnit.PIXEL;
+    this.originUnitHeight = originUnitHeight ?? PositionUnit.PIXEL;
+    this.originUnitPosX = originUnitPosX ?? PositionUnit.PIXEL;
+    this.originUnitPosY = originUnitPosY ?? PositionUnit.PIXEL;
+    return this;
+  }
 
-    get containerUnitHeight() {
-      return this._containerUnitHeight;
-    }
-    set containerUnitHeight(value) {
-      this._containerUnitHeight = value;
-    }
-    get containerUnitWidth() {
-      return this._containerUnitWidth;
-    }
-    set containerUnitWidth(value) {
-      this._containerUnitWidth = value;
-    }
+  withPositionNoise(posXNoise) {
+    this.posXNoise = posXNoise;
+    this.posYNoise = posYNoise;
+    return this;
+  }
 
-    get overflow() {
-      return this._overflow;
-    }
-    set overflow(value) {
-      this._overflow = value;
-    }
+  withOverflow(overflow) {
+    this.overflow = overflow;
+    return this;
+  }
 
-    get positionUnitWidth() {
-      return this._positionUnitWidth;
+  withAnchor(anchorElement) {
+    this.setAnchorElement(anchorElement);
+    return this;
+  }
+
+  build() {
+    this.initializePosition();
+    return this;
+  }
+
+  /* METHODS */
+  initializePosition() {
+    if (this.posXNoise > 0) {
+      this.posX = this.originalPosX + (this.posXNoise / -2 + this.posXNoise * Math.random());
+    } else {
+      this.posX = this.originalPosX;
     }
-    set positionUnitWidth(value) {
-      this._positionUnitWidth = value;
-    }
-    get positionUnitHeight() {
-      return this._positionUnitHeight;
-    }
-    set positionUnitHeight(value) {
-      this._positionUnitHeight = value;
-    }
-    get anchorElement() {
-      return this._anchorElement;
-    }
-    set anchorElement(value) {
-      if (value == null || value instanceof HTMLElement) {
-        this._anchorElement = value;
-      } else {
-        pollenFXError("The provided anchorelement must be of type HTMLElement!");
-      }
+    if (this.posYNoise > 0) {
+      this.posY = this.originalPosY + (this.posYNoise / -2 + this.posYNoise * Math.random());
+    } else {
+      this.posY = this.originalPosY;
     }
   }
-  
+
+  /* GETTERS AND SETTERS */
+  setAnchorElement(value) {
+    if (value == null || value instanceof HTMLElement) {
+      this.anchorElement = value;
+    } else {
+      FXUtil.pollenFXError("The provided anchorelement must be of type HTMLElement!");
+    }
+  }
+}

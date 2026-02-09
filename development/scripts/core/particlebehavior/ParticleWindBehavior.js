@@ -24,6 +24,11 @@ class ParticleWindBehavior extends ParticleBehavior {
        
     }
 
+    
+      build() {
+        // TODO
+    }
+
 
     act(particle, actTime, deltaTime) { 
       const fullRangeProgress = (actTime / this.cycleDuration) * (this.directionsX.length - 1)

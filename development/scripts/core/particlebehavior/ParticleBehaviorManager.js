@@ -12,6 +12,10 @@ class ParticleBehaviorManager {
     }
 
 
+      build() {
+        // TODO
+    }
+
     reset(particle) {
         this.disabledBehaviors.forEach((disabledBehavior, type) => {
             this.particleBehavior.set(type, disabledBehavior)
@@ -33,7 +37,7 @@ class ParticleBehaviorManager {
 
     ensureBehavior(key) {
         let particleBehavior = this.particleBehavior.get(key)
-        if (!valid(particleBehavior)) {
+        if (!FXUtil.valid(particleBehavior)) {
             return this.createDefaultBehavior(key)
         }
     }

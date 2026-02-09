@@ -1,3 +1,9 @@
+  ----- conventions ----- 
+-> Do not use get() or set() members. Always write proper getMethod() getters and setters.
+-> Never acces properties. Always use the getters and setters. 
+-> Only access members or properties that are documented.
+-> parent properties must be accessed with this., parent methods with super.
+
   ----- development folder ----- 
 -> contains the current up to date project in development state and all its sources.
 
@@ -40,14 +46,13 @@
 -> 3. Emittershoot without death will only shoot max 1 particle per (+-) 16ms cos thats the framerate. it does not calculate for faster particles.
 -> 4. An option to render the emitterOrigins.
 -> 5. Method to make, for example an infinite emitter pause,resume,stop/reset,start, .. by calling a function.
--> 6. Builder patters for making emitters,origins,data and behavior as a solution for the long unreadable constructors.
+-> 6. FLUENT API pattern for making emitters,origins,data and behavior as a solution for the long unreadable constructors.
 -> 7. When a first emitter is being created, OR perhaps an FXManager is being made, give it startdata and or behavior so that it immediately gives feedback that it works. 
       A suggestion to implement this would be on emitter level in the constructor, to add say default CSSData, DefaultData and or directionalBehavior. This will immediately make it visible.
       The emitter receives the origin so it knows where to anchor. The only problem is that an emitter must be attached to an fxManager, and the fxManager must be run. So im not yet
       sure how an emitter will be visible immediately upon creating it. But this is food for thought.
--> 8. Origin object weg proberen te halen uit default data object.
 -> 9. Emitterbehavior change to 1 behavior for all particles, with an assistent data-object for all behavior-specific data items which the behaviors currently have.
--> 10.Origin size & position of the origin are still absolute and does not use PositionUnits. This also counts for properties such as speed, size, .. of the particle.
+-> 10. Origin size & position of the origin are still absolute and does not use PositionUnits. This also counts for properties such as speed, size, .. of the particle.
       This could be a huge issue, but can be fixed by setting values based on a calculated device sizes.
 -> 11. Perhaps it could be an idea to move the config parameters & enums (found in config.js) to a better location.
 -> 12. Better design for the windbehavior's considerDefault & overrideInitialDirection fields.
@@ -55,7 +60,14 @@
 -> 14. Free github repo client for private repositories.
 -> 15. Full UML creation.
 -> 16. Better color/colorfilter/over life calculations IF POSSIBLE, or at least document better.
+-> 17. Start/stop functionality which continues/pauses the particles
+-> 18. abort functionality which completely stops all particles. destroys/ends then
+-> 19. Build functionality.
+-> 20. Print currentyAliveParticleCount functionality / average alive particle count
+-> 21. shorthands .gravity(), returning a gravitybuilder, which takes into account data and behavior, to get faster creation of objects
 
+  ----- DONE ----- 
+-> 8. Origin object weg proberen te halen uit default data object.
 
   ----- Terminology ----- 
 -> actTime = time (in ms) something is alive for

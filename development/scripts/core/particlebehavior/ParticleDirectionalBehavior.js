@@ -29,6 +29,10 @@ class ParticleDirectionalBehavior extends ParticleBehavior {
   applyParticle(particle) { }
 
 
+      build() {
+        // TODO
+    }
+
   createNew(copy) {
     if (copy) {
       return this

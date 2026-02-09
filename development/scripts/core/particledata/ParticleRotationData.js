@@ -1,46 +1,40 @@
-
 class ParticleRotationData extends ParticleData {
+  /* FIELDS */
+  rotation;
+  coneNoise;
 
-    constructor(rotation, coneNoise = -1) {
-      super("rotation")
-      if (coneNoise >= 0) {
-        this.rotation = rotation + (Math.random() * coneNoise - coneNoise / 2)
-      } else {
-        this.rotation = rotation
-      }
-      this.coneNoise = coneNoise
-    }
-  
-    getCSS() {
-      return  `transform: rotate(${this.rotation}deg);` 
-    }
-  
-    reset() {
-      return this
-    }
-  
-    createNew(copy) {
-      if (copy) {
-        return this
-      }
-      return new ParticleRotationData(this.rotation, this.coneNoise);
-    }
-  
-    static createDefault() {
-      return new ParticleRotationData(0);
-    }
-  
-    get coneNoise() {
-      return this._coneNoise
-    }
-    set coneNoise(value) {
-      this._coneNoise = value
-    }
-    get rotation() {
-      return this._rotation
-    }
-    set rotation(value) {
-      this._rotation = value
-    }
+
+  /* FIELDS */
+  constructor(rotation, coneNoise = -1) {
+    super("rotation");
+    this.rotation = coneNoise >= 0 ? rotation + (Math.random() * coneNoise - coneNoise / 2) : rotation;
+    this.coneNoise = coneNoise;
   }
-  
+
+
+  /* FLUENT */
+  build() {
+    return this;
+  }
+
+  /* METHODS */
+  getCSS() {
+    return `transform: rotate(${this.rotation}deg);`;
+  }
+
+  reset() {
+    return this;
+  }
+
+  createNew(copy) {
+    if (copy) {
+      return this;
+    }
+    return new ParticleRotationData(this.rotation, this.coneNoise);
+  }
+
+  static createDefault() {
+    return new ParticleRotationData(0);
+  }
+
+}

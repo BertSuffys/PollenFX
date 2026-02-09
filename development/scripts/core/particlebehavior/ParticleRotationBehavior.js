@@ -39,6 +39,10 @@
         this.rotationData.rotation += this.rotation;
     }
 
+      build() {
+        // TODO
+    }
+
 
     /**
      * Ensures that all data and or behaviorobjects are instantiated for this behavior type to function correctly.

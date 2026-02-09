@@ -1,18 +1,28 @@
 class ParticleBehavior {
+  /* FIELDS */
+  type;
+
 
   
-    /* CONSTRUCTOR */
-    constructor(type) {
-      this.type = type
-    }
-  
-    /* GETTERS AND SETTERS */
-    get type() {
-      return this._type
-    }
-    set type(value) {
-      this._type = value
-    }
-  
-
+  /* CONSTRUCTOR */
+  constructor(type) {
+    this.setType(type);
   }
+
+
+
+  /* METHODS */
+  build() {
+    FXUtil.pollenFXError("A concrete instance of ParticleBehavior should never be created or built.");
+  }
+
+
+
+  /* GETTERS AND SETTERS */
+  getType() {
+    return this.type;
+  }
+  setType(value) {
+    this.type = value;
+  }
+}

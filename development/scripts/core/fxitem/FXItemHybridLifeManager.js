@@ -1,65 +1,55 @@
 class FXItemHybridLifeManager extends FXItemManager {
 
-  /* Parameters */
-  _permanentlyActiveFXPool = new Array()
-  _inactiveFXItemPool = new Array()
-  _sharedActivePool = new Array()
+  /* PARAMETERS */
+  permanentlyActiveFXItemPool = new Array(); // FXItems (emitter or particle) that are always active or running
+  inactiveFXItemPool = new Array();          // FXItems (emitter or particle) that are inactive or not running
+  sharedActivePool = new Array();            // An FXItemManager manages both permanent or dying FXItems. The sharedpool contains FXItems that exist in both permanentlyActiveFXItemPool as activeFXItemPool.
 
 
-  constructor(count = -1){
-    super(count);
+
+  /* CONSTRUCTOR */
+  constructor() {
+    super();
   }
 
 
+
+  /* FLUENT */
+  build(){
+    super.build();
+    for (const fxItem of this.permanentlyActiveFXItemPool) {
+      fxItem.build();
+    }
+    return this;
+  }
+
+
+
+  /* METHODS */
   act(deltaTime) {
     super.act(deltaTime);
-    this.checkDeath()
+    this.checkDeath();
   }
 
-
-
-  addFXItem(fxItem, fxItemId = null) {
-    // Not only looping emitters are going on forever, but also those whose particles live forever
-    if (fxItem.loop || fxItem.lifeTime === -1 ) {
-      this.permanentlyActiveFXPool.push(fxItem)
-      super.fxItemCount += 1;
-      fxItem.fxItemId = (fxItemId == null || fxItemId == '') ? fxItem.getClassName()+'_'+ this.fxItemCount : fxItemId;
+  addFXItem(fxItem) {
+    super.addFXItem(fxItem);
+    if (fxItem.isPermanent()) {
+      this.permanentlyActiveFXItemPool.push(fxItem);
     } else {
-      super.addFXItem(fxItem, fxItemId)
+      this.activeFXItemPool.enqueue(fxItem);
     }
-    this.sharedActivePool.push(fxItem)
+    this.sharedActivePool.push(fxItem);
   }
 
-
-
-
-
-  /**
-* Attempts to collect and fxItem from the active pool by its provided ID
-*/
   getFxItemById(fxItemId) {
-    let foundFXItem = super.getFxItemById(fxItemId);
+    // Check the shared pool. Any active FXitem will be in there
+    let foundFXItem = this.getActiveFXItems().find((it) => it.fxItemId == fxItemId);
+    // If not found, check the inactive pool.
     if (foundFXItem == null) {
-      let newAttempt = this.permanentlyActiveFXPool.filter(it => it.fxItemID == fxItemId);
-      if (newAttempt.length == 0) {
-        foundFXItem = null
-      }
-      else {
-        return newAttempt[0];
-      }
+      foundFXItem = this.inactiveFXItemPool.find((it) => it.fxItemId == fxItemId);
     }
-    if (foundFXItem == null) {
-      let newAttempt = this.inactiveFXItemPool.filter(it => it.fxItemID == fxItemId);
-      if (newAttempt.length == 0) {
-        foundFXItem = null;
-      }
-      else {
-        return newAttempt[0];
-      }
-    }
-    return foundFXItem;
+    return foundFXItem ?? null;
   }
-
 
   getActiveFXItems() {
     return this.sharedActivePool;
@@ -67,10 +57,13 @@ class FXItemHybridLifeManager extends FXItemManager {
 
   checkDeath() {
     while (!this.activeFXItemPool.isEmpty() && this.activeFXItemPool.peek().isDead()) {
-      const deadFXItem = super.activeFXItemPool.dequeue();
-      deadFXItem.notifyDead(); // dying FXItem might have to unwind its worldly affaires
-      this.sharedActivePool.splice(this.sharedActivePool.indexOf(deadFXItem), 1);
-      this.inactiveFXItemPool.push(deadFXItem);
+      const deadFXItem = this.activeFXItemPool.dequeue();
+      deadFXItem.die();
+      const deadFXItemInded = this.sharedActivePool.indexOf(deadFXItem);
+      if (deadFXItemInded !== -1) {
+        this.sharedActivePool.splice(i, 1);
+        this.inactiveFXItemPool.push(deadFXItem);
+      }
     }
   }
 
@@ -78,50 +71,27 @@ class FXItemHybridLifeManager extends FXItemManager {
     return this.inactiveFXItemPool.length > 0;
   }
 
-
   recycle() {
-    return this.inactiveFXItemPool.shift()
+    return this.inactiveFXItemPool.shift();
   }
 
-
-  /**
-* Empties the whole of the active FXItem pool and moves to the recyclable pool
-*/
   killAllFXItems() {
+    // kill active fxitem pool
     while (!this.activeFXItemPool.isEmpty()) {
-      const deadFXItem = super.activeFXItemPool.dequeue();
-      deadFXItem.notifyDead(); // dying FXItem might have to unwind its worldly affaires
-      this.sharedActivePool.splice(this.sharedActivePool.indexOf(deadFXItem), 1);
+      const deadFXItem = this.activeFXItemPool.dequeue();
+      deadFXItem.die();
+      const i = this.sharedActivePool.indexOf(deadFXItem);
+      if (i !== -1) {
+        this.sharedActivePool.splice(i, 1);
+      }
       this.inactiveFXItemPool.push(deadFXItem);
     }
-    for (fxItem of this.permanentlyActiveFXPool) {
-      fxItem.notifyDead()                    // hide css requirement
+    // kill permanentactive fxitem pool
+    for (const fxItem of this.permanentlyActiveFXItemPool) {
+      fxItem.die();
     }
-    this.permanentlyActiveFXPool.length = 0;
-    for (fxItem of this.sharedActivePool) {
-      fxItem.notifyDead()                    // hide css requirement
-    }
+    this.permanentlyActiveFXItemPool.length = 0;
+    // empty the shared fxitem pool to get rid of floating references
     this.sharedActivePool.length = 0;
-  }
-
-
-
-  get permanentlyActiveFXPool() {
-    return this._permanentlyActiveFXPool
-  }
-  set permanentlyActiveFXPool(value) {
-    this._permanentlyActiveFXPool = value
-  }
-  get sharedActivePool() {
-    return this._sharedActivePool
-  }
-  set sharedActivePool(value) {
-    this._sharedActivePool = value
-  }
-  get inactiveFXItemPool() {
-    return this._inactiveFXItemPool
-  }
-  set inactiveFXItemPool(value) {
-    this._inactiveFXItemPool = value
   }
 }

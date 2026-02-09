@@ -1,78 +1,63 @@
 class FXItemManager {
-
-  _fxItemCount
-
-  _activeFXItemPool = new PriorityQueue((cur, next) => {
-    return (cur.lifeTime - cur.actTime) - (next.lifeTime - next.actTime)
-  })
+  /* FIELDS */
+  fxItemCount;
+  activeFXItemPool;
+  allAddedFXItems;
 
 
-  /* Constructor */
-  constructor( count = -1) {
+  /* CONSTRUCTOR */
+  constructor() {
     this.fxItemCount = 0;
+    this.allAddedFXItems = [];
+    this.activeFXItemPool = new PriorityQueue((cur, next) => {
+      return cur.lifeTime - cur.actTime - (next.lifeTime - next.actTime);
+    });
   }
 
 
+
+  /* FLUENT */
+  build() {
+    for (const fxItem of this.activeFXItemPool.collect()) {
+      fxItem.build();
+    }
+    return this;
+  }
+
+
+
+  /* METHODS */
   act(deltaTime) {
-    for(let fxItem of this.getActiveFXItems()){
+    for (let fxItem of this.getActiveFXItems()) {
       fxItem.act(deltaTime);
     }
   }
 
-
-  /**
-* Attempts to collect and fxItem from the active pool by its provided ID
-*/
   getFxItemById(fxItemId) {
-    try {
-      return this.activeFXItemPool.collect().filter(it => it.fxItemId === fxItemId)[0];
-    } catch (exception) {
-      return null;
-    }
+    return this.activeFXItemPool.collect().find((it) => it.fxItemId === fxItemId);
   }
 
-
-  addFXItem(fxItem, fxItemId = null) {
-    this.activeFXItemPool.enqueue(fxItem)
+  addFXItem(fxItem) {
+    this.allAddedFXItems.push(fxItem);
     this.fxItemCount += 1;
-    fxItem.fxItemId = (fxItemId == null || fxItemId == '') ? fxItem.getClassName() + this.fxItemCount : fxItemId;
   }
 
-  /**
-   * Empties the whole of the active FXItem pool
-   */
   killAllFXItems() {
     for (const fxItem of this.activeFXItemPool.collect()) {
-      fxItem.notifyDead()                    // hide css requirement
+      fxItem.die();
     }
-    this.activeFXItemPool.empty()
+    this.activeFXItemPool.empty();
   }
-
 
   getActiveFXItems() {
-    return this.activeFXItemPool.collect()
+    return this.activeFXItemPool.collect();
   }
-
 
   canRecycle() {
-    return false
+    return false;
   }
 
-
-
-
-  get fxItemCount() {
-    return this._fxItemCount
+  pause() {
+    //todo
   }
-  set fxItemCount(value) {
-    this._fxItemCount = value
-  }
-
-  get activeFXItemPool() {
-    return this._activeFXItemPool
-  }
-  set activeFXItemPool(value) {
-    this._activeFXItemPool = value
-  }
-
 }

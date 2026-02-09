@@ -36,6 +36,10 @@ class ParticleGravityBehavior extends ParticleBehavior {
       }
     }
   
+      build() {
+        // TODO
+    }
+
   
     createNew(copy) {
       if (copy) {

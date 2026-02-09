@@ -1,119 +1,106 @@
-
-
 class EmitterBurst extends Emitter {
 
-  /* Constructor */
-  constructor(emitterOrigin, particleCount, burstCount, emitterDuration, particleLifetime, delay = -1, particleLifetimeNoise = -1, burstIntervalTime = 500) {
-    super(particleCount, emitterDuration, delay, emitterOrigin, particleLifetime, particleLifetimeNoise)
-    this.burstCount = super.loop ? Number.MAX_VALUE : burstCount
-    this.timeSinceLastBurst = 0
-    this.burstedCount = 0
-    if (super.loop) {
-      this.burstIntervalTime = burstIntervalTime
-    } else {
-      this.burstIntervalTime = emitterDuration / Math.max(burstCount - 1, 1)
-    }
-    this.localBurstCount = 1
+  /* FIELDS */
+  burstCount;           // Amount of bursts that must occur.
+  burstIntervalTime;    // Time between bursts
+  localBurstCount;      // Number of bursts to spawn this frame
+  burstedCount;         // Total bursts emitted
+  timeSinceLastBurst;   // Accumulator for burst timing
+
+
+
+  /* CONSTRUCTOR */
+  constructor(emitterOrigin) {
+    super(emitterOrigin);
   }
 
 
-  /**
-   * Burst core act method
-   */
+
+  /* FLUENT */
+  build() {
+    super.build();
+    this.burstCount = this.loop ? Number.MAX_VALUE : this.burstCount;
+    this.timeSinceLastBurst = 0;
+    this.burstedCount = 0;
+    this.localBurstCount = 1;
+    return this;
+  }
+
+  finite(particleCount, burstCount, emitterDuration, particleLifetime, particleLifetimeNoise = -1) {
+    super.initFinite(particleCount, emitterDuration, particleLifetime, particleLifetimeNoise);
+    this.burstIntervalTime = emitterDuration / Math.max(burstCount - 1, 1);
+    return this;
+  }
+
+  infinite(particleCount, burstIntervalTime, particleLifetime, particleLifetimeNoise = -1) {
+    super.initInfinite(particleLifetime, particleLifetimeNoise, particleCount);
+    this.burstIntervalTime = burstIntervalTime;
+    return this;
+  }
+
+
+
+  /* METHODS */
   act(deltaTime) {
-
-    if (super.active) {
-
+    if (this.active) {
       for (let i = 0; i < this.localBurstCount; i++) {
-        this.burst()
-        this.timeSinceLastBurst = this.timeSinceLastBurst % this.burstIntervalTime
+        this.burst();
+        this.timeSinceLastBurst = this.timeSinceLastBurst % this.burstIntervalTime;
       }
 
       /* Calculation for potential next burst */
-      let localBurstCount = (deltaTime + this.cutOff) / this.burstIntervalTime
-      this.cutOff = (deltaTime + this.cutOff) % this.burstIntervalTime
-      this.localBurstCount = Math.min(Math.trunc(localBurstCount), this.burstCount - this.burstedCount)
+      let localBurstCount = (deltaTime + this.cutOff) / this.burstIntervalTime;
+      this.cutOff = (deltaTime + this.cutOff) % this.burstIntervalTime;
+      this.localBurstCount = Math.min(Math.trunc(localBurstCount), this.burstCount - this.burstedCount);
 
       /* Death calculation? */
-      if (super.emitterCreationTime + super.emitterLiveTime >= super.emitterCreationTime + super.lifeTime) {
-        super.getActiveParticles().length = 0
-      } else if (super.emitterLiveTime > super.delay) {
-        super.active = true
+      if (this.emitterCreationTime + this.emitterLiveTime >= this.emitterCreationTime + this.lifeTime) {
+        super.getActiveParticles().length = 0;
+      } else if (this.emitterLiveTime > this.delay) {
+        this.active = true;
       }
     }
-    // in case of delay: check when to begin
-    else if (super.actTime > super.delay) {
-      super.active = true
-    }
-    super.act(deltaTime)
+    super.act(deltaTime);
   }
 
-
-  /**
- * Spawn of another burst
- */
   burst() {
-    super.emitterOrigin.initializePosition()  /* Configure next burst position */
+    console.log("fire")
+    this.emitterOrigin.initializePosition(); /* Configure next burst position */
 
-    for (let i = 0; i < super.particleCount; i++) {
-      let newParticleLifetime = super.generateNextParticleLifetime() /* Configure next particle lifetime */
+    for (let i = 0; i < this.particleCount; i++) {
+      let newParticleLifetime = super.generateNextParticleLifetime(); /* Configure next particle lifetime */
       let particle;
       /* Recycle ? */
-      if (super.particleManager.canRecycle()) {
-        particle = super.particleManager.recycle().reset(newParticleLifetime)  
-        particle.showCSS(super.emitterBox)                // re-show the HTML element
-      }
+      if (this.particleManager.canRecycle()) {
+        particle = this.particleManager.recycle().reset(newParticleLifetime);
+        particle.showCSS(this.emitterBox); // re-show the HTML element
+      } else {
       /* New particle ? */
-      else {
-        particle = new Particle(newParticleLifetime)
-        for (let [key, value] of super.particleData) {
-          particle.addParticleData(value.createNew(false))
+        particle = new Particle(newParticleLifetime);
+        for (let [key, value] of this.particleData) {
+          particle.addParticleData(value.createNew(false).build());
         }
-        for (let [key, value] of super.particleBehavior) {
-          particle.addParticleBehavior(value.createNew(false))
+        for (let [key, value] of this.particleBehavior) {
+          particle.addParticleBehavior(value.createNew(false).build());
         }
-        particle.createParticleBox(super.emitterBox);                   // Creation of the element
+        particle.createParticleBox(this.emitterBox); // Creation of the element
       }
-      super.particleManager.activeFXItemPool.enqueue(particle)
+      this.particleManager.activeFXItemPool.enqueue(particle);
     }
-    this.burstedCount += super.spawnedCountAddend
+    this.burstedCount += this.spawnedCountAddend;
+  }
+
+  getAverigeAliveParticleCount() {
+    let maxConcurrentBursts = Math.ceil(this.particleLifetime / this.burstIntervalTime);
+    if (!this.loop) {
+      maxConcurrentBursts = Math.min(maxConcurrentBursts, this.burstCount);
+    }
+    return Math.round(maxConcurrentBursts * this.particleCount);
+  }
+
+  getCurrentAliveParticleCount(){
+    // todo
   }
 
 
-
-
-
-
-  get localBurstCount() {
-    return this._localBurstCount
-  }
-  set localBurstCount(value) {
-    this._localBurstCount = value
-  }
-  get burstCount() {
-    return this._burstCount
-  }
-  set burstCount(value) {
-    this._burstCount = value
-  }
-
-  get burstIntervalTime() {
-    return this._burstIntervalTime
-  }
-  set burstIntervalTime(value) {
-    this._burstIntervalTime = value
-  }
-
-  get timeSinceLastBurst() {
-    return this._timeSinceLastBurst
-  }
-  set timeSinceLastBurst(value) {
-    this._timeSinceLastBurst = value
-  }
-  get burstedCount() {
-    return this._burstedCount
-  }
-  set burstedCount(value) {
-    this._burstedCount = value
-  }
 }

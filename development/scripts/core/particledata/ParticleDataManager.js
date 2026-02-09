@@ -1,16 +1,20 @@
-
-
-
 class ParticleDataManager {
 
+    /* FIELDS */
+    particleData = new Map()
+    default_particle_styles = "position:absolute;"       // A default or general style always applied. Global styles might be appended externally
 
-    _particleData = new Map()
-    _default_particle_styles = "position:absolute;"       // A default or general style always applied. Global styles might be appended externally
 
-
-  
+    /* CONSTRUCTOR */
     constructor() { }
   
+
+    /* METHODS */
+    build() {
+      for (let [type, particleData] of this.particleData) {
+        particleData.build();
+      }
+    }
     getCSS() {
       let resultCSS = ""
       for (let [type, particleData] of this.particleData) {
@@ -25,22 +29,22 @@ class ParticleDataManager {
       }
     }
   
-  
     ensureData(key) {
       let particleData = this.particleData.get(key)
-      if (!valid(particleData)) {
+      if (!FXUtil.valid(particleData)) {
         return this.createDefaultData(key)
       }
       return particleData
     }
 
-    /**
-     * Add an additional global style to the data manager which applies this to all particles
-     */
     addDefaultCssStyle(style){
       this.default_particle_styles += style;
     }
   
+    addParticleData(particleData) {
+      this.particleData.set(particleData.type, particleData)
+    }
+
     createDefaultData(key) {
       let newDefaultData
   
@@ -74,25 +78,6 @@ class ParticleDataManager {
   
       this.particleData.set(key, newDefaultData)
       return newDefaultData
-    }
-  
-    addParticleData(particleData) {
-      this.particleData.set(particleData.type, particleData)
-    }
-  
-    get particleData() {
-      return this._particleData
-    }
-    set particleData(value) {
-      this._particleData = value
-    }
-
-
-    get default_particle_styles() {
-      return this._default_particle_styles
-    }
-    set default_particle_styles(value) {
-      this._default_particle_styles = value
     }
 
 

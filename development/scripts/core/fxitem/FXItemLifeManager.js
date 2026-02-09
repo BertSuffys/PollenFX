@@ -1,76 +1,61 @@
 class FXItemLifeManager extends FXItemManager {
 
-  _inactiveFXItemPool = new Array()
+  /* FIELDS */
+  inactiveFXItemPool = new Array();
 
 
-  constructor(count = -1){
-    super(count);
+
+  /* CONSTRUCTOR */
+  constructor(){
+    super();
   }
 
 
+
+  /* METHODS */
   act(deltaTime) {
-    super.act(deltaTime)
+    super.act(deltaTime);
     this.checkDeath();
   }
 
-
   canRecycle() {
-    return this.inactiveFXItemPool.length > 0
+    return this.inactiveFXItemPool.length > 0;
   }
 
+  addFXItem(fxItem) {
+    super.addFXItem(fxItem);
+    this.activeFXItemPool.enqueue(fxItem);
+  }
 
   recycle() {
     const revivedFXItem = this.inactiveFXItemPool.shift();
     revivedFXItem.showCSS();
-    return revivedFXItem
+    return revivedFXItem;
   }
 
-
-  /**
-   * Checks for to-be-dead particles in the active pool and kills them
-   */
   checkDeath() {
-    while (!super.activeFXItemPool.isEmpty() && super.activeFXItemPool.peek().isDead()) {
-      const deadFXItem = super.activeFXItemPool.dequeue();
+    while (!this.activeFXItemPool.isEmpty() && this.activeFXItemPool.peek().isDead()) {
+      const deadFXItem = this.activeFXItemPool.dequeue();
       this.inactiveFXItemPool.push(deadFXItem);
-      deadFXItem.notifyDead();
+      deadFXItem.die();
     }
   }
 
-  /**
-* Attempts to collect and fxItem from the active pool by its provided ID
-*/
   getFxItemById(fxItemId) {
     let foundFXItem = super.getFxItemById(fxItemId);
     if (foundFXItem == null) {
-      let newAttempt = this.inactiveFXItemPool.collect().filter(it => it.fxItemID == fxItemId);
-      if (newAttempt.length == 0) {
-        foundFXItem = null;
-      }
-      else {
-        return newAttempt[0];
-      }
+      foundFXItem = this.inactiveFXItemPool.find(it => it.fxItemID === fxItemId);
     }
-    return foundFXItem;
+    return foundFXItem ?? null;
   }
 
-
-  /**
-  * Empties the whole of the active FXItem pool and moves to the recyclable pool
-  */
   killAllFXItems() {
-    while (!super.activeFXItemPool.isEmpty()) {
-      const deadFXItem = super.activeFXItemPool.dequeue();
-      this.inactiveFXItemPool.push(deadFXItem);
-      deadFXItem.notifyDead();
+    const pool = this.activeFXItemPool;
+    while (!pool.isEmpty()) {
+      const fxItem = pool.dequeue();
+      fxItem.die();
+      this.inactiveFXItemPool.push(fxItem);
     }
   }
 
-
-  get inactiveFXItemPool() {
-    return this._inactiveFXItemPool
-  }
-  set inactiveFXItemPool(value) {
-    this._inactiveFXItemPool = value
-  }
 }

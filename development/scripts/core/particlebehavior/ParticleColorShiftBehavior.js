@@ -75,6 +75,10 @@ class ParticleColorShiftBehavior extends ParticleBehavior {
     }
   }
 
+      build() {
+        // TODO
+    }
+
   act(particle, actTime, deltaTime) {
     for (let [key, value] of this.shifterMap) {
 

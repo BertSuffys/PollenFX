@@ -43,6 +43,10 @@ class ParticleRotationByDirectionBehavior extends ParticleBehavior {
     }
 
 
+      build() {
+        // TODO
+    }
+
 
     createNew(copy) {
         if (copy) {

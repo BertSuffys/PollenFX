@@ -34,6 +34,10 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     }
 
 
+      build() {
+        // TODO
+    }
+
 
     act(particle, actTime, deltaTime) {
 
