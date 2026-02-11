@@ -1,102 +1,62 @@
- class ParticleRotationBehavior extends ParticleBehavior {
+class ParticleRotationBehavior extends ParticleBehavior {
 
-    /* PARAMETERS */
-     _rotation;                                  
-     _rotationNoise;                           
-     _rotationData;                           
-     _allowReverse;
+  /* FIELDS */
+  rotationData;
+  initialRotationSpeed;
+  rotationSpeed;
+  rotationNoise = -1;
+  allowReverse = true;
 
+  /* CONSTRUCTOR */
+  constructor(rotationSpeed) {
+    super("rotation");
+    this.initialRotationSpeed = rotationSpeed;
+  }
 
+  /* FLUENT */
+  build(particleDataManager, particleBehaviorManager) {
+    this.rotationData = particleDataManager.ensureData("rotation");
+    this.rotationSpeed = this.initialRotationSpeed;
+    this.adjustRotationSpeed();
+    return this;
+  }
 
+  withNoise(rotationNoise, allowReverse = true) {
+    this.rotationNoise = rotationNoise;
+    this.allowReverse = allowReverse;
+    return this;
+  }
 
-    /* CONSTRUCTOR */
-    constructor(rotation, rotationNoise = -1, allowReverse = true) {
-        super("rotation")
-        if (rotationNoise > 0) {
-            if(allowReverse){
-                rotation = PollenMath.absoluteMap(rotation, rotationNoise, Math.random())
-            }else{
-                rotation = PollenMath.relativeMap(rotation, rotationNoise, Math.random())
-            }
-        }
-        this.rotation = rotation;
-        this.rotationNoise = rotationNoise;
-        this.allowReverse = allowReverse;
+  reset() {
+    this.adjustRotationSpeed();
+    return this;
+  }
+
+  /* METHODS */
+  act(particle, actTime, deltaTime, deltaTimeSeconds) {
+    this.rotationData.rotation += this.rotationSpeed * deltaTimeSeconds;
+  }
+
+  adjustRotationSpeed(){
+    if (this.rotationNoise > 0) {
+      if (this.allowReverse) {
+        this.rotationSpeed = PollenMath.absoluteMap(this.rotationSpeed, this.rotationNoise, Math.random());
+      } else {
+        this.rotationSpeed = PollenMath.relativeMap(this.rotationSpeed, this.rotationNoise, Math.random());
+      }
     }
+  }
 
-
-    /* METHODS */
-
-    applyParticle(particle){}
-
-    reset(){}
-
-
-    /**
-     * Performs the behavior of the gravityparticlebehavior
-     */
-     act(particle, actTime, deltaTime) {
-        this.rotationData.rotation += this.rotation;
+  createNewBehavior(copy) {
+    if (copy) {
+      return this;
     }
+    return new ParticleRotationBehavior(this.initialRotationSpeed).withNoise(this.rotationNoise, this.allowReverse);
+  }
 
-      build() {
-        // TODO
-    }
+  applyParticle(particle) {}
 
-
-    /**
-     * Ensures that all data and or behaviorobjects are instantiated for this behavior type to function correctly.
-     */
-     ensureDependencies(particleDataManager , particleBehaviorManager) {
-        this.rotationData = particleDataManager.ensureData("rotation")
-    }
-
-
-    /**
-     * Gravitybehavior need not be unique for each particle, as
-     */
-    createNew(copy) {
-        if (copy) {
-            return this;
-        }
-        return new ParticleRotationBehavior(this.rotation, this.rotationNoise, this.allowReverse);
-    }
-
-
-    /**
-     * Creates a default Particlebehavior object
-     */
-     static createDefault() {
-        return new ParticleRotationBehavior(0.2, -1, true);
-    }
-
-
-
-    /* GETTERS AND SETTERS */
-
-     get allowReverse() {
-        return this._allowReverse;
-    }
-     set allowReverse(value) {
-        this._allowReverse = value;
-    }
-     get rotationNoise() {
-        return this._rotationNoise;
-    }
-     set rotationNoise(value) {
-        this._rotationNoise = value;
-    }
-     get rotation() {
-        return this._rotation;
-    }
-     set rotation(value) {
-        this._rotation = value;
-    }
-     get rotationData() {
-        return this._rotationData;
-    }
-     set rotationData(value) {
-        this._rotationData = value;
-    }
+  static createDefault() {
+    return new ParticleRotationBehavior(0.2).withNoise(-1, true);
+  }
 }
-

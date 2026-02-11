@@ -37,8 +37,8 @@ class ParticleDirectionData extends ParticleData {
 
   /* METHODS */
   calculateDirection() {
-    let alteredSpeed = speedNoise > 0 ? PollenMath.relativeMap(speed, 1 + speedNoise, Math.random()) : speed;
-    let alteredDirectionAngle = coneNoise > 0 ? directionAngle + (Math.random() * coneNoise - coneNoise / 2) : directionAngle;
+    let alteredSpeed = this.speedNoise > 0 ? PollenMath.relativeMap(this.speed, 1 + this.speedNoise, Math.random()) : this.speed;
+    let alteredDirectionAngle = this.coneNoise > 0 ? this.directionAngle + (Math.random() * this.coneNoise - this.coneNoise / 2) : this.directionAngle;
     this.directionX = PollenMath.cos(alteredDirectionAngle) * alteredSpeed;
     this.directionY = PollenMath.sin(alteredDirectionAngle) * alteredSpeed * -1;
   }
@@ -55,6 +55,6 @@ class ParticleDirectionData extends ParticleData {
   }
 
   static createDefault() {
-    return new ParticleDirectionData(45, 0);
+    return new ParticleDirectionData(45, 100);
   }
 }

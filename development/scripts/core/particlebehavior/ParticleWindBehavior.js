@@ -1,4 +1,8 @@
 class ParticleWindBehavior extends ParticleBehavior {
+    /* FIELDS */
+  /* CONSTRUCTOR */
+  /* FLUENT */
+  /* METHODS */
 
     _cycleDuration = 0
     _windSpeed = 0
@@ -199,7 +203,7 @@ class ParticleWindBehavior extends ParticleBehavior {
 
   
   
-    createNew(copy) {
+    createNewBehavior(copy) {
       if (copy) {
         return this
       } else {

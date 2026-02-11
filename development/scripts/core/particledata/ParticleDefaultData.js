@@ -13,6 +13,7 @@ class ParticleDefaultData extends ParticleData {
   noiseWidth = -1;
   noiseHeight = -1;
   uniformSizeWidth = false;
+  particleBoxClass = null;
 
 
 
@@ -47,6 +48,11 @@ class ParticleDefaultData extends ParticleData {
     return this;
   }
 
+  withClass(particleBoxClass){
+    this.particleBoxClass = particleBoxClass;
+    return this;
+  }
+
 
   /* METHODS */
   reset() {
@@ -74,7 +80,8 @@ class ParticleDefaultData extends ParticleData {
     return new ParticleDefaultData(this.initialWidth, this.initialHeight)
       .sizeNoise(this.noiseWidth, this.noiseHeight, this.uniformSizeWidth)
       .pivot(this.horizontalPivot, this.verticalPivot)
-      .setEmitterOrigin(this.emitterOrigin);
+      .setEmitterOrigin(this.emitterOrigin)
+      .withClass(this.particleBoxClass)
   }
 
   initSizes(noiseWidth, noiseHeight, uniformSizeWidth, width, height) {

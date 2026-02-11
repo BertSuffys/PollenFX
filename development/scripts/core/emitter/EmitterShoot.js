@@ -42,26 +42,8 @@ class EmitterShoot extends Emitter {
   }
 
   spawn() {
+    super.spawn()
     this.spawnedCount++;
-    let newParticleLifetime = super.generateNextParticleLifetime();
-    let particle;
-    // Recycled particle from the inactive pool
-    if (this.particleManager.canRecycle()) {
-      particle = this.particleManager.recycle().reset(newParticleLifetime);
-      particle.showCSS(this.emitterBox); // re-show the HTML element
-    }
-    // Newly created particle
-    else {
-      particle = new Particle(newParticleLifetime);
-      for (let [key, value] of this.particleData) {
-        particle.addParticleData(value.createNew(false).build());
-      }
-      for (let [key, value] of this.particleBehavior) {
-        particle.addParticleBehavior(value.createNew(false).build());
-      }
-    }
-    this.particleManager.activeFXItemPool.enqueue(particle);
-    particle.createParticleBox(this.emitterBox);
   }
 
   getAverigeAliveParticleCount() {

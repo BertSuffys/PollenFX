@@ -74,6 +74,7 @@
 -> spawnTime = moment/date (in ms) when spawning
 -> lifeTime = time (in ms) something should in total be alive for
 -> liveTime = spawnTime + actTime, in essence.
-
+-> fxItemId = id of either a particle or an emitter
+-> active = ultimate identifier indicating that something can run, compiled from multiple flags
 
 

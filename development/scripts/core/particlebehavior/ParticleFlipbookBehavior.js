@@ -1,6 +1,10 @@
 
 
 class ParticleFlipbookBehavior extends ParticleBehavior {
+    /* FIELDS */
+  /* CONSTRUCTOR */
+  /* FLUENT */
+  /* METHODS */
     constructor(speed, speedNoise = -1, endingFrameCount = -1) {
       super("flipbook")
       this.flipCount = 0
@@ -67,7 +71,7 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     }
   
   
-    createNew(copy) {
+    createNewBehavior(copy) {
       if (copy) {
         return this
       }

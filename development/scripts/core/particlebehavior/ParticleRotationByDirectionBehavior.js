@@ -1,6 +1,9 @@
 class ParticleRotationByDirectionBehavior extends ParticleBehavior {
 
-
+  /* FIELDS */
+  /* CONSTRUCTOR */
+  /* FLUENT */
+  /* METHODS */
     _offset;                   // offset (in degrees) added to the direction angle of the particle
     _particleDirectionData;
     _particleRotationData;
@@ -48,7 +51,7 @@ class ParticleRotationByDirectionBehavior extends ParticleBehavior {
     }
 
 
-    createNew(copy) {
+    createNewBehavior(copy) {
         if (copy) {
             return this;
         } else {

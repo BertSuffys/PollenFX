@@ -1,6 +1,11 @@
 
 class ParticleColorShiftBehavior extends ParticleBehavior {
 
+    /* FIELDS */
+  /* CONSTRUCTOR */
+  /* FLUENT */
+  /* METHODS */
+
   KEY_HUE = "hue"
   KEY_CONTRAST = "contrast"
   KEY_SATURATION = "saturation"
@@ -133,7 +138,7 @@ class ParticleColorShiftBehavior extends ParticleBehavior {
   }
 
 
-  createNew(copy) {
+  createNewBehavior(copy) {
     if (copy) {
       return this
     }

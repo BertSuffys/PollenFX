@@ -1,58 +1,45 @@
-
 class ParticleDirectionalBehavior extends ParticleBehavior {
+  /* FIELDS */
+  particleDefaultData;
+  particleDirectionData;
 
+
+
+  /* CONSTRUCTOR */
   constructor() {
-    super("direction")
+    super("direction");
   }
 
 
-  act(particle, actTime, deltaTime) {
-    this._particleDefaultData.posX += this.particleDirectionData.directionX * (deltaTime / FXManager.IDEAL_FPS)
-    this._particleDefaultData.posY += this.particleDirectionData.directionY * (deltaTime / FXManager.IDEAL_FPS)
+
+  /* FLUENT */
+  build(particleDataManager, particleBehaviorManager) {
+    this.particleDirectionData = particleDataManager.ensureData("direction");
+    this.particleDefaultData = particleDataManager.ensureData("default");
+    return this;
   }
 
 
-  ensureDependencies(particleDataManager, particleBehaviorManager) {
-    this.particleDirectionData = particleDataManager.ensureData("direction")
-    this._particleDefaultData = particleDataManager.ensureData("default")
+
+  /* METHODS */
+  act(particle, actTime, deltaTime, deltaTimeSeconds) {
+    this.particleDefaultData.posX += this.particleDirectionData.directionX * deltaTimeSeconds;
+    this.particleDefaultData.posY += this.particleDirectionData.directionY * deltaTimeSeconds;
   }
 
+  createNewBehavior(copy) {
+    if (copy) {
+      return this;
+    } else {
+      return new ParticleDirectionalBehavior();
+    }
+  }
 
-  reset() { }
+  reset() {}
 
+  applyParticle(particle) {}
 
   static createDefault() {
-    return new ParticleDirectionalBehavior()
-  }
-
-
-  applyParticle(particle) { }
-
-
-      build() {
-        // TODO
-    }
-
-  createNew(copy) {
-    if (copy) {
-      return this
-    } else {
-      return new ParticleDirectionalBehavior()
-    }
-  }
-
-
-  get particleDefaultData() {
-    return this._particleDefaultData
-  }
-  set particleDefaultData(value) {
-    this._particleDefaultData = value
-  }
-
-  get particleDirectionData() {
-    return this._particleDirectionData
-  }
-  set particleDirectionData(value) {
-    this._particleDirectionData = value
+    return new ParticleDirectionalBehavior();
   }
 }

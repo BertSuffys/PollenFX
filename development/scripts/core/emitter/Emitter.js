@@ -15,8 +15,6 @@ class Emitter extends FXItem {
   particleBehavior = new Map();
   particleData = new Map();
 
-
-
   /* CONSTRUCTOR */
   constructor(emitterOrigin) {
     super(0);
@@ -25,8 +23,6 @@ class Emitter extends FXItem {
     }
     this.emitterOrigin = emitterOrigin;
   }
-
-
 
   /* FLUENT */
   initFinite(particleCount, emitterDuration, particleLifetime, particleLifetimeNoise = -1) {
@@ -75,27 +71,14 @@ class Emitter extends FXItem {
     this.active = this.delay <= 0;
     this.cutOff = 0;
 
-    // infinite emitter
-    if (this.particleLifetime <= 0) {
-      this.particleManager = new FXItemManager(this.loop ? -1 : this.particleCount); // todo build
-    }
-
-    // finite emitter
-    else {
-      this.particleManager = new FXItemLifeManager(this.loop ? -1 : this.particleCount); // todo build
-    }
+    // create the particleManager
+    this.createParticleManager();
 
     // build the origin
     this.emitterOrigin.build();
 
-    // propagate build to data and behavior
-    this.particleData.get("default").setEmitterOrigin(this.emitterOrigin);
-    this.particleData.forEach((dataObject, key) => {
-      dataObject.build();
-    });
-    this.particleBehavior.forEach((behaviorObject, key) => {
-      behaviorObject.build();
-    });
+    // Provide origin to defaultData if present
+    this.particleData.get("default")?.setEmitterOrigin(this.emitterOrigin);
 
     // All DOM related particle stuff
     this.createDOMDependencies();
@@ -103,7 +86,27 @@ class Emitter extends FXItem {
     return this;
   }
 
-  createDOMDependencies(){
+  createParticleManager(){
+    // infinite emitter
+    if (this.particleLifetime <= 0) {
+      this.particleManager = new FXItemManager(this.loop ? -1 : this.particleCount); // todo build
+    }
+    // finite emitter
+    else {
+      this.particleManager = new FXItemLifeManager(this.loop ? -1 : this.particleCount); // todo build
+    }
+  }
+
+  /* METHODS */
+  act(deltaTime) {
+    super.act(deltaTime);
+    if (this.delay > 0 && this.actTime > this.delay) {
+      this.active = true;
+    }
+    this.particleManager.act(deltaTime);
+  }
+
+  createDOMDependencies() {
     // The collapsed container
     this.emitterContainer = FXDom.createEmitterContainer(this.emitterOrigin);
     // The box or actual habitat
@@ -116,31 +119,49 @@ class Emitter extends FXItem {
       FXDom.initBodyResizeObserver(this.emitterBox);
     }
     // The origin debug
-    if(FXManager.DEBUG){
-      switch(this.emitterOrigin.constructor.name){
-        case 'CircularEmitterOrigin' : {
-          FXDom.createCircularOriginBox(this.emitterOrigin, this.emitterContainer);break;
+    if (FXManager.DEBUG) {
+      switch (this.emitterOrigin.constructor.name) {
+        case "CircularEmitterOrigin": {
+          FXDom.createCircularOriginBox(this.emitterOrigin, this.emitterContainer);
+          break;
         }
-        case 'LineEmitterOrigin' : {
-          FXDom.createLineOriginBox(this.emitterOrigin, this.emitterContainer);break;
+        case "LineEmitterOrigin": {
+          FXDom.createLineOriginBox(this.emitterOrigin, this.emitterContainer);
+          break;
         }
-        case 'PointEmitterOrigin' : {
-          FXDom.createPointOriginBox(this.emitterOrigin, this.emitterContainer);break;
+        case "PointEmitterOrigin": {
+          FXDom.createPointOriginBox(this.emitterOrigin, this.emitterContainer);
+          break;
         }
-        default : {
-          FXDom.createRectangularOriginBox(this.emitterOrigin, this.emitterContainer);break;
+        default: {
+          FXDom.createRectangularOriginBox(this.emitterOrigin, this.emitterContainer);
+          break;
         }
       }
     }
   }
 
-  /* METHODS */
-  act(deltaTime) {
-    super.act(deltaTime);
-    if (this.delay > 0 && this.actTime > this.delay) {
-      this.active = true;
+  spawn() {
+    let newParticleLifetime = this.generateNextParticleLifetime();
+    let particle;
+    // Recycled particle from the inactive pool
+    if (this.particleManager.canRecycle()) {
+      particle = this.particleManager.recycle().reset(newParticleLifetime);
+      particle.showCSS(this.emitterBox); // re-show the HTML element
     }
-    this.particleManager.act(deltaTime);
+    // Newly created particle
+    else {
+      particle = new Particle(newParticleLifetime)
+      for (let [key, value] of this.particleData) {
+        particle.addParticleData(value.createNew(false));
+      }
+      for (let [key, value] of this.particleBehavior) {
+        particle.addParticleBehavior(value.createNewBehavior(false));
+      }
+    }
+    this.particleManager.activeFXItemPool.enqueue(particle);
+    particle.build();
+    particle.createParticleBox(this.emitterBox);
   }
 
   die() {

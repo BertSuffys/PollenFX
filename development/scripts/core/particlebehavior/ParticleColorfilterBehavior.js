@@ -1,4 +1,8 @@
 class ParticleColorfilterBehavior extends ParticleBehavior {
+    /* FIELDS */
+  /* CONSTRUCTOR */
+  /* FLUENT */
+  /* METHODS */
   constructor(colors, duration = -1, randomStartColor = false, startIndex = 0, colorIterationCount = -1) {
     super("colorfilter");
     this.colorIteration = 0;
@@ -73,7 +77,7 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
     }
   }
 
-  createNew(copy) {
+  createNewBehavior(copy) {
     if (copy) {
       return this;
     }

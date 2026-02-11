@@ -1,20 +1,15 @@
 class EmitterBurst extends Emitter {
-
   /* FIELDS */
-  burstCount;           // Amount of bursts that must occur.
-  burstIntervalTime;    // Time between bursts
-  localBurstCount;      // Number of bursts to spawn this frame
-  burstedCount;         // Total bursts emitted
-  timeSinceLastBurst;   // Accumulator for burst timing
-
-
+  burstCount; // Amount of bursts that must occur.
+  burstIntervalTime; // Time between bursts
+  localBurstCount; // Number of bursts to spawn this frame
+  burstedCount; // Total bursts emitted
+  timeSinceLastBurst; // Accumulator for burst timing
 
   /* CONSTRUCTOR */
   constructor(emitterOrigin) {
     super(emitterOrigin);
   }
-
-
 
   /* FLUENT */
   build() {
@@ -37,8 +32,6 @@ class EmitterBurst extends Emitter {
     this.burstIntervalTime = burstIntervalTime;
     return this;
   }
-
-
 
   /* METHODS */
   act(deltaTime) {
@@ -64,30 +57,10 @@ class EmitterBurst extends Emitter {
   }
 
   burst() {
-    console.log("fire")
-    this.emitterOrigin.initializePosition(); /* Configure next burst position */
-
+    this.emitterOrigin.initializePosition();
     for (let i = 0; i < this.particleCount; i++) {
-      let newParticleLifetime = super.generateNextParticleLifetime(); /* Configure next particle lifetime */
-      let particle;
-      /* Recycle ? */
-      if (this.particleManager.canRecycle()) {
-        particle = this.particleManager.recycle().reset(newParticleLifetime);
-        particle.showCSS(this.emitterBox); // re-show the HTML element
-      } else {
-      /* New particle ? */
-        particle = new Particle(newParticleLifetime);
-        for (let [key, value] of this.particleData) {
-          particle.addParticleData(value.createNew(false).build());
-        }
-        for (let [key, value] of this.particleBehavior) {
-          particle.addParticleBehavior(value.createNew(false).build());
-        }
-        particle.createParticleBox(this.emitterBox); // Creation of the element
-      }
-      this.particleManager.activeFXItemPool.enqueue(particle);
+      super.spawn();
     }
-    this.burstedCount += this.spawnedCountAddend;
   }
 
   getAverigeAliveParticleCount() {
@@ -98,9 +71,7 @@ class EmitterBurst extends Emitter {
     return Math.round(maxConcurrentBursts * this.particleCount);
   }
 
-  getCurrentAliveParticleCount(){
+  getCurrentAliveParticleCount() {
     // todo
   }
-
-
 }

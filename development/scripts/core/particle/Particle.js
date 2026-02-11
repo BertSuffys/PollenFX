@@ -1,150 +1,93 @@
 class Particle extends FXItem {
 
-  /* Parameters */
-  _dataManager;
-  _behaviorManager;
-  _particleBox;                                              // html element representing the particle
-  _emitterBox;                                               // Parent emitter spawn box
+  /* FIELDS */
+  dataManager;         // manager of this particle's data
+  behaviorManager;     // manager of this particle's behavior
+  particleBox;         // html element representing the particle
+  emitterBox;          // Parent emitter spawn box
 
 
-  /* Constructor */
+  /* CONSTRUCTOR */
   constructor(lifetime) {
     super(Math.max(0, lifetime));
-    this.dataManager = new ParticleDataManager();
+    this.dataManager = new ParticleDataManager()
     this.behaviorManager = new ParticleBehaviorManager();
   }
 
-      
+  /* FLUENT */
+  build(){
+    this.dataManager.build();
+    this.behaviorManager.build(this.dataManager, this.behaviorManager)
+    return this;
+  }
 
-  /**
- * Coor loop behavior of a particle
- */
+  reset(lifeTime) {
+    super.reset(lifeTime);
+    this.behaviorManager.reset(this);
+    this.dataManager.reset();
+    return this;
+  }
+      
+  /* METHODS */
   act(deltaTime) {
-    this.behaviorManager.act(this, super.actTime , deltaTime);
-    super.act(deltaTime);        // used to be underneath this.behaviorManager.act(th...
+    super.act(deltaTime);   
+    this.behaviorManager.act(this, this.actTime, deltaTime);
     this.updateStyle();
   }
 
-
-
-  /**
-   * Creates the html element representing the particle and attaches it to the emitterBox
-   */
   createParticleBox(emitterBox) {
     if (emitterBox != null && !this.particleBox) {
       this.emitterBox = emitterBox;
       this.particleBox = document.createElement('div');                            // create
-      this.particleBox.classList.add(PollenFXClasses.PARTICLE_BOX_CLASS);           // add class
+      this.particleBox.classList.add(PollenFXClasses.PARTICLE_BOX_CLASS);          // add class
+      const particleBoxClass = this.dataManager.getDataByKey("default")?.particleBoxClass
+      if(particleBoxClass){
+          this.particleBox.classList.add(particleBoxClass);      // add custom class
+      }
       this.updateStyle();                                                          // start css
       this.emitterBox.appendChild(this.particleBox);                               // empty anchor? just add
     }
   }
 
-  /**
-   * Removes the particlebox from the DOM through detaching it from its parent, making it invisible 
-   */
   hideCSS() {
     this.particleBox.setAttribute('style', 'display:none;');
    // this.emitterBox.removeChild(this.particleBox);              // performance ??
   }
 
-  /**
-   * Adds the particlebox from the DOM through appending it from its parent, making it visible
-   */
   showCSS() {
     //this.emitterBox.appendChild(this.particleBox);              // performance ??
     this.particleBox.setAttribute('style', 'display:block;');
     this.updateStyle();
   }
 
-
-
-  /**
-  * Collects all css from its dataobjects and applies it to the css of the particleBox
-  */
   updateStyle() {
     this.particleBox.setAttribute('style', this.getCSS());
   }
 
-
-  /**
-* Adds particle data to the particle
-*/
   addParticleData(particleData) {
     this.dataManager.addParticleData(particleData)
   }
 
-  /**
-* Adds particle behavior to the particle
-*/
   addParticleBehavior(behavior) {
     this.behaviorManager.addParticleBehavior(behavior, this.dataManager)
     behavior.applyParticle(this)
   }
 
-  /**
-* Retrieves all CSS of all particle data-objects
-*/
   getCSS() {
-    return this.dataManager.getCSS()
+    return this.dataManager.getCSS();
   }
-
 
   disableBehavior(type) {
-    this.behaviorManager.disableBehavior(type)
+    this.behaviorManager.disableBehavior(type);
   }
 
-
   enableBehavior(type) {
-    this.behaviorManager.enableBehavior(type)
+    this.behaviorManager.enableBehavior(type);
   }
 
   die(){
-    this.hideCSS()
+    this.hideCSS();
   }
 
-  getClassName(){
-    return "particle"
-  }
-
-
-  reset(lifeTime) {
-    super.reset(lifeTime)
-    this.behaviorManager.reset(this)
-    this.dataManager.reset()
-    return this
-  }
-
-
-  get emitterBox() {
-    return this._emitterBox
-  }
-  set emitterBox(value) {
-    this._emitterBox = value
-  }
-  get particleBox() {
-    return this._particleBox
-  }
-  set particleBox(value) {
-    this._particleBox = value
-  }
-  get index() {
-    return this._index
-  }
-  set index(value) {
-    this._index = value
-  }
-  get dataManager() {
-    return this._dataManager
-  }
-  set dataManager(value) {
-    this._dataManager = value
-  }
-  get behaviorManager() {
-    return this._behaviorManager
-  }
-  set behaviorManager(value) {
-    this._behaviorManager = value
-  }
 }
 

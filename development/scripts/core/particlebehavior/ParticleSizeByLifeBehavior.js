@@ -1,6 +1,10 @@
 
 
 class ParticleSizeByLifeBehavior extends ParticleBehavior {
+    /* FIELDS */
+  /* CONSTRUCTOR */
+  /* FLUENT */
+  /* METHODS */
     _duration = 0
   
     constructor(sizeMultipliersX, sizeMultipliersY, duration = -1, scalarNoise = -1, uniformNoise, sizeIterationCount = -1 ) {
@@ -172,7 +176,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     }
   
   
-    createNew(copy) {
+    createNewBehavior(copy) {
       if (copy) {
         return this
       } else {
