@@ -65,6 +65,7 @@
 -> 19. Build functionality.
 -> 20. Print currentyAliveParticleCount functionality / average alive particle count
 -> 21. shorthands .gravity(), returning a gravitybuilder, which takes into account data and behavior, to get faster creation of objects
+-> 22. for wind the option to kill the wind behavior (checkBehaviorDeath) and leave it blowing in a certain stance.
 
   ----- DONE ----- 
 -> 8. Origin object weg proberen te halen uit default data object.

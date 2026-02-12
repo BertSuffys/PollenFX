@@ -7,6 +7,8 @@ let fxManager;
 // check for whether finite or infinite was called to see whether it can run.
 // default display particle to see if it all works
 // origin properties
+// spiral emitter
+// ensuredependencies checken weg
 
 document.addEventListener('DOMContentLoaded', function () {
     fxManager = new FXManager().setDebug(true).withAllowDOMOverflow(false);
@@ -28,15 +30,15 @@ function getEmitterShoot(id) {
     let line = this.getLineEmitterOrigin(anchor);
     let point = this.getPointEmitterOrigin(anchor);
     let rect = this.getRectangularEmitterOrigin(anchor);
-    let emitter = new EmitterShoot(rect).infinite(50, 10000).withDelay(0);
+    let emitter = new EmitterShoot(rect).finite(1, 10, 5000).withDelay(0);
 
     // Data
     const data_default = new ParticleDefaultData(30, 30).withClass("orb")//.sizeNoise(20, 20, false).pivot(Pivot.CENTER, Pivot.CENTER);
     const data_rotation = new ParticleRotationData(0, 10);
     const data_opacity = new ParticleOpacityData(0.5, 0.2);
-    const data_css = new ParticleCustomCssData(`background-color: red;`).zIndexRange(150, 400);
+    const data_css = new ParticleCustomCssData(`background-color: #ffd000; border-radius:50px;`).zIndexRange(150, 400);
     const data_color = new ParticleColorfilterData().withBrightness(300);
-    const data_direction = new ParticleDirectionData(90, 100).withConeNoise(90).withSpeedNoise(10);
+    const data_direction = new ParticleDirectionData(180, 2).withConeNoise(90).withSpeedNoise(100);
     emitter.addParticleData(data_default);
     emitter.addParticleData(data_css);
     emitter.addParticleData(data_direction);
@@ -48,15 +50,22 @@ function getEmitterShoot(id) {
     // Behavior
     const behavior_direction = new ParticleDirectionalBehavior();
     const behavior_rotation = new ParticleRotationBehavior(100).withNoise(10, true);
+    const behavior_rotation_by_direction = new ParticleRotationByDirectionBehavior();
     const behavior_gravity = new ParticleGravityBehavior(500);
-    const behavior_opacity_by_life = new ParticleOpacityByLifeBehavior([0,1]).withDuration(500, 3)
+    const behavior_opacity_by_life = new ParticleOpacityByLifeBehavior([0,1]).withDuration(1000, 3);
+    const behavior_wind = new ParticleWindBehavior([90, 180, 270, 180, 90, 180, 270, 180, 90,180, 270, 180, 90]);
+    const behavior_size_by_life = new ParticleSizeByLifeBehavior([0,1]).withNoise(0.2).withDuration(1000,5);
     emitter.addParticleBehavior(behavior_direction);
-    emitter.addParticleBehavior(behavior_rotation);
-    emitter.addParticleBehavior(behavior_gravity);
-    emitter.addParticleBehavior(behavior_opacity_by_life);
+    emitter.addParticleBehavior(behavior_rotation_by_direction);
+    //emitter.addParticleBehavior(behavior_gravity);
+    //emitter.addParticleBehavior(behavior_opacity_by_life);
+    //emitter.addParticleBehavior(behavior_wind);
+    emitter.addParticleBehavior(behavior_size_by_life);
     //const sizeByLifeBehavior = new ParticleSizeByLifeBehavior([0.5, 1, 1.3]);
 
     //emitter.addParticleBehavior(sizeByLifeBehavior);
+
+    
 
     // Return
     emitter.withId(id)

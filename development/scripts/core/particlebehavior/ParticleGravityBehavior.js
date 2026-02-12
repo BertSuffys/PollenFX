@@ -18,10 +18,7 @@ class ParticleGravityBehavior extends ParticleBehavior {
   build(particleDataManager, particleBehaviorManager) {
     // dependencies
     this.particleDirectionData = particleDataManager.ensureData("direction");
-    const ensuredDirectionalBehavior = particleBehaviorManager.ensureBehavior("direction");
-    if (ensuredDirectionalBehavior) {
-      ensuredDirectionalBehavior.ensureDependencies(particleDataManager, particleBehaviorManager);
-    }
+    particleBehaviorManager.ensureBehavior("direction");
     // calculated values
     if (this.fieldStrengthNoise > 0) {
       this.fieldStrength = PollenMath.relativeMap(this.initialFieldStrength, this.fieldStrengthNoise, Math.random());

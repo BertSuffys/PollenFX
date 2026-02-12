@@ -59,9 +59,9 @@ class FXItemHybridLifeManager extends FXItemManager {
     while (!this.activeFXItemPool.isEmpty() && this.activeFXItemPool.peek().isDead()) {
       const deadFXItem = this.activeFXItemPool.dequeue();
       deadFXItem.die();
-      const deadFXItemInded = this.sharedActivePool.indexOf(deadFXItem);
-      if (deadFXItemInded !== -1) {
-        this.sharedActivePool.splice(i, 1);
+      const deadFXItemIndex = this.sharedActivePool.indexOf(deadFXItem);
+      if (deadFXItemIndex !== -1) {
+        this.sharedActivePool.splice(deadFXItemIndex, 1);
         this.inactiveFXItemPool.push(deadFXItem);
       }
     }
