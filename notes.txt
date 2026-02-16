@@ -4,71 +4,41 @@
 -> Only access members or properties that are documented.
 -> parent properties must be accessed with this., parent methods with super.
 
-  ----- development folder ----- 
--> contains the current up to date project in development state and all its sources.
-
-
-  ----- production folder ----- 
--> contains for each release a folder with nothing but the finished product and documentation.
 
 
   ----- export documentation to pdf ----- 
 -> In the browser open the html in a tab. press ctrl+p, alter destination to 'Save as pdf', optionally alter the properties, save.
 
-  ----- Known bugs ----- 
-1. When the particlelifetime is set to -1, and in a behaviortype the duration is set to -1, there is no way to know over which time the behavior is going to play out.
-   In case of a particlellifetime of -1, this behavior duration must be provided. Solve by throwing error.
-
-  ----- Developer notes----- 
-1. An FXItem, when it dies, also kills all FXItem children. For example a dying emitter, first kills it particle children. 
-2. Dead particles, or FXItems in general will not be removed (nor re-attached) upon death/recycling. merely hidden/shown for performance reasons.<br>
-3. By setting the DevConfig.DEBUG enum in the PollenFX config file, one allows helperobjects to be rendered<br>
-4. Creating  emitters involves the creation of a few helper HTMLElements. This happens within the Emitter.
-   -> EmitterContainer: when creating an emitter, it will always become attached to a HTMLElement. This can be provided explicitly, but if not it will attach
-      to the body element. We call this the anchor element. Within this anchor element the EmitterContainer is added, which is an imploded, relatively positioned, width
-      and heightless element with top:0 and left:0 initialized. This functions as the first layer of emitter setup. Its styling is important. its class="pollenfx_emitter_container".
-      Beware that at some point i changed the position from absolute to relative without being fully aware of the consequences. 
-   -> EmitterBox: When an emitter is being created, It will first create the emitterContainer as described earlier. Next up,
-      within the EmitterContainer, an EmitterBox is being created. this element mimics the anchor element within which the particles will reside. Its in some sense a sort of clone
-      of the anchorelement because we do not have control over its styling. We do have control over the EmitterBox. Each emitter has one emitterbox, it is position:relative, its 
-      styling is important, has class="pollenfx_emitter_box", and can only be seen when DevConfig.DEBUG=true.
-   -> EmitterWrapper: When the provided anchor element is an invalid element type such as img ot then insert divs into, a div wrapper is created around this invalid anchor element
-      and then set to be the new anchor element.
-   -> ParticleBox: The particleBox is the true HTMLElement representing the particle. It is being created from an emitter-implementation upon a particle spawn. The particle 
-      is position:absolute which is defined as a default style in the ParticleDataManager. This element carries the final particle styling.
-5. The applyParticle() method is used upon particle creation to provide the particle itself to the behaviormanager and thus all behaviors for its potential noised-lifetime
-   to be set in this behavior as duration. this makes particleLifetimeNoise possible.
 
 
   ----- Future updates (Priority sorted) ----- 
--> 1. Upon emitter death, actually detach the particle divs from the dom for performance reasons.
--> 2. Include deltatime speed calculation in all behavior objects.
--> 3. Emittershoot without death will only shoot max 1 particle per (+-) 16ms cos thats the framerate. it does not calculate for faster particles.
--> 4. An option to render the emitterOrigins.
--> 5. Method to make, for example an infinite emitter pause,resume,stop/reset,start, .. by calling a function.
--> 6. FLUENT API pattern for making emitters,origins,data and behavior as a solution for the long unreadable constructors.
--> 7. When a first emitter is being created, OR perhaps an FXManager is being made, give it startdata and or behavior so that it immediately gives feedback that it works. 
-      A suggestion to implement this would be on emitter level in the constructor, to add say default CSSData, DefaultData and or directionalBehavior. This will immediately make it visible.
-      The emitter receives the origin so it knows where to anchor. The only problem is that an emitter must be attached to an fxManager, and the fxManager must be run. So im not yet
-      sure how an emitter will be visible immediately upon creating it. But this is food for thought.
--> 9. Emitterbehavior change to 1 behavior for all particles, with an assistent data-object for all behavior-specific data items which the behaviors currently have.
--> 10. Origin size & position of the origin are still absolute and does not use PositionUnits. This also counts for properties such as speed, size, .. of the particle.
-      This could be a huge issue, but can be fixed by setting values based on a calculated device sizes.
--> 11. Perhaps it could be an idea to move the config parameters & enums (found in config.js) to a better location.
--> 12. Better design for the windbehavior's considerDefault & overrideInitialDirection fields.
--> 13. PositionUnits in the default data sometimes cause a weird jittery/jumpy effect.
--> 14. Free github repo client for private repositories.
--> 15. Full UML creation.
--> 16. Better color/colorfilter/over life calculations IF POSSIBLE, or at least document better.
--> 17. Start/stop functionality which continues/pauses the particles
--> 18. abort functionality which completely stops all particles. destroys/ends then
--> 19. Build functionality.
--> 20. Print currentyAliveParticleCount functionality / average alive particle count
--> 21. shorthands .gravity(), returning a gravitybuilder, which takes into account data and behavior, to get faster creation of objects
--> 22. for wind the option to kill the wind behavior (checkBehaviorDeath) and leave it blowing in a certain stance.
+  
+-> Pause/resume
+-> Colorfilterbehavior
 
-  ----- DONE ----- 
--> 8. Origin object weg proberen te halen uit default data object.
+-> Rendering and modiying origins, visually
+-> Optionally, Upon emitter death/stopping, detach the particle divs from the dom for performance reasons.
+
+-> Documentatie
+-> Youtube video
+
+-> Testing
+     - infinite particle + buttons
+     - finite emitter + buttons
+
+-> 1. Some data objects or behavior objects have fields that are used for calculations, but are never updated or used themselves (ex: initialRotation), 
+       but do however remain unique per particle which results in alot of unnessesary data allocation. Maybe find a workaround with global config objects
+       per data or behavior object. Same for behavior objects. They actually do the same, but take up alot of memory because they exist for each particle, even though
+       their modification logic is all the same
+-> 2. PositionUnits in the default data sometimes cause a weird jittery/jumpy effect.
+-> 3. Full UML creation.
+-> 4. Better color/colorfilter/over life calculations IF POSSIBLE, or at least document better.
+-> 5. Shorthands .gravity(), returning a gravitybuilder, which takes into account data and behavior, to get faster creation of objects
+-> 6. for wind the option to kill the wind behavior (checkBehaviorDeath) and leave it blowing in a certain stance.
+-> 7. When the particlelifetime is set to -1, and in a behaviortype the duration is set to -1, there is no way to know over which time the behavior is going to play out.
+      In case of a particlellifetime of -1, this behavior duration must be provided. Solve by throwing error. Maybe let data objects also store data now related to behavior (that gets updated),
+      and let behavior only update data?
+
 
   ----- Terminology ----- 
 -> actTime = time (in ms) something is alive for
