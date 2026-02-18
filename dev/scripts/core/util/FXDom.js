@@ -84,6 +84,10 @@ class FXDom {
     emitterBox.style.overflow = emitterOrigin.overflow == true ? "visible" : "hidden";
     emitterBox.style.position = "relative";
     emitterBox.style.pointerEvents = "none";
+    if(emitterOrigin.anchorElement && emitterOrigin.mimicShape){
+      const computed = window.getComputedStyle(emitterOrigin.anchorElement);
+      emitterBox.style.borderRadius = computed.borderRadius;
+    }
     if (FXManager.DEBUG == true) {
       const color = Color.randomColor(100, 0.5);
       emitterBox.style.backgroundImage = `linear-gradient(${color.toRgba(0.15)}, ${color.toRgba(0.5)})`;

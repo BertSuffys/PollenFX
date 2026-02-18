@@ -1,23 +1,23 @@
 class FXManager {
   /* PARAMETERS */
   // children
-  emitterManager; // Stores and manages all emitters
+  emitterManager;                    // Stores and manages all emitters
   // runnables
-  startTime = 0; // actual start time when the FXManager was started.
-  runtime = 0; // time in milliseconds that the programm has been running for.
-  lastRuntime = 0; // unupdated time in milliseconds that the programm has been running
-  deltaTime = 0; // time passed between last two frames
-  totalDocumentClosedRuntime = 0; // duration in milliseconds of the document being closed due to hiding or minimizing
-  documentCloseTime = 0; // timestamp in milliseconds when the document closed due to hiding or minimizing
+  startTime = 0;                     // actual start time when the FXManager was started.
+  runtime = 0;                       // time in milliseconds that the programm has been running for.
+  lastRuntime = 0;                   // unupdated time in milliseconds that the programm has been running
+  deltaTime = 0;                     // time passed between last two frames
+  totalDocumentClosedRuntime = 0;    // duration in milliseconds of the document being closed due to hiding or minimizing
+  documentCloseTime = 0;             // timestamp in milliseconds when the document closed due to hiding or minimizing
   // config
-  documentOpened = false; // Whether the website window is opened or not. allows for pausing when on different tab
-  built = false; // whether all initialization is complete
-  started = false; // whether the FXManager was started
-  stopped = false; // whether the FXManager was stopped
-  canAct = false; // global field combining all other evaluation fields to base the act method on.
-  static DEBUG = false; // whether the debugging visuals must be displayed. static as must be available globally
+  documentOpened = false;            // Whether the website window is opened or not. allows for pausing when on different tab
+  built = false;                     // whether all initialization is complete
+  started = false;                   // whether the FXManager was started
+  stopped = false;                   // whether the FXManager was stopped
+  canAct = false;                    // global field combining all other evaluation fields to base the act method on.
+  static DEBUG = false;              // whether the debugging visuals must be displayed. static as must be available globally
   static ALLOW_DOM_OVERFLOW = false; // whether or not overflow is allowed to occur on the body. static as there must only be such a value, regardless of manager count.
-  static VERSION = "1.0.0"; // version
+  static VERSION = "1.0.0";          // version
   // misc
   subscribers = [];
   // animation
@@ -26,11 +26,15 @@ class FXManager {
     window.requestAnimationFrame(this.renderfunction);
   };
 
+
+
   /* CONSTRUCTOR */
   constructor() {
     this.setDocumentOpenHideHandler();
     this.emitterManager = new FXItemHybridLifeManager(); // emitters can be permanently active or temporarily active emitters, so always hybrid
   }
+
+
 
   /* FLUENT */
   withAllowDOMOverflow(allowDOMOverflow = true) {
@@ -90,32 +94,11 @@ class FXManager {
     return this;
   }
 
-  /* METHODS */
-  act(nowTime) {
-    this.runtime = nowTime - this.totalDocumentClosedRuntime;
-    this.deltaTime = this.runtime - this.lastRuntime;
-    if (this.canAct) {
-      this.emitterManager.act(this.deltaTime, this.startTime);
-      for (let subscriber of this.subscribers) {
-        subscriber(nowTime, this.runtime, this);
-      }
-    }
-    this.lastRuntime = this.runtime;
-  }
-
-  pause(gentle = false) {
-    this.emitterManager.pause();
-  }
-
-  restart() {
-    this.stop();
-    this.start();
-  }
-
   start() {
     if (this.canStart()) {
       if (this.stopped) {
         this.emitterManager.reviveAllFXItems();
+        this.emitterManager.resume();
       }
       this.reset();
       this.started = true;
@@ -125,17 +108,8 @@ class FXManager {
     return this;
   }
 
-  canStart() {
-    if (this.started) {
-      return false;
-    }
-    if (!this.built) {
-      FXUtil.pollenFXError("The start() method cannot be called on an FXManager before build() gets called.");
-      return false;
-    }
-    return true;
-  }
 
+  /* METHODS */
   stop() {
     this.started = false;
     this.stopped = true;
@@ -143,12 +117,25 @@ class FXManager {
     this.emitterManager.killAllFXItems(false);
   }
 
-  reset() {
-    // note: lastRuntime must never be reset, as runtime itself never resets.
-    this.startTime = new Date().getTime();
-    this.runtime = 0;
-    this.deltaTime = 0;
-    this.totalDocumentClosedRuntime = 0;
+  restart() {
+    this.stop();
+    this.start();
+  }
+
+  pause(gentle = false) {
+    this.emitterManager.pause(gentle);
+  }
+
+  resume() {
+    this.emitterManager.resume();
+  }
+
+  pauseEmitter(id, gentle=true){
+    this.emitterManager.pauseFXItem(id, gentle);
+  }
+
+  resumeEmitter(id){
+    this.emitterManager.resumeFXItem(id);
   }
 
   getAverigeAliveParticleCount() {
@@ -162,6 +149,51 @@ class FXManager {
     return this.emitterManager.getActiveFXItems().reduce((accum, emitter) => {
       return accum + emitter.getCurrentAliveParticleCount();
     }, 0);
+  }
+
+  getEmitterById(fxItemId) {
+    return this.emitterManager.getFxItemById(fxItemId);
+  }
+
+  getFPS() {
+    const currentFPS = this.deltaTime > 0 ? 1000 / this.deltaTime : 0;
+    return Math.round(currentFPS);
+  }
+
+  getActiveEmitters() {
+    return this.emitterManager.getActiveFXItems();
+  }
+
+
+  act(nowTime) {
+    this.runtime = nowTime - this.totalDocumentClosedRuntime;
+    this.deltaTime = this.runtime - this.lastRuntime;
+    if (this.canAct) {
+      this.emitterManager.act(this.deltaTime, this.startTime);
+      for (let subscriber of this.subscribers) {
+        subscriber(nowTime, this.runtime, this);
+      }
+    }
+    this.lastRuntime = this.runtime;
+  }
+
+  canStart() {
+    if (this.started) {
+      return false;
+    }
+    if (!this.built) {
+      FXUtil.pollenFXError("The start() method cannot be called on an FXManager before build() gets called.");
+      return false;
+    }
+    return true;
+  }
+
+  reset() {
+    // note: lastRuntime must never be reset, as runtime itself never resets.
+    this.startTime = new Date().getTime();
+    this.runtime = 0;
+    this.deltaTime = 0;
+    this.totalDocumentClosedRuntime = 0;
   }
 
   setDocumentOpenHideHandler() {
@@ -186,19 +218,6 @@ class FXManager {
     const origin = new CircularEmitterOrigin(windowWidth / 2 - originSize / 2, windowHeight / 2 - originSize / 2, originSize, originSize);
     let emitter = new EmitterShoot(origin).infinite(50, 1000);
     this.addEmitter(emitter);
-  }
-
-  getEmitterById(fxItemId) {
-    return this.emitterManager.getFxItemById(fxItemId);
-  }
-
-  getFPS() {
-    const currentFPS = this.deltaTime > 0 ? 1000 / this.deltaTime : 0;
-    return Math.round(currentFPS);
-  }
-
-  getActiveEmitters() {
-    return this.emitterManager.getActiveFXItems();
   }
 
   setCanAct() {

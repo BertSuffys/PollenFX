@@ -28,7 +28,7 @@ class EmitterShoot extends Emitter {
   /* METHODS */
   act(deltatime, startTimeMs) {
     // Spawn logic
-    if (this.active) {
+    if (this.active && !this.paused) {
       let spawnCount = (deltatime + this.cutOff) / this.spawnIntervalTime;
       this.cutOff = (spawnCount % 1) * this.spawnIntervalTime;
       spawnCount = Math.trunc(spawnCount);
@@ -42,7 +42,7 @@ class EmitterShoot extends Emitter {
   }
 
   spawn() {
-    super.spawn()
+    super.spawn();
     this.spawnedCount++;
   }
 
@@ -51,7 +51,7 @@ class EmitterShoot extends Emitter {
     let avgLifetime = this.particleLifetime;
 
     if (this.particleLifetimeNoise > 0) {
-      avgLifetime *= 1 + (this.particleLifetimeNoise * 0.5);
+      avgLifetime *= 1 + this.particleLifetimeNoise * 0.5;
     }
 
     // Continuous steady-state overlap

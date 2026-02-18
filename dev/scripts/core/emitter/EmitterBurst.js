@@ -35,7 +35,7 @@ class EmitterBurst extends Emitter {
 
   /* METHODS */
   act(deltaTime, startTimeMs) {
-    if (this.active) {
+    if (this.active && !this.paused) {
       for (let i = 0; i < this.localBurstCount; i++) {
         this.burst();
         this.timeSinceLastBurst = this.timeSinceLastBurst % this.burstIntervalTime;

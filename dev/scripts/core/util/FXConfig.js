@@ -1,5 +1,4 @@
 const FXConfig = {
-  IDEAL_FPS: 60,                                                      // the ideal running FPS // todo: what is this used for?
   PFX_STYLES_SET: false,                                              // whether the general pfx styles have been set
 };
 

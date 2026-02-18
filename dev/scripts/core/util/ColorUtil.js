@@ -13,14 +13,6 @@ class ColorUtil {
     return new Color(rLerp, gLerp, bLerp);
   }
 
-  static lerpColorToTarget(targetColor, color_1, color_2, lerpFactor) {
-    targetColor.r = Math.floor(PollenMath.lerp(color_1.r, color_2.r, lerpFactor));
-    targetColor.g = Math.floor(PollenMath.lerp(color_1.g, color_2.g, lerpFactor));
-    targetColor.b = Math.floor(PollenMath.lerp(color_1.b, color_2.b, lerpFactor));
-    targetColor.hexFromRGB();
-    return targetColor;
-  }
-
   static validateHexColors(hexColors) {
     if (FXUtil.valid(hexColors)) {
       for (let i = 0; i < hexColors.length; i++) {

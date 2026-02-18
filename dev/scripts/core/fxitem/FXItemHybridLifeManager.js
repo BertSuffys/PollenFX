@@ -24,6 +24,28 @@ class FXItemHybridLifeManager extends FXItemManager {
     this.checkDeath();
   }
 
+  pause(gentle = false) {
+    this.sharedActivePool.forEach(fxItem => {
+      fxItem.pause(gentle);
+    });
+  }
+
+  resume() {
+    this.sharedActivePool.forEach(fxItem => {
+      if(fxItem.paused){
+        fxItem.resume();
+      }
+    });
+  }
+
+  pauseFXItem(id, gentle=true){
+    this.getFxItemById(id).pause(gentle);
+  }
+
+  resumeFXItem(id){
+    this.getFxItemById(id).resume();
+  }
+
   addFXItem(fxItem) {
     super.addFXItem(fxItem);
     if (fxItem.isPermanent()) {
@@ -75,7 +97,7 @@ class FXItemHybridLifeManager extends FXItemManager {
     }
     this.sharedActivePool.length = 0;
     this.permanentlyActiveFXItemPool.length = 0;
-    this.activeFXItemPool.length = 0; // todo
+    this.activeFXItemPool.length = 0;
   }
 
   reviveAllFXItems() {

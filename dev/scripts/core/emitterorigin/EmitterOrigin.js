@@ -47,7 +47,7 @@ class EmitterOrigin {
   }
 
   withMimicShape(mimicShape = true) {
-    this.mimicShape = mimicShape; // todo
+    this.mimicShape = mimicShape;
     return this;
   }
 
@@ -80,7 +80,7 @@ class EmitterOrigin {
     return this;
   }
 
-  withPositionNoise(posXNoise) {
+  withPositionNoise(posXNoise, posYNoise) {
     this.posXNoise = posXNoise;
     this.posYNoise = posYNoise;
     return this;

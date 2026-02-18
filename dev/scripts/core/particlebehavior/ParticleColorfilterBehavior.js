@@ -1,7 +1,8 @@
 class ParticleColorfilterBehavior extends ParticleBehavior {
   /* FIELDS */
   duration = -1;
-  colors;
+  colors = [];
+  colorsHsb = [];                  // array containing the hsb values
   particleColorfilterData;
   randomStartColor = false;
   startIndex = 0;
@@ -17,24 +18,24 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
 
   /* FLUENT */
   build(particleDataManager, particleBehaviorManager) {
-    this.colorIteration = 0;
+    this.deriveHSBColors()
     // global config
-    this.startIndex = this.startIndex % this.colors.length;
-    this.lastColorIndexSum = this.startIndex + (1 % this.colors.length);
+    this.colorIteration = 0;
+    this.startIndex = this.startIndex % this.colorsHsb.length;
+    this.lastColorIndexSum = Math.min(this.colorsHsb.length, 1);
     if (this.randomStartColor) {
-      this.startIndex = Math.floor(Math.random() * this.colors.length);
+      this.startIndex = Math.floor(Math.random() * this.colorsHsb.length);
     }
     // ensuring dependencies
     this.particleColorfilterData = particleDataManager.ensureData("colorfilter");
     if (this.particleColorfilterData.color === null) {
-      this.particleColorfilterData.color = this.colors != null ? this.colors[0] : new Color(ColorUtil.debugColor);
+      this.particleColorfilterData.color = this.colors != null ? new Color(this.colors[0]) : new Color(ColorUtil.debugColor);
     }
-    this.reset();
     // finish
     return this;
   }
 
-  withRandomStartColor(randomStartColor) {
+  withRandomStartColor(randomStartColor=true) {
     this.randomStartColor = randomStartColor;
     return this;
   }
@@ -51,16 +52,21 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
   }
 
   reset() {
+    this.lastColorIndexSum = Math.min(this.colorsHsb.length, 1);
     this.colorIteration = 0;
-    this.lastColorIndexSum = this.startIndex + (1 % this.colors.length);
-    ColorUtil.lerpColorToTarget(this.particleColorfilterData.color, this.colors[0], this.colors[1 % this.colors.length], 0);
-    this.alterColoring();
     return this;
   }
 
   /* METHODS */
+  deriveHSBColors(){
+    this.colorsHsb = this.colors.map((colorHex) => {
+      const c = new Color(colorHex);
+      return c.getHSB();
+    })
+  }
+
   act(particle, startTimeMs, deltaTime, deltaTimeSeconds) {
-    const steps = this.colors.length;
+    const steps = this.colorsHsb.length;
 
     const fullRangeProgress = (particle.actTime / this.duration) * Math.max(1, steps - 1);
     const localProgress = fullRangeProgress % 1;
@@ -68,25 +74,27 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
     const fromIndex = (this.startIndex + Math.trunc(fullRangeProgress)) % steps;
     const toIndex = (fromIndex + 1) % steps;
 
-    /* Color adjusting */
-    ColorUtil.lerpColorToTarget(this.particleColorfilterData.color, this.colors[fromIndex], this.colors[toIndex], localProgress);
-    this.alterColoring();
-
+    // Color adjusting
+    const h = PollenMath.lerp(this.colorsHsb[fromIndex][0], this.colorsHsb[toIndex][0], localProgress);
+    const s = PollenMath.lerp(this.colorsHsb[fromIndex][1], this.colorsHsb[toIndex][1], localProgress);
+    const b = PollenMath.lerp(this.colorsHsb[fromIndex][2], this.colorsHsb[toIndex][2], localProgress);
+    const h_rot = this.particleColorfilterData.getHueShiftForColorTargetFromSepia([h,s,b], this.particleColorfilterData.initialHueRotate)
+    // Update
+    this.updateColors(h_rot, s, b);
+    // check death
     this.checkBehaviorDeath(fromIndex, toIndex, particle);
   }
 
-  alterColoring() {
-    this.particleColorfilterData.color.updateDerivedValues();
-    const hsb = this.particleColorfilterData.color.getHSB();
-    this.particleColorfilterData.hueRotate = this.particleColorfilterData.getHueShiftForColorTargetFromSepia(hsb, this.particleColorfilterData.initialHueRotate);
-    this.particleColorfilterData.saturation = hsb[1];
-    this.particleColorfilterData.brightness = hsb[2];
+  updateColors(h, s, b) {
+    this.particleColorfilterData.hueRotate = h;
+    this.particleColorfilterData.saturation = s;
+    this.particleColorfilterData.brightness = b;
   }
 
   checkBehaviorDeath(fromIndex, toIndex, particle) {
     const maxIndexSum = fromIndex + Math.max(toIndex, fromIndex);
     this.colorIteration += Math.min(1, Math.abs(this.lastColorIndexSum - maxIndexSum));
-    this.lastOpacityIndexSum = maxIndexSum;
+    this.lastColorIndexSum = maxIndexSum;    
     if (this.colorIteration + 1 > this.colorIterationCount) {
       particle.disableBehavior(this.type);
     }

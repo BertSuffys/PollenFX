@@ -14,7 +14,8 @@ class Emitter extends FXItem {
   emitterOrigin;
   particleBehavior = new Map();
   particleData = new Map();
-  type
+  type;
+  pausedGentle;            // If paused, whether it abruptly pauses everything, or lets the particles that were already alive continue.
 
 
   /* CONSTRUCTOR */
@@ -48,6 +49,11 @@ class Emitter extends FXItem {
     this.delay = Math.max(0, delay);
     return this;
   }
+  
+  addParticleData(data) {
+    this.particleData.set(data.type, data);
+    return this;
+  }
 
   addParticleBehavior(behavior) {
     this.checkBehaviorValidityByEmitterType(behavior);
@@ -63,17 +69,13 @@ class Emitter extends FXItem {
     }
   }
 
-  addParticleData(data) {
-    this.particleData.set(data.type, data);
-    return this;
-  }
-
   getActiveParticles() {
     return this.particleManager.getActiveFXItems();
   }
 
   reset() {
     super.reset(this.lifeTime);
+    this.spawnedCount = 0;
     this.cutOff = 0;
     return this;
   }
@@ -134,13 +136,33 @@ class Emitter extends FXItem {
     }
   }
 
+  pause(gentle=true){
+    this.paused = true;
+    this.pausedGentle = gentle;
+    return this;
+  }
+
+  resume(){
+    this.paused = false;
+    this.pausedGentle = null;
+    return this;
+  }
+
   /* METHODS */
   act(deltaTime, startTimeMs) {
     super.act(deltaTime);
+    if(!this.paused){
+      this.checkSetActive();
+      this.particleManager.act(deltaTime, startTimeMs);
+    }else if(this.pausedGentle == true){
+      this.particleManager.act(deltaTime, startTimeMs);
+    }
+  }
+
+  checkSetActive(){
     if (this.delay > 0 && this.actTime > this.delay) {
       this.active = true;
     }
-    this.particleManager.act(deltaTime, startTimeMs);
   }
 
   createDOMDependencies() {

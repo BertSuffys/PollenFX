@@ -6,8 +6,9 @@ class FXItem {
     lifeTime;               // Time (in ms) something should in total be alive for
     liveTime;               // spawnTime + actTime, in essence.
     fxItemId;               // Unique identifier
+    paused;                 // Whether this FXItem is paused
 
-    
+
 
     /* CONSTRUCTOR */
     constructor(lifeTime) {
@@ -17,9 +18,13 @@ class FXItem {
         this.actTime = 0;
     }
 
+
+
     /* METHODS */
     act(deltaTime) {
-        this.actTime += deltaTime;
+        if(!this.paused){
+            this.actTime += deltaTime;
+        }
         this.liveTime += deltaTime;
     }
 

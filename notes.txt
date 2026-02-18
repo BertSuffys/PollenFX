@@ -13,29 +13,29 @@
 
   ----- Future updates (Priority sorted) ----- 
   
--> Pause/resume
--> Colorfilterbehavior
 
 -> Rendering and modiying origins, visually
--> Optionally, Upon emitter death/stopping, detach the particle divs from the dom for performance reasons.
-
+-> Raecon
+-> Origin visual + origin properties
+-> bug document closed timing 
 -> Documentatie
 -> Youtube video
-
 -> Testing
      - infinite particle + buttons
      - finite emitter + buttons
 
--> 1. Some data objects or behavior objects have fields that are used for calculations, but are never updated or used themselves (ex: initialRotation), 
+-> 0. JSON export/import of particle effects
+-> 1. Implementation of .withOriginProperties
+-> 2. Some data objects or behavior objects have fields that are used for calculations, but are never updated or used themselves (ex: initialRotation), 
        but do however remain unique per particle which results in alot of unnessesary data allocation. Maybe find a workaround with global config objects
        per data or behavior object. Same for behavior objects. They actually do the same, but take up alot of memory because they exist for each particle, even though
        their modification logic is all the same
--> 2. PositionUnits in the default data sometimes cause a weird jittery/jumpy effect.
--> 3. Full UML creation.
--> 4. Better color/colorfilter/over life calculations IF POSSIBLE, or at least document better.
--> 5. Shorthands .gravity(), returning a gravitybuilder, which takes into account data and behavior, to get faster creation of objects
--> 6. for wind the option to kill the wind behavior (checkBehaviorDeath) and leave it blowing in a certain stance.
--> 7. When the particlelifetime is set to -1, and in a behaviortype the duration is set to -1, there is no way to know over which time the behavior is going to play out.
+-> 3. PositionUnits in the default data sometimes cause a weird jittery/jumpy effect.
+-> 4. Full UML creation.
+-> 5. Better color/colorfilter/over life calculations IF POSSIBLE, or at least document better.
+-> 6. Shorthands .gravity(), returning a gravitybuilder, which takes into account data and behavior, to get faster creation of objects
+-> 7. for wind the option to kill the wind behavior (checkBehaviorDeath) and leave it blowing in a certain stance.
+-> 8. When the particlelifetime is set to -1, and in a behaviortype the duration is set to -1, there is no way to know over which time the behavior is going to play out.
       In case of a particlellifetime of -1, this behavior duration must be provided. Solve by throwing error. Maybe let data objects also store data now related to behavior (that gets updated),
       and let behavior only update data?
 

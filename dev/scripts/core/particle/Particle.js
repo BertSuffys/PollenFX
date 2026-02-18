@@ -42,14 +42,14 @@ class Particle extends FXItem {
   tryCreateParticleBox(emitterBox) {
     if (emitterBox != null && !this.particleBox) {
       this.emitterBox = emitterBox;
-      this.particleBox = document.createElement("div"); // create
-      this.particleBox.classList.add(PollenFXClasses.PARTICLE_BOX_CLASS); // add class
+      this.particleBox = document.createElement("div"); 
+      this.particleBox.classList.add(PollenFXClasses.PARTICLE_BOX_CLASS); 
       const particleBoxClass = this.dataManager.getDataByKey("default")?.particleBoxClass;
       if (particleBoxClass) {
-        this.particleBox.classList.add(particleBoxClass); // add custom class
+        this.particleBox.classList.add(particleBoxClass); 
       }
-      this.updateStyle(); // start css
-      this.emitterBox.appendChild(this.particleBox); // empty anchor? just add
+      this.updateStyle();
+      this.emitterBox.appendChild(this.particleBox); 
     }
   }
 
@@ -63,7 +63,6 @@ class Particle extends FXItem {
   }
 
   showCSS() {
-    console.trace()
     this.particleBox.setAttribute("style", "display:block;");
     this.updateStyle();
   }

@@ -36,7 +36,7 @@ class ParticleWindBehavior extends ParticleBehavior {
     this.configure();
     // ensure dependencies
     this.particleDirectionData = particleDataManager.ensureData("direction");
-    particleBehaviorManager.ensureBehavior("direction");
+    particleBehaviorManager.ensureBehavior("direction").build(particleDataManager, particleBehaviorManager);
     // config
     if (this.considerDefault) {
       if (!this.overrideInitialDirection) {

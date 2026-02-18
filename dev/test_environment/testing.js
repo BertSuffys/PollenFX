@@ -1,8 +1,45 @@
 let fxManager;
+let fxManager2;
 
-// pauseresume
-// Default particle behavior and data for debugging
-// Origin visual + origin properties
+document.addEventListener("DOMContentLoaded", function () {
+  // FXManager
+  fxManager = new PFX.FXManager();
+
+  // Anchor
+  let anchor = document.getElementById("anchor_1");
+
+  // Origin
+  const origin = new PFX.RectangularEmitterOrigin(25, 50, 65, 30)
+                    .withAnchor(anchor);
+
+  // Emitter
+  let emitter = new PFX.EmitterShoot(origin)
+                  .infinite(30, 1500)
+                  .withId("myEmitter");
+
+  // Data objects
+  const data_default = new PFX.ParticleDefaultData(30, 30)
+  const data_css = new PFX.ParticleCustomCssData(`background-color: red; border-radius: 20px;`).zIndexRange(100, 200);  
+  const data_directional = new PFX.ParticleDirectionData(90, 300)
+  emitter.addParticleData(data_default);
+  emitter.addParticleData(data_css);
+  emitter.addParticleData(data_directional);
+
+  // Behavior objects
+  const behavior_size_by_life = new PFX.ParticleSizeByLifeBehavior([0, 1, 0])
+  const behavior_gravity = new PFX.ParticleGravityBehavior(7).withNoise(0.1);
+  const behavior_direction_by_rotation = new PFX.ParticleRotationByDirectionBehavior()
+  emitter.addParticleBehavior(behavior_gravity);
+  emitter.addParticleBehavior(behavior_size_by_life);
+  emitter.addParticleBehavior(behavior_direction_by_rotation);
+
+  // Add emitter to FXManager
+  fxManager.addEmitter(emitter);
+
+  // Finish
+  fxManager.build().start();
+});
+
 
 document.addEventListener("DOMContentLoaded", function () {
   createFX();
@@ -10,22 +47,24 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function createFX() {
-  fxManager = new FXManager().setDebug(false).withAllowDOMOverflow(false)
+  fxManager = new FXManager()
+  .setDebug(true)
+  .withAllowDOMOverflow(false)
   .addEmitter(getFlipbookEmitter("fx_flipbook"))
   .addEmitter(getColorshiftEmitter("fx_colorshift"))
   .addEmitter(getColorFilterEmitter("fx_colorfilter"))
   .addEmitter(getSpiralEmitter("fx_spiral"))
-  .build(false)//.start();
+  .build()
 }
-
 
 function getFlipbookEmitter(id) {
   // anchor
   let anchor = document.getElementById("anchor_1");
 
   // origin
-  const origin_rect = new RectangularEmitterOrigin(25, 20, 65, 10)
+  const origin_rect = new RectangularEmitterOrigin(25, 50, 65, 30)
     .withAnchor(anchor)
+    .withMimicShape(true)
     .withOverflow(true)
     .withDomProperties(false, false, true)
     .withContainerProperties(100, 100, 0, 0)
@@ -37,7 +76,7 @@ function getFlipbookEmitter(id) {
   // data
   const data_default = new ParticleDefaultData(120, 120).withClass("flame").pivot(Pivot.CENTER, Pivot.END).withAllowMirrored(true, false);
   const data_flipbook = new ParticleFlipbookData(`../img/fire.png`, 1920, 960, 4, 2);
-  const data_css = new ParticleCustomCssData(`mix-blend-mode: color-dodge;`);
+  const data_css = new ParticleCustomCssData(`mix-blend-mode: color-dodge;`).zIndexRange(300,400);
   emitter_shoot.addParticleData(data_default);
   emitter_shoot.addParticleData(data_flipbook);
   emitter_shoot.addParticleData(data_css);
@@ -106,25 +145,27 @@ function getColorFilterEmitter(id) {
   const origin_point = new PointEmitterOrigin(25, 25).withAnchor(anchor).withOverflow(true).withDomProperties(false, false, true).withContainerProperties(100, 100, 0, 0).withOriginProperties();
 
   // emitter
-  let emitter_shoot = new EmitterShoot(origin_point).infinite(500, 2500).withDelay(0).withId(id);
+  let emitter_shoot = new EmitterShoot(origin_point).finite(30, 10000, 3000).withDelay(0).withId(id);
 
   // data
-  const data_direction = new ParticleDirectionData(90, 600);
-  const data_rotation = new ParticleRotationData(45);
-  const data_default = new ParticleDefaultData(30, 30).sizeNoise(2, 2, true).withClass("cube").pivot(Pivot.CENTER, Pivot.CENTER);
-  const data_css = new ParticleCustomCssData(`background: cyan; border: 2px solid black;`);
+  const data_direction = new ParticleDirectionData(90, 400).withConeNoise(45);
+  const data_rotation = new ParticleRotationData(45, 20);
+  const data_default = new ParticleDefaultData(70, 70).sizeNoise(0.2, 0.2, true).withClass("duck").pivot(Pivot.CENTER, Pivot.CENTER);
+  const data_colorfilter = new ParticleColorfilterData().withColor("#ff7300")
+  const data_image = new ParticleImageData(`./../img/rubber_duck.png`, 256, 256);
   emitter_shoot.addParticleData(data_default);
-  emitter_shoot.addParticleData(data_css);
+  emitter_shoot.addParticleData(data_image);
   emitter_shoot.addParticleData(data_direction);
   emitter_shoot.addParticleData(data_rotation);
+  emitter_shoot.addParticleData(data_colorfilter);
 
   // behavior
   const behavior_size_by_life = new ParticleSizeByLifeBehavior([0, 1, 1, 1, 1, 1, 1]);
   const behavior_opacity_by_life = new ParticleOpacityByLifeBehavior([1, 1, 1, 0]);
   const behavior_directional = new ParticleDirectionalBehavior();
   const behavior_rotation = new ParticleRotationBehavior(200).withNoise(0.4);
-  const behavior_gravity = new ParticleGravityBehavior(600).withNoise(0.5);
-  const behavior_colorfilter = new ParticleColorfilterBehavior([new Color("#f715f7")]);
+  const behavior_gravity = new ParticleGravityBehavior(400).withNoise(0.5);
+  const behavior_colorfilter = new ParticleColorfilterBehavior(["#9100ff", "#a9ff09", "#ff7300"])
   emitter_shoot.addParticleBehavior(behavior_size_by_life);
   emitter_shoot.addParticleBehavior(behavior_directional);
   emitter_shoot.addParticleBehavior(behavior_gravity);
@@ -150,20 +191,24 @@ function getSpiralEmitter(id) {
     .withOriginProperties();
 
   // emitter
-  let emitter_shoot = new EmitterShoot(origin_circle).infinite(10, 400).withDelay(0).withId(id);
+  let emitter_shoot = new EmitterShoot(origin_circle).infinite(30, 1500).withDelay(0).withId(id);
 
   // data
-  const data_default = new ParticleDefaultData(30, 22).sizeNoise(0.2, -1, false).withClass("flame").pivot(Pivot.CENTER, Pivot.END).withAllowMirrored(true, false);
-  const data_css = new ParticleCustomCssData(`background-color: #4A412A; border-radius:30px; border:1px solid #4A412A;`).zIndexRange(100, 200);
-  const data_directional = new ParticleDirectionData(90, 300)
+  const data_default = new ParticleDefaultData(30, 28).sizeNoise(0.5, -1, false).withClass("flame").pivot(Pivot.CENTER, Pivot.END).withAllowMirrored(true, false);
+  const data_css = new ParticleCustomCssData(`
+    background: radial-gradient(circle at 35% 30%, #6a6b3a 0%, #5a4a2e 35%, #4a3b24 65%, #3a2e1c 100%);
+    border-radius: 58% 42% 55% 45% / 48% 60% 40% 52%;
+    border: 1px solid #3a2e1c;
+  `).zIndexRange(100, 200);  
+  const data_directional = new ParticleDirectionData(90, 300).withSpeedNoise(0.1)
   emitter_shoot.addParticleData(data_default);
   emitter_shoot.addParticleData(data_css);
   emitter_shoot.addParticleData(data_directional);
 
   // behavior
-  const behavior_size_by_life = new ParticleSizeByLifeBehavior([0, 0.5, 0.8, 0.9, 1, 0.9, 0.8, 0.5, 0]);
-  const behavior_spiral = new ParticleSpiralBehavior(2000, false).withSpeedNoise(1)
-  const behavior_gravity = new ParticleGravityBehavior(4).withNoise(3);
+  const behavior_size_by_life = new ParticleSizeByLifeBehavior([0, 0.5, 0.8, 0.9, 1, 0.9, 0.8, 0.5, 0])
+  const behavior_spiral = new ParticleSpiralBehavior(2000, false)
+  const behavior_gravity = new ParticleGravityBehavior(7).withNoise(0.1);
   const behavior_direction_by_rotation = new ParticleRotationByDirectionBehavior()
   emitter_shoot.addParticleBehavior(behavior_spiral);
   emitter_shoot.addParticleBehavior(behavior_gravity);
@@ -182,6 +227,9 @@ function getLineEmitterOrigin(anchor) {
 function initButtons() {
   const stopBtn = document.querySelector(".buttons_btn--stop");
   const startBtn = document.querySelector(".buttons_btn--start");
+  const pauseBtn = document.querySelector(".buttons_btn--pause");
+  const pauseGentleBtn = document.querySelector(".buttons_btn--pause-gentle");
+  const resumeBtn = document.querySelector(".buttons_btn--resume");
   const restartBtn = document.querySelector(".buttons_btn--restart");
   const CountBtn = document.querySelector(".buttons_btn--count");
   const AvgBtn = document.querySelector(".buttons_btn--avg");
@@ -199,6 +247,18 @@ function initButtons() {
     fxManager?.restart();
   });
 
+  pauseBtn.addEventListener("click", () => {
+    fxManager.pause(false);
+  });
+
+  pauseGentleBtn.addEventListener("click", () => {
+    fxManager.pause(true);
+  });
+
+  resumeBtn.addEventListener("click", () => {
+    fxManager.resume();
+  });
+
   CountBtn.addEventListener("click", () => {
     alert(`There are currently ${fxManager?.getCurrentAliveParticleCount()} active particles.`);
   });
@@ -210,5 +270,4 @@ function initButtons() {
   FpsBtn.addEventListener("click", () => {
     alert(`The current FPS rate is ${fxManager?.getFPS()} frames per second`);
   });
-  
 }

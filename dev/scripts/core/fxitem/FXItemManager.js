@@ -70,8 +70,4 @@ class FXItemManager {
   hasAnyFXItem(){
     return this.allAddedFXItems?.length > 0;
   }
-
-  pause() {
-    //todo
-  }
 }

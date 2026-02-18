@@ -79,12 +79,12 @@ class ParticleColorfilterData extends ParticleData {
     this.helperStringCSS = "";
     if (this.color != null) {
       this.helperStringCSS = "grayscale(100%) sepia(100%)";
-      const hsb = this.color.getHSB();
+      const hsb = new Color(this.color).getHSB();
       const backupHueRotate = this.getHueRotateDelta();
-      this.hueRotate = this.getHueShiftForColorTargetFromSepia(hsb, this.hueRotate, this.color) + backupHueRotate;
+      this.hueRotate = this.getHueShiftForColorTargetFromSepia(hsb, this.initialHueRotate) + backupHueRotate;
       this.saturation = this.initialSaturation > -1 ? this.clampSaturation(this.initialSaturation) : hsb[1];
       this.brightness = this.initialBrightness > -1 ? this.clampBrightness(this.initialBrightness) : hsb[2];
-      this.contrast = this.initialContrast > -1 ? this.clampBrightness(this.initialContrast) : this.contrast;
+      this.contrast = this.initialContrast > -1 ? this.clampContrast(this.initialContrast) : this.contrast;
     } else {
       this.saturation = this.initialSaturation > -1 ? this.clampSaturation(this.initialSaturation) : this.saturation;
       this.brightness = this.initialBrightness > -1 ? this.clampBrightness(this.initialBrightness) : this.brightness;

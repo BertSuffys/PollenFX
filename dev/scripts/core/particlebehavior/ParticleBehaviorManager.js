@@ -40,7 +40,7 @@ class ParticleBehaviorManager {
   ensureBehavior(key) {
     let particleBehavior = this.particleBehaviors.get(key);
     if (!FXUtil.valid(particleBehavior)) {
-      return this.createDefaultBehavior(key).build();
+      return this.createDefaultBehavior(key);
     }
     return particleBehavior;
   }

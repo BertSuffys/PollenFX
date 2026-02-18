@@ -35,7 +35,7 @@ function getBigSmoke() {
     const directionData = new ParticleDirectionData(90, 6, 10, 2)
     const rotationData = new ParticleRotationData(127, 45)
     const cssData = new ParticleCustomCssData("mix-blend-mode: plus-darker;", 90, 105);
-    const flipbookData = new ParticleFlipbookData("./../../img/smoke.png", -1, -1, 6, 5);
+    const flipbookData = new ParticleFlipbookData("./img/smoke.png", -1, -1, 6, 5);
     const colorData = new ParticleColorfilterData(-30, new Color("#b05500"), -1, -1, -1, -1)
     emitter.addParticleData(defaultData);
     emitter.addParticleData(directionData);
@@ -71,7 +71,7 @@ function getFlames() {
     // Data
     const cssData = new ParticleCustomCssData("mix-blend-mode: overlay;", 100, 120);
     const defaultData = new ParticleDefaultData(40, 40, origin, -1, -1, -1, Pivot.CENTER, Pivot.END);
-    const flipbookData = new ParticleFlipbookData("./../../img/fire.png", -1, -1, 4, 2);
+    const flipbookData = new ParticleFlipbookData("./img/fire.png", -1, -1, 4, 2);
     emitter.addParticleData(defaultData);
     emitter.addParticleData(flipbookData);
     emitter.addParticleData(cssData);
@@ -142,7 +142,7 @@ function getLightSmoke() {
     let defaultData = new ParticleDefaultData(100, 100, origin, 0.5, 0.5, true);
     let directionData = new ParticleDirectionData(90, 6, 10, 2)
     let rotationData = new ParticleRotationData(127, 45)
-    let flipbookData = new ParticleFlipbookData("./../../img/smoke.png", -1, -1, 6, 5);
+    let flipbookData = new ParticleFlipbookData("./smoke.png", -1, -1, 6, 5);
     let colorData = new ParticleColorfilterData(-30, new Color("#b05500"), -1, -1, -1, -1)
     emitter.addParticleData(defaultData);
     emitter.addParticleData(directionData);

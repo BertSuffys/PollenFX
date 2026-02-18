@@ -18,7 +18,7 @@ class ParticleGravityBehavior extends ParticleBehavior {
   build(particleDataManager, particleBehaviorManager) {
     // dependencies
     this.particleDirectionData = particleDataManager.ensureData("direction");
-    particleBehaviorManager.ensureBehavior("direction");
+    particleBehaviorManager.ensureBehavior("direction").build(particleDataManager, particleBehaviorManager);
     // calculated values
     this.setFieldStrength();
     return this;
