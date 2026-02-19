@@ -1,23 +1,20 @@
 class FXManager {
   /* PARAMETERS */
   // children
-  emitterManager;                    // Stores and manages all emitters
+  emitterManager; // Stores and manages all emitters
   // runnables
-  startTime = 0;                     // actual start time when the FXManager was started.
-  runtime = 0;                       // time in milliseconds that the programm has been running for.
-  lastRuntime = 0;                   // unupdated time in milliseconds that the programm has been running
-  deltaTime = 0;                     // time passed between last two frames
-  totalDocumentClosedRuntime = 0;    // duration in milliseconds of the document being closed due to hiding or minimizing
-  documentCloseTime = 0;             // timestamp in milliseconds when the document closed due to hiding or minimizing
+  startTime = 0; // actual start time when the FXManager was started.
+  runtime = 0; // time in milliseconds that the programm has been running for.
+  lastRuntime = 0; // unupdated time in milliseconds that the programm has been running
+  deltaTime = 0; // time passed between last two frames
   // config
-  documentOpened = false;            // Whether the website window is opened or not. allows for pausing when on different tab
-  built = false;                     // whether all initialization is complete
-  started = false;                   // whether the FXManager was started
-  stopped = false;                   // whether the FXManager was stopped
-  canAct = false;                    // global field combining all other evaluation fields to base the act method on.
-  static DEBUG = false;              // whether the debugging visuals must be displayed. static as must be available globally
+  built = false; // whether all initialization is complete
+  started = false; // whether the FXManager was started
+  stopped = false; // whether the FXManager was stopped
+  canAct = false; // global field combining all other evaluation fields to base the act method on.
+  static DEBUG = false; // whether the debugging visuals must be displayed. static as must be available globally
   static ALLOW_DOM_OVERFLOW = false; // whether or not overflow is allowed to occur on the body. static as there must only be such a value, regardless of manager count.
-  static VERSION = "1.0.0";          // version
+  static VERSION = "1.0.0"; // version
   // misc
   subscribers = [];
   // animation
@@ -25,16 +22,16 @@ class FXManager {
     this.act(nowTime);
     window.requestAnimationFrame(this.renderfunction);
   };
-
-
+  // document visibility
+  totalDocumentClosedRuntime = 0; // duration in milliseconds of the document being closed due to hiding or minimizing
+  documentCloseTime = 0; // timestamp in milliseconds when the document closed due to hiding or minimizing
+  documentOpened = false; // Whether the website window is opened or not. allows for pausing when on different tab
 
   /* CONSTRUCTOR */
   constructor() {
     this.setDocumentOpenHideHandler();
     this.emitterManager = new FXItemHybridLifeManager(); // emitters can be permanently active or temporarily active emitters, so always hybrid
   }
-
-
 
   /* FLUENT */
   withAllowDOMOverflow(allowDOMOverflow = true) {
@@ -108,7 +105,6 @@ class FXManager {
     return this;
   }
 
-
   /* METHODS */
   stop() {
     this.started = false;
@@ -130,11 +126,11 @@ class FXManager {
     this.emitterManager.resume();
   }
 
-  pauseEmitter(id, gentle=true){
+  pauseEmitter(id, gentle = true) {
     this.emitterManager.pauseFXItem(id, gentle);
   }
 
-  resumeEmitter(id){
+  resumeEmitter(id) {
     this.emitterManager.resumeFXItem(id);
   }
 
@@ -164,17 +160,20 @@ class FXManager {
     return this.emitterManager.getActiveFXItems();
   }
 
-
   act(nowTime) {
-    this.runtime = nowTime - this.totalDocumentClosedRuntime;
-    this.deltaTime = this.runtime - this.lastRuntime;
-    if (this.canAct) {
-      this.emitterManager.act(this.deltaTime, this.startTime);
-      for (let subscriber of this.subscribers) {
-        subscriber(nowTime, this.runtime, this);
+    if (this.documentOpened) {
+      // calculation update
+      this.runtime = nowTime - this.totalDocumentClosedRuntime;
+      this.deltaTime = this.runtime - this.lastRuntime;
+      this.lastRuntime = this.runtime;  
+      // logic update
+      if (this.canAct) {
+        this.emitterManager.act(this.deltaTime, this.startTime);
+        for (let subscriber of this.subscribers) {
+          subscriber(nowTime, this.runtime, this);
+        }
       }
     }
-    this.lastRuntime = this.runtime;
   }
 
   canStart() {
@@ -190,7 +189,7 @@ class FXManager {
 
   reset() {
     // note: lastRuntime must never be reset, as runtime itself never resets.
-    this.startTime = new Date().getTime();
+    this.startTime = performance.now();
     this.runtime = 0;
     this.deltaTime = 0;
     this.totalDocumentClosedRuntime = 0;
@@ -202,9 +201,11 @@ class FXManager {
       if (document.hidden) {
         this.documentOpened = false;
         this.documentCloseTime = performance.now();
+        console.log("Start being closed");
       } else {
         this.documentOpened = true;
         this.totalDocumentClosedRuntime += performance.now() - this.documentCloseTime;
+        console.log("Stop being closed");
       }
       this.setCanAct();
     });

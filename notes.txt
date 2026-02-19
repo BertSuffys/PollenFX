@@ -13,16 +13,17 @@
 
   ----- Future updates (Priority sorted) ----- 
   
+-> Documentatie controle
 
 -> Rendering and modiying origins, visually
--> Raecon
--> Origin visual + origin properties
--> bug document closed timing 
--> Documentatie
--> Youtube video
 -> Testing
      - infinite particle + buttons
      - finite emitter + buttons
+-> Youtube video
+-> Raecon
+-> Export
+
+
 
 -> 0. JSON export/import of particle effects
 -> 1. Implementation of .withOriginProperties

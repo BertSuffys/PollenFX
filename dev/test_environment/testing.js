@@ -1,45 +1,4 @@
 let fxManager;
-let fxManager2;
-
-document.addEventListener("DOMContentLoaded", function () {
-  // FXManager
-  fxManager = new PFX.FXManager();
-
-  // Anchor
-  let anchor = document.getElementById("anchor_1");
-
-  // Origin
-  const origin = new PFX.RectangularEmitterOrigin(25, 50, 65, 30)
-                    .withAnchor(anchor);
-
-  // Emitter
-  let emitter = new PFX.EmitterShoot(origin)
-                  .infinite(30, 1500)
-                  .withId("myEmitter");
-
-  // Data objects
-  const data_default = new PFX.ParticleDefaultData(30, 30)
-  const data_css = new PFX.ParticleCustomCssData(`background-color: red; border-radius: 20px;`).zIndexRange(100, 200);  
-  const data_directional = new PFX.ParticleDirectionData(90, 300)
-  emitter.addParticleData(data_default);
-  emitter.addParticleData(data_css);
-  emitter.addParticleData(data_directional);
-
-  // Behavior objects
-  const behavior_size_by_life = new PFX.ParticleSizeByLifeBehavior([0, 1, 0])
-  const behavior_gravity = new PFX.ParticleGravityBehavior(7).withNoise(0.1);
-  const behavior_direction_by_rotation = new PFX.ParticleRotationByDirectionBehavior()
-  emitter.addParticleBehavior(behavior_gravity);
-  emitter.addParticleBehavior(behavior_size_by_life);
-  emitter.addParticleBehavior(behavior_direction_by_rotation);
-
-  // Add emitter to FXManager
-  fxManager.addEmitter(emitter);
-
-  // Finish
-  fxManager.build().start();
-});
-
 
 document.addEventListener("DOMContentLoaded", function () {
   createFX();
@@ -53,6 +12,7 @@ function createFX() {
   .addEmitter(getFlipbookEmitter("fx_flipbook"))
   .addEmitter(getColorshiftEmitter("fx_colorshift"))
   .addEmitter(getColorFilterEmitter("fx_colorfilter"))
+  .addEmitter(getChatGPTEmitter("fx_chatGPTEmitter"))
   .addEmitter(getSpiralEmitter("fx_spiral"))
   .build()
 }
@@ -219,9 +179,130 @@ function getSpiralEmitter(id) {
   return emitter_shoot;
 }
 
-function getLineEmitterOrigin(anchor) {
-  return new LineEmitterOrigin(0, 0, 200, 200, 50).withAnchor(anchor).withOverflow(false).withDomProperties(false, false, true).withContainerProperties(300, 300, -100, -100).withOriginProperties();
-}
+
+function getChatGPTEmitter(id) {
+  // Anchor
+  let anchor = document.getElementById("anchor_chatgpt");
+
+  // Origin — tight circular neural core
+  const origin = new CircularEmitterOrigin(50, 50, 10, 10)
+    .withAnchor(anchor)
+    .withOverflow(true)
+    .withMimicShape(true)
+    .withDomProperties(false, false, true)
+
+
+  // Emitter — infinite intelligent pulse
+  let emitter = new EmitterShoot(origin)
+    .infinite(75, 3000, 5)
+    .withId(id);
+
+  /* =========================
+     DATA
+     ========================= */
+
+  // Base particle
+  const data_default = new ParticleDefaultData(18, 18)
+    .sizeNoise(0.6, 0.6, true)
+    .withAllowMirrored(true, true)
+    .withClass("chatgpt-neuron");
+
+  // Direction outward
+  const data_direction = new ParticleDirectionData(0, 200)
+    .withSpeedNoise(0.3)
+    .withConeNoise(180);
+
+  // Rotation
+  const data_rotation = new ParticleRotationData(0, 1200);
+
+  // Base color filter
+  const data_colorfilter = new ParticleColorfilterData()
+    .withColor("#00ffa3")
+    .withBrightness(120)
+    .withSaturation(120);
+
+  // Cosmic glow CSS
+  const data_css = new ParticleCustomCssData(`
+    background: radial-gradient(circle at 30% 30%, 
+      #ffffff 0%, 
+      #00ffa3 25%, 
+      #0099ff 55%, 
+      #6f00ff 85%, 
+      transparent 100%);
+    border-radius: 50%;
+    box-shadow:
+      0 0 6px rgba(0,255,163,0.9),
+      0 0 14px rgba(0,153,255,0.7),
+      0 0 28px rgba(111,0,255,0.5),
+      0 0 60px rgba(0,255,163,0.3);
+    mix-blend-mode: screen;
+  `).zIndexRange(500, 800);
+
+  emitter.addParticleData(data_default);
+  emitter.addParticleData(data_direction);
+  emitter.addParticleData(data_rotation);
+  emitter.addParticleData(data_colorfilter);
+  emitter.addParticleData(data_css);
+
+  /* =========================
+     BEHAVIOR
+     ========================= */
+
+  // Spiral outward like expanding intelligence
+  const behavior_spiral = new ParticleSpiralBehavior(2000, true)
+    .withRandomStartRotation(true)
+    .withSpeedNoise(0.3);
+
+  // Gentle wind oscillation
+  const behavior_wind = new ParticleWindBehavior([0, 45, -45, 90, -90], 0.1)
+    .withDuration(3000)
+    .randomizeShallow(true);
+
+  // Gravity very subtle (floating effect)
+  const behavior_gravity = new ParticleGravityBehavior(1)
+    .withNoise(0.2);
+
+  // Size breathing cycle
+  const behavior_size = new ParticleSizeByLifeBehavior(
+    [0, 0.8, 1.4, 1.8, 1.2, 0.5, 0]
+  ).withNoise(0.15, true);
+
+  // Opacity pulse
+  const behavior_opacity = new ParticleOpacityByLifeBehavior(
+    [0, 1, 0.7, 1, 0]
+  ).withNoise(0.1);
+
+  // Rotation following movement
+  const behavior_rotation_follow = new ParticleRotationByDirectionBehavior(90);
+
+  // Color shift over life (digital spectrum)
+  const behavior_colorshift = new ParticleColorShiftBehavior()
+    .withHues([0, 120, 240, 360], true)
+    .withSaturations([100, 150, 200, 100])
+    .withBrightnesses([100, 200, 300, 150])
+    .withDuration(6000);
+
+  // Color morph
+  const behavior_colorfilter = new ParticleColorfilterBehavior([
+    "#00ffa3",
+    "#0099ff",
+    "#6f00ff",
+    "#ffffff"
+  ])
+  .withRandomStartColor(true)
+  .withDuration(6000);
+
+  emitter.addParticleBehavior(behavior_spiral);
+  emitter.addParticleBehavior(behavior_wind);
+  emitter.addParticleBehavior(behavior_gravity);
+  emitter.addParticleBehavior(behavior_size);
+  emitter.addParticleBehavior(behavior_opacity);
+  emitter.addParticleBehavior(behavior_rotation_follow);
+  emitter.addParticleBehavior(behavior_colorshift);
+  emitter.addParticleBehavior(behavior_colorfilter);
+
+  return emitter;
+} 
 
 
 function initButtons() {
