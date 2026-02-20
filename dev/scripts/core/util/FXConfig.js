@@ -1,3 +1,5 @@
+const svgNS = "http://www.w3.org/2000/svg";
+
 const FXConfig = {
   PFX_STYLES_SET: false,                                              // whether the general pfx styles have been set
 };

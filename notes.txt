@@ -12,13 +12,13 @@
 
 
   ----- Future updates (Priority sorted) ----- 
-  
--> Documentatie controle
 
 -> Rendering and modiying origins, visually
+
 -> Testing
      - infinite particle + buttons
      - finite emitter + buttons
+     
 -> Youtube video
 -> Raecon
 -> Export

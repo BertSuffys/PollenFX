@@ -11,6 +11,7 @@ function createFX() {
   .withAllowDOMOverflow(false)
   .addEmitter(getFlipbookEmitter("fx_flipbook"))
   .addEmitter(getColorshiftEmitter("fx_colorshift"))
+  .addEmitter(getSimpleEmitter("fx_simple"))
   .addEmitter(getColorFilterEmitter("fx_colorfilter"))
   .addEmitter(getChatGPTEmitter("fx_chatGPTEmitter"))
   .addEmitter(getSpiralEmitter("fx_spiral"))
@@ -22,7 +23,7 @@ function getFlipbookEmitter(id) {
   let anchor = document.getElementById("anchor_1");
 
   // origin
-  const origin_rect = new RectangularEmitterOrigin(25, 50, 65, 30)
+  const origin_rect = new RectangularEmitterOrigin(25, 65, 65, 30)
     .withAnchor(anchor)
     .withMimicShape(true)
     .withOverflow(true)
@@ -133,6 +134,38 @@ function getColorFilterEmitter(id) {
   emitter_shoot.addParticleBehavior(behavior_rotation);
   emitter_shoot.addParticleBehavior(behavior_rotation);
   emitter_shoot.addParticleBehavior(behavior_colorfilter);
+
+  // finish
+  return emitter_shoot;
+}
+
+function getSimpleEmitter(id){
+  // anchor
+  let anchor = document.getElementById("anchor_6");
+
+
+  // origin
+  const origin_circle = new LineEmitterOrigin(-400, -225, 230, -112, 10)
+    .withAnchor(anchor)
+    .withOverflow(true)
+    .withDomProperties(false, false, true)
+    .withContainerProperties(100, 100, 0, 0)
+    .withOriginProperties();
+
+  // emitter
+  let emitter_shoot = new EmitterShoot(origin_circle).infinite(10, 6000).withId(id);
+
+  // data
+  const data_default = new ParticleDefaultData(20, 20)
+  const data_css = new ParticleCustomCssData("background-color: red; border: 1px solid black; border-radius: 20px;")
+  emitter_shoot.addParticleData(data_default);
+  emitter_shoot.addParticleData(data_css);
+
+  // behavior
+  const behavior_gravity = new ParticleGravityBehavior(400).withNoise(0.5);
+  const behavior_opacity_by_life = new ParticleOpacityByLifeBehavior([0, 1, 1, 1, 1, 1, 1, 1, 0]);
+  emitter_shoot.addParticleBehavior(behavior_opacity_by_life);
+  emitter_shoot.addParticleBehavior(behavior_gravity);
 
   // finish
   return emitter_shoot;

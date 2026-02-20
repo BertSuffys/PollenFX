@@ -172,8 +172,7 @@ class Emitter extends FXItem {
     this.emitterBox = FXDom.createEmitterBox(this.emitterOrigin, this.emitterContainer);
     // The size listeners
     if (this.emitterOrigin.anchorElement != null) {
-      FXDom.initAnchorWidthResizeObserver(this.emitterOrigin, this.emitterBox); // width and x position
-      FXDom.initAnchorHeightResizeObserver(this.emitterOrigin, this.emitterBox); // height and y position
+      FXDom.initAnchorResizeObserver(this.emitterOrigin, this.emitterBox);
     } else {
       FXDom.initBodyResizeObserver(this.emitterBox);
     }

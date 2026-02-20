@@ -30,7 +30,9 @@ class EmitterOrigin {
   mimicShape = false;         // whether the emitterBox mimics shape or transform influencing properties from the anchorElement
   includeMargin = false;      // whether the emitterBox' width & height should also take into account the anchorElement's margin
   includePadding = true;      // whether the emitterBox' width & height should also take into account the anchorElement's padding
-  includeBorder = true;       // whether the emitterBox' width & height should also take into account the anchorElement's margin
+  includeBorder = true;       // whether the emitterBox' width & height should also take into account the anchorElement's margin\
+  //debug color
+  debugColor = null;
 
   /* CONSTRUCTOR */
   constructor(posX, posY) {
@@ -98,6 +100,9 @@ class EmitterOrigin {
 
   build() {
     this.initializePosition();
+    if(FXManager.DEBUG){
+      this.debugColor = Color.randomColor(100, 0.5);
+    }
     return this;
   }
 

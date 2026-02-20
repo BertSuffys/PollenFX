@@ -201,11 +201,9 @@ class FXManager {
       if (document.hidden) {
         this.documentOpened = false;
         this.documentCloseTime = performance.now();
-        console.log("Start being closed");
       } else {
         this.documentOpened = true;
         this.totalDocumentClosedRuntime += performance.now() - this.documentCloseTime;
-        console.log("Stop being closed");
       }
       this.setCanAct();
     });
