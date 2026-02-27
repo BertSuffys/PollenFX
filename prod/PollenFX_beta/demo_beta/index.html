@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PollenFX Testing</title>
+</head>
+
+<body>
+    <main>
+        <div id="anchor_1">Anchor</div>
+        <div class="buttons">
+            <button class="buttons_btn buttons_btn--stop">Stop</button>
+            <button class="buttons_btn buttons_btn--start">Start</button>
+            <button class="buttons_btn buttons_btn--restart">Restart</button>
+            <button class="buttons_btn buttons_btn--pause">Pause</button>
+            <button class="buttons_btn buttons_btn--pause-gentle">Pause (gentle)</button>
+            <button class="buttons_btn buttons_btn--resume">Resume</button>
+            <button class="buttons_btn buttons_btn--count">Current particlecount</button>
+            <button class="buttons_btn buttons_btn--avg">Average particlecount</button>
+            <button class="buttons_btn buttons_btn--fps">FPS</button>
+        </div>
+    </main>
+    <script src="../PollenFX.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+
+<style>
+    body {
+        background: linear-gradient(#464e6f, #131637);
+        width: 100vw;
+        height: 100vh;
+        margin: 0px;
+    }
+
+    #anchor_1 {
+        margin-left: calc(50vw - 20px);
+        background-color: rgb(116, 221, 226);
+        border: 2px solid blue;
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        margin-top: calc(50vh - 20px);
+        position: absolute;
+        color: rgb(0, 0, 0);
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 44px;
+    }
+
+    .buttons {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        display: flex;
+        gap: 16px;
+        z-index: 1000;
+    }
+</style>
