@@ -7,9 +7,10 @@ class ParticleBehaviorManager {
   constructor() {}
 
   /* FLUENT */
-  build(particleDataManager, particleBehaviorManager) {
+  build(particleDataManager, particleBehaviorManager, particle) {
     this.particleBehaviors.forEach((particleBehavior, type) => {
       particleBehavior.build(particleDataManager, particleBehaviorManager);
+      particleBehavior.applyParticle(particle)
     });
     return this;
   }
@@ -32,8 +33,7 @@ class ParticleBehaviorManager {
     });
     this.disabledBehaviors.clear();
     for (let [type, particleBehavior] of this.particleBehaviors) {
-      particleBehavior.applyParticle(particle);
-      particleBehavior.reset();
+      particleBehavior.reset(particle);
     }
   }
 

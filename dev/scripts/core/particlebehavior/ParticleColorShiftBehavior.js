@@ -2,6 +2,7 @@ class ParticleColorShiftBehavior extends ParticleBehavior {
   /* FIELDS */
   // core fields
   duration = -1;
+  initialDuration = -1;
   forceForwardHue = true;
   particleColorFilterData;
   // keys for indexation
@@ -33,11 +34,12 @@ class ParticleColorShiftBehavior extends ParticleBehavior {
     // ensuring dependencies
     this.particleColorFilterData = particleDataManager.ensureData("colorfilter");
     // finish
+    this.duration = this.initialDuration;
     return this;
   }
 
   withDuration(duration) {
-    this.duration = duration;
+    this.initialDuration = duration;
     return this;
   }
 
@@ -146,7 +148,7 @@ class ParticleColorShiftBehavior extends ParticleBehavior {
   }
 
   applyParticle(particle) {
-    if (this.duration <= 0) {
+    if (this.initialDuration <= 0) {
       this.duration = particle.lifeTime;
     }
   }
@@ -161,7 +163,7 @@ class ParticleColorShiftBehavior extends ParticleBehavior {
       .withContrasts(this.shifterMap.get(this.KEY_CONTRAST))
       .withSaturations(this.shifterMap.get(this.KEY_SATURATION))
       .withBrightnesses(this.shifterMap.get(this.KEY_BRIGHTNESS))
-      .withDuration(this.duration);
+      .withDuration(this.initialDuration);
   }
 
   static createDefault() {

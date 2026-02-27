@@ -13,10 +13,7 @@ class ParticleDefaultData extends ParticleData {
   noiseHeight = -1;
   uniformSizeWidth = false;
   particleBoxClass = null;
-  mirrorX = false;
-  mirrorY = false;
-  mirrorXScale = 1;
-  mirrorYScale = 1;
+
 
   /* CONSTRUCTOR */
   constructor(width, height) {
@@ -52,11 +49,7 @@ class ParticleDefaultData extends ParticleData {
     return this;
   }
 
-  withAllowMirrored(mirrorX, mirrorY = false) {
-    this.mirrorX = mirrorX;
-    this.mirrorY = mirrorY;
-    return this;
-  }
+
 
   /* METHODS */
   reset() {
@@ -70,8 +63,7 @@ class ParticleDefaultData extends ParticleData {
             left: ${this.posX - this.width * this.horizontalPivot}px;
             width: ${this.width}px;
             height: ${this.height}px;
-            will-change : transform;
-            transform: scale(${this.mirrorXScale}, ${this.mirrorYScale});`;
+            will-change : transform;`;
   }
 
   static createDefault() {
@@ -86,8 +78,7 @@ class ParticleDefaultData extends ParticleData {
       .sizeNoise(this.noiseWidth, this.noiseHeight, this.uniformSizeWidth)
       .pivot(this.horizontalPivot, this.verticalPivot)
       .setEmitterOrigin(this.emitterOrigin)
-      .withClass(this.particleBoxClass)
-      .withAllowMirrored(this.mirrorX, this.mirrorY);
+      .withClass(this.particleBoxClass);
   }
 
   initSizes(noiseWidth, noiseHeight, uniformSizeWidth, width, height) {
@@ -120,9 +111,6 @@ class ParticleDefaultData extends ParticleData {
       this.height = height;
       this.width = width;
     }
-    // optional mirroring
-    this.mirrorXScale *= this.mirrorX ? PollenMath.randomSign() : 1;
-    this.mirrorYScale *= this.mirrorY ? PollenMath.randomSign() : 1;
   }
 
   /* GETTERS AND SETTERS */

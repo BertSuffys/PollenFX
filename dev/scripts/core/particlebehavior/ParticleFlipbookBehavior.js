@@ -68,9 +68,7 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     const framesToAdvance = Math.floor(this.timeSinceLastFrameshift * this.speed);
 
     if (framesToAdvance > 0) {
-      this.flipbookData.currentFrameIndex =
-        (this.flipbookData.currentFrameIndex + framesToAdvance) %
-        this.flipbookData.frameCount;
+      this.flipbookData.currentFrameIndex = (this.flipbookData.currentFrameIndex + framesToAdvance) % this.flipbookData.frameCount;
 
       // remove consumed time
       this.timeSinceLastFrameshift -= framesToAdvance / this.speed;

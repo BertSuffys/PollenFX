@@ -82,7 +82,7 @@ class Emitter extends FXItem {
 
   build() {
     if(this.particleCount == null){
-      FXUtil.pollenFXError("An emitter must be initialized using initFinite() or initInfinite()!");
+      FXUtil.pollenFXError("An emitter must be initialized using .finite() or .infinite()!");
     }
     // setup
     super.setLifetime(Emitter.calculateFinalDuration(this.particleLifetime, this.particleLifetimeNoise, this.lifeTime, this.delay));
@@ -167,7 +167,7 @@ class Emitter extends FXItem {
 
   createDOMDependencies() {
     // The collapsed container
-    this.emitterContainer = FXDom.createEmitterContainer(this.emitterOrigin);
+    this.emitterContainer = FXDom.createEmitterContainer(this.emitterOrigin, this.fxItemId);
     // The box or actual habitat
     this.emitterBox = FXDom.createEmitterBox(this.emitterOrigin, this.emitterContainer);
     // The size listeners
@@ -180,19 +180,19 @@ class Emitter extends FXItem {
     if (FXManager.DEBUG) {
       switch (this.emitterOrigin.constructor.name) {
         case "CircularEmitterOrigin": {
-          FXDom.createCircularOriginBox(this.emitterOrigin, this.emitterContainer);
+          FXDom.createCircularOriginBox(this.emitterOrigin, this.emitterContainer, this.emitterBox);
           break;
         }
         case "LineEmitterOrigin": {
-          FXDom.createLineOriginBox(this.emitterOrigin, this.emitterContainer);
+          FXDom.createLineOriginBox(this.emitterOrigin, this.emitterContainer, this.emitterBox);
           break;
         }
         case "PointEmitterOrigin": {
-          FXDom.createPointOriginBox(this.emitterOrigin, this.emitterContainer);
+          FXDom.createPointOriginBox(this.emitterOrigin, this.emitterContainer, this.emitterBox);
           break;
         }
         default: {
-          FXDom.createRectangularOriginBox(this.emitterOrigin, this.emitterContainer);
+          FXDom.createRectangularOriginBox(this.emitterOrigin, this.emitterContainer, this.emitterBox);
           break;
         }
       }
@@ -252,9 +252,8 @@ class Emitter extends FXItem {
   generateNextParticleLifetime() {
     if (this.particleLifetimeNoise > 0) {
       return PollenMath.relativeMap(this.particleLifetime, this.particleLifetimeNoise, Math.random());
-    } else {
-      return this.particleLifetime;
     }
+      return this.particleLifetime;
   }
 
   getCurrentAliveParticleCount() {

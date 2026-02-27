@@ -1,3 +1,8 @@
+  ----- Production scripts ----- 
+  PFX.js        -> Minified script with PFX wrapper (angular purposes)
+  PollenFX.js   -> Minified script as is
+
+  
   ----- conventions ----- 
 -> Do not use get() or set() members. Always write proper getMethod() getters and setters.
 -> Never acces properties. Always use the getters and setters. 
@@ -12,17 +17,7 @@
 
 
   ----- Future updates (Priority sorted) ----- 
-
--> Rendering and modiying origins, visually
-
--> Testing
-     - infinite particle + buttons
-     - finite emitter + buttons
-     
--> Youtube video
--> Raecon
--> Export
-
+-> Youtube video.
 
 
 -> 0. JSON export/import of particle effects

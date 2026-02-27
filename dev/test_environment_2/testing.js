@@ -1,0 +1,95 @@
+let fxManager;
+
+document.addEventListener("DOMContentLoaded", function () {
+  createFX();
+  initButtons();
+});
+
+function createFX() {
+  fxManager = new FXManager()
+    .setDebug(true)
+    .withAllowDOMOverflow(false)
+    .addEmitter(getEmitter())
+    .build(false)
+    .subscribe((a, b, c) => {})
+    .start();
+}
+
+function getEmitter() {
+  // anchor
+  let anchor = document.getElementById("anchor_1");
+
+  // origin
+  const origin_circle = new CircularEmitterOrigin(100, 200, 100, 100).withAnchor(anchor).withOverflow(true).withContainerProperties(170, 170, 300, 100, null, null, PositionUnit.PIXEL)
+
+  // emitter
+  let emitter_shoot = new EmitterShoot(origin_circle).infinite(10, 3000).withId("roebob");
+
+  // data
+  const data_default = new ParticleDefaultData(20, 20);
+  const data_css = new ParticleCustomCssData(`background-color: red; border-radius: 20px; border: 1px solid white;`).zIndexRange(300, 400);
+  const data_direction = new ParticleDirectionData(90, 150)
+  emitter_shoot.addParticleData(data_default);
+  emitter_shoot.addParticleData(data_css);
+  emitter_shoot.addParticleData(data_direction);
+
+  // behavior
+  const behavior_direction = new ParticleDirectionalBehavior();
+  //emitter_shoot.addParticleBehavior(behavior_direction);
+
+  // finish
+  return emitter_shoot;
+}
+
+function getComparisonEmitter() {
+  const origin_rect = new RectangularEmitterOrigin(275, 635, 65, 30);
+  return new EmitterShoot(origin_rect).withId("comparison").infinite(100, 5000);
+}
+
+function initButtons() {
+  const stopBtn = document.querySelector(".buttons_btn--stop");
+  const startBtn = document.querySelector(".buttons_btn--start");
+  const pauseBtn = document.querySelector(".buttons_btn--pause");
+  const pauseGentleBtn = document.querySelector(".buttons_btn--pause-gentle");
+  const resumeBtn = document.querySelector(".buttons_btn--resume");
+  const restartBtn = document.querySelector(".buttons_btn--restart");
+  const CountBtn = document.querySelector(".buttons_btn--count");
+  const AvgBtn = document.querySelector(".buttons_btn--avg");
+  const FpsBtn = document.querySelector(".buttons_btn--fps");
+
+  stopBtn.addEventListener("click", () => {
+    fxManager?.stop();
+  });
+
+  startBtn.addEventListener("click", () => {
+    fxManager?.start();
+  });
+
+  restartBtn.addEventListener("click", () => {
+    fxManager?.restart();
+  });
+
+  pauseBtn.addEventListener("click", () => {
+    fxManager.pause(false);
+  });
+
+  pauseGentleBtn.addEventListener("click", () => {
+    fxManager.pause(true);
+  });
+
+  resumeBtn.addEventListener("click", () => {
+    fxManager.resume();
+  });
+
+  CountBtn.addEventListener("click", () => {
+    alert(`There are currently ${fxManager?.getCurrentAliveParticleCount()} active particles.`);
+  });
+
+  AvgBtn.addEventListener("click", () => {
+    alert(`There are on average ${fxManager?.getAverigeAliveParticleCount()} active particles.`);
+  });
+
+  FpsBtn.addEventListener("click", () => {
+    alert(`The current FPS rate is ${fxManager?.getFPS()} frames per second`);
+  });
+}

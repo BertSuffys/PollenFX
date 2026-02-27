@@ -19,7 +19,7 @@ class ParticleSpiralBehavior extends ParticleDirectionalBehavior {
 
   /* CONSTRUCTOR */
   constructor(msPerRotation, randomRotationDirection = false) {
-    super();
+    super("direction");
     this.randomRotationDirection = randomRotationDirection;
     this.initialMsPerRotation = Math.abs(msPerRotation);
     this.rotationMultiplier = Math.sign(msPerRotation);
@@ -71,8 +71,8 @@ class ParticleSpiralBehavior extends ParticleDirectionalBehavior {
     const fraction = (elapsed % this.msPerRotation) / this.msPerRotation;
     const particleDirection = this.startRotation + 360 * fraction * this.rotationMultiplier;
 
-    const xUpdate = PollenMath.cos(particleDirection) * this.particleDirectionData.speed * deltaTimeSeconds;
-    const yUpdate = PollenMath.sin(particleDirection) * this.particleDirectionData.speed * deltaTimeSeconds * -1;
+    const xUpdate = PollenMath.cos(particleDirection) * this.particleDirectionData.speed ;
+    const yUpdate = PollenMath.sin(particleDirection) * this.particleDirectionData.speed * -1;
 
     this.particleDirectionData.directionX += xUpdate - this.lastSpiralEffectX;
     this.particleDirectionData.directionY += yUpdate - this.lastSpiralEffectY;
@@ -81,8 +81,8 @@ class ParticleSpiralBehavior extends ParticleDirectionalBehavior {
     this.lastSpiralEffectY = yUpdate;
 
     // position update. Note: This is the actual position update, as though it were directionalbehavior.
-    this.particleDefaultData.posX += this.particleDirectionData.directionX;
-    this.particleDefaultData.posY += this.particleDirectionData.directionY;
+    this.particleDefaultData.posX += this.particleDirectionData.directionX * deltaTimeSeconds;
+    this.particleDefaultData.posY += this.particleDirectionData.directionY * deltaTimeSeconds;
   }
 
   calculateValues() {

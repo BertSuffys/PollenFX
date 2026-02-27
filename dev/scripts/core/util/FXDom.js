@@ -1,5 +1,5 @@
 class FXDom {
-  static createEmitterContainer(emitterOrigin) {
+  static createEmitterContainer(emitterOrigin, fxItemId) {
     let emitterContainer;
 
     // define a valid anchor. either provided or the document body.
@@ -44,6 +44,9 @@ class FXDom {
     // Create the physical container
     emitterContainer = document.createElement("div");
     emitterContainer.classList.add(PollenFXClasses.EMITTER_CONTAINER_CLASS);
+    if (fxItemId) {
+      emitterContainer.classList.add(fxItemId);
+    }
     if (anchor.hasChildNodes()) {
       anchor.insertBefore(emitterContainer, anchor.firstChild); // non-empty anchor -> stack ontop of child list
     } else {
@@ -91,20 +94,23 @@ class FXDom {
     return emitterBox;
   }
 
-  static createCircularOriginBox(circularEmitterOrigin, emitterContainer, overrideDimensions = null) {
+  static createCircularOriginBox(circularEmitterOrigin, emitterContainer, emitterBox, overrideDimensions = null) {
     // validity
     if (!FXUtil.valid(emitterContainer)) {
       FXUtil.pollenFXError("No emittercontainer was provided. Something went wrong.");
       return;
     }
+    
+    const emitterBoxLeft = FXUtil.fromPixel(emitterBox.style.left);
+    const emitterBoxTop = FXUtil.fromPixel(emitterBox.style.top);
 
     // Create SVG
     let svg_wrapper = FXDom.getSvgWrapper();
 
     // Create Ellipse
     let ellipse = document.createElementNS(svgNS, "ellipse");
-    ellipse.setAttribute("cx", circularEmitterOrigin.posX);
-    ellipse.setAttribute("cy", circularEmitterOrigin.posY);
+    ellipse.setAttribute("cx", circularEmitterOrigin.posX + emitterBoxLeft);
+    ellipse.setAttribute("cy", circularEmitterOrigin.posY + emitterBoxTop);
     ellipse.setAttribute("rx", overrideDimensions ?? circularEmitterOrigin.width / 2);
     ellipse.setAttribute("ry", overrideDimensions ?? circularEmitterOrigin.height / 2);
     ellipse.setAttribute("stroke", "black");
@@ -118,18 +124,21 @@ class FXDom {
     emitterContainer.appendChild(svg_wrapper);
   }
 
-  static createLineOriginBox(lineEmitterOrigin, emitterContainer) {
+  static createLineOriginBox(lineEmitterOrigin, emitterContainer, emitterBox) {
     if (!FXUtil.valid(emitterContainer)) {
       FXUtil.pollenFXError("No emittercontainer was provided. Something went wrong.");
       return;
     }
 
+    const emitterBoxLeft = FXUtil.fromPixel(emitterBox.style.left);
+    const emitterBoxTop = FXUtil.fromPixel(emitterBox.style.top);
+
     const svg_wrapper = FXDom.getSvgWrapper();
 
-    const x1 = lineEmitterOrigin.posX;
-    const y1 = lineEmitterOrigin.posY;
-    const x2 = lineEmitterOrigin.posX_2;
-    const y2 = lineEmitterOrigin.posY_2;
+    const x1 = lineEmitterOrigin.posX + emitterBoxLeft;
+    const y1 = lineEmitterOrigin.posY + emitterBoxTop;
+    const x2 = lineEmitterOrigin.posX_2 + emitterBoxLeft;
+    const y2 = lineEmitterOrigin.posY_2 + emitterBoxTop;
     const thickness = lineEmitterOrigin.offset ?? 2; // perpendicular thickness
 
     // Compute perpendicular vector
@@ -171,16 +180,19 @@ class FXDom {
     emitterContainer.appendChild(svg_wrapper);
   }
 
-  static createPointOriginBox(pointEmitterOrigin, emitterContainer) {
-    FXDom.createCircularOriginBox(pointEmitterOrigin, emitterContainer, 20);
+  static createPointOriginBox(pointEmitterOrigin, emitterContainer, emitterBox) {
+    FXDom.createCircularOriginBox(pointEmitterOrigin, emitterContainer, emitterBox, 5);
   }
 
-  static createRectangularOriginBox(rectangularEmitterOrigin, emitterContainer) {
+  static createRectangularOriginBox(rectangularEmitterOrigin, emitterContainer, emitterBox) {
     // validity
     if (!FXUtil.valid(emitterContainer)) {
       FXUtil.pollenFXError("No emittercontainer was provided. Something went wrong.");
       return;
     }
+
+    const emitterBoxLeft = FXUtil.fromPixel(emitterBox.style.left);
+    const emitterBoxTop = FXUtil.fromPixel(emitterBox.style.top);
 
     // Create SVG
     let svg_wrapper = FXDom.getSvgWrapper();
@@ -192,8 +204,8 @@ class FXDom {
     const height = rectangularEmitterOrigin.height;
 
     // Center-based positioning (like ellipse)
-    rect.setAttribute("x", rectangularEmitterOrigin.posX - width / 2);
-    rect.setAttribute("y", rectangularEmitterOrigin.posY - height / 2);
+    rect.setAttribute("x", (rectangularEmitterOrigin.posX - width / 2) + emitterBoxLeft);
+    rect.setAttribute("y", (rectangularEmitterOrigin.posY - height / 2) + emitterBoxTop);
     rect.setAttribute("width", width);
     rect.setAttribute("height", height);
 
@@ -215,13 +227,16 @@ class FXDom {
   }
 
   static initAnchorResizeObserver(emitterOrigin, emitterBox) {
+    FXDom.handleResizing(emitterOrigin, emitterBox);
     const heightObserver = new ResizeObserver((entries) => {
-      // this is necessary because the size of the emitterbox can be expressed as a percentage of the anchor
-      FXDom.handleAnchorWidthResizing(emitterOrigin, emitterBox); // emitterbox
-      FXDom.handleAnchorHeightResizing(emitterOrigin, emitterBox); // emitterbox
-      // Note: Above, the emitterbox is made responsive. This is not yet done for the EmitterOrigin, because withOriginProperties is not yet implemented.
+      FXDom.handleResizing(emitterOrigin, emitterBox);
     });
     heightObserver.observe(emitterOrigin.anchorElement);
+  }
+
+  static handleResizing(emitterOrigin, emitterBox) {
+    FXDom.handleAnchorWidthResizing(emitterOrigin, emitterBox); // emitterbox
+    FXDom.handleAnchorHeightResizing(emitterOrigin, emitterBox); // emitterbox
   }
 
   static handleAnchorHeightResizing(emitterOrigin, emitterBox) {

@@ -4,6 +4,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
   sizeMultipliersX;
   sizeMultipliersY;
   duration = -1;
+  initialDuration = -1;
   // noise
   scalarNoise = -1;
   uniformNoise = true;
@@ -39,13 +40,14 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     this.particleDefaultData = particleDataManager.ensureData("default");
     this.initialHeight = this.particleDefaultData.height;
     this.initialWidth = this.particleDefaultData.width;
+    this.duration = this.initialDuration
     this.setInitialSizeData();
     return this;
   }
 
   withDuration(duration, sizeIterationCount = -1) {
     this.sizeIterationCount = sizeIterationCount < 0 ? Number.MAX_VALUE : sizeIterationCount;
-    this.duration = duration;
+    this.initialDuration = duration;
     return this;
   }
 
@@ -55,8 +57,9 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     return this;
   }
 
-  reset() {
+  reset(particle) {
     this.setInitialSizeData();
+    this.applyParticle(particle);
     this.xSizeIteration = 0;
     this.ySizeIteration = 0;
     this.lastXSizeIndexSum = Math.min(this.sizeMultipliersX.length, 1);
@@ -114,7 +117,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
   }
 
   applyParticle(particle) {
-    if (this.duration <= 0) {
+    if (this.initialDuration <= 0) {
       this.duration = particle.lifeTime;
     }
   }
@@ -187,7 +190,7 @@ class ParticleSizeByLifeBehavior extends ParticleBehavior {
     } else {
       const newBehavior = new ParticleSizeByLifeBehavior(this.initialSizeMultipliersX, this.initialSizeMultipliersY)
         .withNoise(this.scalarNoise, this.uniformNoise)
-        .withDuration(this.duration, this.sizeIterationCount);
+        .withDuration(this.initialDuration, this.sizeIterationCount);
       return newBehavior;
     }
   }

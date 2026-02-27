@@ -1,6 +1,7 @@
 class ParticleColorfilterBehavior extends ParticleBehavior {
   /* FIELDS */
   duration = -1;
+  initialDuration = -1;
   colors = [];
   colorsHsb = [];                  // array containing the hsb values
   particleColorfilterData;
@@ -23,13 +24,15 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
     this.colorIteration = 0;
     this.startIndex = this.startIndex % this.colorsHsb.length;
     this.lastColorIndexSum = Math.min(this.colorsHsb.length, 1);
+    this.duration = this.initialDuration;
     if (this.randomStartColor) {
       this.startIndex = Math.floor(Math.random() * this.colorsHsb.length);
     }
     // ensuring dependencies
-    this.particleColorfilterData = particleDataManager.ensureData("colorfilter");
+    this.particleColorfilterData = particleDataManager.ensureData("colorfilter", false);
     if (this.particleColorfilterData.color === null) {
-      this.particleColorfilterData.color = this.colors != null ? new Color(this.colors[0]) : new Color(ColorUtil.debugColor);
+      this.particleColorfilterData.color = this.colors != null ? this.colors[0] : ColorUtil.debugColor;
+      this.particleColorfilterData.build();
     }
     // finish
     return this;
@@ -42,7 +45,7 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
 
   withDuration(duration, colorIterationCount = -1) {
     this.colorIterationCount = colorIterationCount < 0 ? Number.MAX_VALUE : colorIterationCount;
-    this.duration = duration;
+    this.initialDuration = duration;
     return this;
   }
 
@@ -101,7 +104,7 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
   }
 
   applyParticle(particle) {
-    if (this.duration <= 0) {
+    if (this.initialDuration <= 0) {
       this.duration = particle.lifeTime;
     }
   }
@@ -111,7 +114,7 @@ class ParticleColorfilterBehavior extends ParticleBehavior {
       return this;
     }
     return new ParticleColorfilterBehavior(this.colors)
-      .withDuration(this.duration, this.colorIterationCount)
+      .withDuration(this.initialDuration, this.colorIterationCount)
       .withRandomStartColor(this.randomStartColor)
       .withStartIndex(this.startIndex);
   }

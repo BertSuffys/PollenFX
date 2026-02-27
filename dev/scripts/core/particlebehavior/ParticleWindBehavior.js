@@ -4,6 +4,7 @@ class ParticleWindBehavior extends ParticleBehavior {
   angles;
   windSpeed = 0;
   cycleDuration = -1;
+  initialCycleDuration = -1;
   // random
   shallowRandom = false;
   deepRandom = false;
@@ -91,7 +92,7 @@ class ParticleWindBehavior extends ParticleBehavior {
   }
 
   withDuration(cycleDuration) {
-    this.cycleDuration = cycleDuration;
+    this.initialCycleDuration = cycleDuration;
     return this;
   }
 
@@ -125,7 +126,7 @@ class ParticleWindBehavior extends ParticleBehavior {
   }
 
   applyParticle(particle) {
-    if (this.cycleDuration < 0) {
+    if (this.initialCycleDuration < 0) {
       this.cycleDuration = particle.lifeTime;
     }
   }
@@ -138,6 +139,7 @@ class ParticleWindBehavior extends ParticleBehavior {
   }
 
   configure() {
+    this.cycleDuration = this.initialCycleDuration;
     if (this.angles != null) {
       this.directionsX = [];
       this.directionsY = [];
@@ -197,7 +199,7 @@ class ParticleWindBehavior extends ParticleBehavior {
       return new ParticleWindBehavior(this.angles, this.windSpeed)
         .randomizeShallow(this.shallowRandom)
         .randomizeDeep(this.deepRandom)
-        .withDuration(this.cycleDuration)
+        .withDuration(this.initialCycleDuration)
         .withInitialDirection(this.considerDefault, this.overrideInitialDirection);
     }
   }

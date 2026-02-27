@@ -18,8 +18,8 @@ class Particle extends FXItem {
 
   /* FLUENT */
   build() {
-    this.dataManager.build();
-    this.behaviorManager.build(this.dataManager, this.behaviorManager);
+    this.dataManager.build(this.dataManager, this.behaviorManager, this);
+    this.behaviorManager.build(this.dataManager, this.behaviorManager, this);
     return this;
   }
 
@@ -77,7 +77,6 @@ class Particle extends FXItem {
 
   addParticleBehavior(behavior) {
     this.behaviorManager.addParticleBehavior(behavior, this.dataManager);
-    behavior.applyParticle(this);
   }
 
   getCSS() {

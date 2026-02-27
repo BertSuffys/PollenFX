@@ -34,7 +34,7 @@ and using this script, you agree to the following terms:
      inability to use the script.
 
 6. Modifications:
-   - Bert Suffyes reserves the right to modify, suspend, or
+   - Bert Suffys reserves the right to modify, suspend, or
      discontinue the script at any time.
 
 By using the script, you acknowledge that you have read, understood, and agree

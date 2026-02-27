@@ -23,19 +23,25 @@ class ParticleFlipbookData extends ParticleImageData {
   }
 
   /* FLUENT */
-  build() {
+  build(particleDataManager, particleBehaviorManager) {
+    this.defaultData = particleDataManager.ensureData("default");
+    this.particleWidth = this.defaultData.width;
+    this.particleHeight = this.defaultData.height;
     super.extractImageDimensions(this.url, this.imgWidth, this.imgHeight, (response) => {
       this.imgWidth = this.imgWidth != null && this.imgHeight != null ? this.imgWidth : response[0];
       this.imgHeight = this.imgWidth != null && this.imgHeight != null ? this.imgHeight : response[1];
       this.frameWidth = this.imgWidth / this.frameCountX;
       this.frameHeight = this.imgHeight / this.frameCountY;
-      this.particleWidth = this.imgWidth;
-      this.particleHeight = this.imgHeight;
     });
     return this;
   }
 
   reset() {
+    return this;
+  }
+
+  withRandomStartFrame(){
+    this.startFrame = (this.frameCountX * this.frameCountY) - 1;
     return this;
   }
 

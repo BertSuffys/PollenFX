@@ -18,7 +18,7 @@
 
     <!-- PollenFX Logo -->
     <div class="flex row hcenter" id="logo">
-      <img src="./img/pollenfx_logo.png" alt="">
+      <img src="./../../../documentation/img/pollenfx_logo.png" alt="">
     </div>
 
 
@@ -77,7 +77,7 @@
             built and started. This covers the general workflow of PollenFX.
           </p>
 
-          <img src="./img/snippet_general_overview.JPG" style="width:900px;" alt="">
+          <img src="./../../../documentation/img/snippet_general_overview.JPG" style="width:900px;" alt="">
 
           <p class="c-80">
             <span class="title">1. FXManager and Emitters</span> <br>
@@ -217,7 +217,7 @@
 
           <p class="c-80">
             <span class="title">1. CircularEmitterOrigin</span> <img style="height: 25px;"
-              src="./img/icon_circularEmitterOrigin.png"><br>
+              src="./../../../documentation/img/icon_circularEmitterOrigin.png"><br>
             Allows particles to spawn somewhere within an elliptical/circular area.<br>
 
           <h4>Constructor</h4>
@@ -234,7 +234,7 @@
 
           <p class="c-80">
             <span class="title">2. LineEmitterOrigin</span> <img style="height: 25px;"
-              src="./img/icon_lineEmitterOrigin.png"><br>
+              src="./../../../documentation/img/icon_lineEmitterOrigin.png"><br>
             Allows particles to spawn at some point on, or around a defined line segment.<br>
 
           <h4>Constructor</h4>
@@ -261,7 +261,7 @@
 
           <p class="c-80">
             <span class="title">3. PointEmitterOrigin</span> <img style="height: 25px;"
-              src="./img/icon_pointEmitterOrigin.png"><br>
+              src="./../../../documentation/img/icon_pointEmitterOrigin.png"><br>
             Allows particles to come to life on a point.<br>
 
           <h4>Constructor</h4>
@@ -277,7 +277,7 @@
 
           <p class="c-80">
             <span class="title">4. RectangularEmitterOrigin</span> <img style="height: 25px;"
-              src="./img/icon_rectangularEmitterOrigin.png"><br>
+              src="./../../../documentation/img/icon_rectangularEmitterOrigin.png"><br>
             Allows particles to come to life somewhere within a rectangular area.<br>
           <h4>Constructor</h4>
           <span class="parameter">posX </span>Numeric value representing the x position coordinate of the top left
@@ -393,7 +393,7 @@
 
 
           <p class="c-80">
-            <span class="title">1. EmitterShoot</span> <img style="height: 25px;" src="./img/icon_emitterShoot.png"><br>
+            <span class="title">1. EmitterShoot</span> <img style="height: 25px;" src="./../../../documentation/img/icon_emitterShoot.png"><br>
             The EmitterShoot object is an emitter that emits particles one by one in a linear flow. This can last
             indefinitely or be halted at some point. An example would be a dripping fosset.<br>
 
@@ -437,7 +437,7 @@
           </p>
 
           <p class="c-80">
-            <span class="title">2. EmitterBurst</span> <img style="height: 25px;" src="./img/icon_emitterBurst.png"><br>
+            <span class="title">2. EmitterBurst</span> <img style="height: 25px;" src="./../../../documentation/img/icon_emitterBurst.png"><br>
             The EmitterBurst object is an emitter that releases all of its particle in one go. These bursts can go on
             indefinitely or occur only once. An example would be a firework explosion.<br>
 
@@ -534,7 +534,7 @@
 
           <p class="c-80">
             <span class="title">1. ParticleDefaultData</span> <img style="height: 25px;"
-              src="./img/icon_defaultData.png"><br>
+              src="./../../../documentation/img/icon_defaultData.png"><br>
             In order for a particle to just be shown, it requires at least two properties; position and size. This is
             what the ParticleDefaultData object prescribes.<br>
 
@@ -572,15 +572,13 @@
           Adds a custom class to each particle element.
           <br>
 
-          <span class="parameter">.withAllowMirrored(mirrorX: boolean, mirrorY: boolean) (optional) </span>
-          Allows for random horizonal or vertical particle element mirroring to add further randomness.
-          <br>
+
 
           </p>
 
           <p class="c-80">
             <span class="title">2. ParticleCustomCSSData</span> <img style="height: 25px;"
-              src="./img/icon_customCSSData.png"><br>
+              src="./../../../documentation/img/icon_customCSSData.png"><br>
             The ParticleCustomCSSData allows for custom css stylerules to be added to each particle within an
             emitter.<br>
           <h4>Constructor</h4>
@@ -603,7 +601,7 @@
 
           <p class="c-80">
             <span class="title">3. ParticleDirectionData</span> <img style="height: 25px;"
-              src="./img/icon_directionData.png"><br>
+              src="./../../../documentation/img/icon_directionData.png"><br>
             The ParticleDirectionData defines the direction and speed of the particles of an emitter. Because this is
             a
             data object, this object by itself won't do anything. It is however
@@ -641,7 +639,7 @@
 
           <p class="c-80">
             <span class="title">4. ParticleRotationData</span> <img style="height: 25px;"
-              src="./img/icon_rotationData.png"><br>
+              src="./../../../documentation/img/icon_rotationData.png"><br>
             The ParticleRotationData object defines the rotation property of the particles spawned from an
             emitter.<br>
 
@@ -655,15 +653,18 @@
           rotation angle and
           randomizes the rotation value by a random angle within this cone. Default = -1 and means no
           randomization.<br>
+          randomization.<br>
           </p>
 
-
-
+          <h4>Fluent initialisation methods</h4>
+          <span class="parameter">.withAllowMirrored(mirrorX: boolean, mirrorY: boolean) (optional) </span>
+          Allows for random horizonal or vertical particle element mirroring to add further randomness.
+          <br>
 
 
           <p class="c-80">
             <span class="title">5. ParticleOpacityData</span> <img style="height: 25px;"
-              src="./img/icon_opacityData.png"><br>
+              src="./../../../documentation/img/icon_opacityData.png"><br>
             The ParticleOpacityData object defines the transparency of each particle.<br>
           <h4>Constructor</h4>
           <span class="parameter">opacity </span>Numeric value defining the transparency/opacity of the particles
@@ -680,7 +681,7 @@
 
           <p class="c-80">
             <span class="title">6. ParticleImageData</span> <img style="height: 25px;"
-              src="./img/icon_imageData.png"><br>
+              src="./../../../documentation/img/icon_imageData.png"><br>
             The ParticleImageData object allows for particles to be presented as an image.<br>
           <h4>Constructor</h4>
           <span class="parameter">url </span>String value representing the URL to the image.<br>
@@ -707,7 +708,7 @@
 
           <p class="c-80">
             <span class="title">7. ParticleFlipbookData</span> <img style="height: 25px;"
-              src="./img/icon_flipbookData.png"><br>
+              src="./../../../documentation/img/icon_flipbookData.png"><br>
             The ParticleFlipbookData object allows for spritesheets/flipbooks to be applied to the particle through
             which is being flipped in order to display an animation. This data object should be used along with
             ParticleFlipbookBehavior, in order to to achieve a meaningful animation.<br>
@@ -747,7 +748,7 @@
 
           <p class="c-80">
             <span class="title">8. ParticleColorfilterData (experimental)</span> <img style="height: 25px;"
-              src="./img/icon_colorfilterBehavior.png"><br>
+              src="./../../../documentation/img/icon_colorfilterBehavior.png"><br>
             The ParticleColorfilterData object allows for altering or adding color to the look of the particle as well
             as
             modifying hue, saturation and brightness. This is an experimental component. Be aware that some cases might
@@ -819,7 +820,7 @@
 
           <p class="c-80">
             <span class="title">1. ParticleDirectionalBehavior</span> <img style="height: 25px;"
-              src="./img/icon_directionData.png"><br>
+              src="./../../../documentation/img/icon_directionData.png"><br>
             The ParticleDirectionalBehavior allows for particle movement in a certain direction. It acts on the
             ParticleDefaultData and has no constructor parameters as all data it requires
             is already stored in the data object. It does however still need to be created and applied to the
@@ -834,7 +835,7 @@
 
           <p class="c-80">
             <span class="title">2. ParticleSizeByLifeBehavior</span> <img style="height: 25px;"
-              src="./img/icon_defaultData.png"><br>
+              src="./../../../documentation/img/icon_defaultData.png"><br>
             This behavioral type allows for gradual changes in size over the lifetime of the particles and acts upon
             ParticleDefaultData.<br>
           <h4>Constructor</h4>
@@ -876,7 +877,7 @@
 
           <p class="c-80">
             <span class="title">3. ParticleGravityBehavior</span> <img style="height: 25px;"
-              src="./img/icon_gravityBehavior.png"><br>
+              src="./../../../documentation/img/icon_gravityBehavior.png"><br>
             The ParticleGravityBehavior allows for adding gravity and acts upon ParticleDefaultData.<br>
 
           <h4>Constructor</h4>
@@ -897,7 +898,7 @@
 
           <p class="c-80">
             <span class="title">4. ParticleRotationBehavior</span> <img style="height: 25px;"
-              src="./img/icon_rotationData.png"><br>
+              src="./../../../documentation/img/icon_rotationData.png"><br>
             Defines how the particles should be rotating or 'spinning'. This behavior object acts on
             the ParticleRotationData.<br>
           <h4>Constructor</h4>
@@ -905,7 +906,7 @@
           rotate. Positive values
           yield counter clockwise rotation.<br>
           <h4>Fluent initialisation methods</h4>
-          <span class="parameter">.withNoise(rotationNois: number, allowReverse: boolean) (optional) </span>RotationNoise
+          <span class="parameter">.withNoise(rotationNoise: number, allowReverse: boolean) (optional) </span>RotationNoise
           is a
           numeric value which adds noise/random offset to
           the rotation
@@ -921,7 +922,7 @@
 
           <p class="c-80">
             <span class="title">5. ParticleOpacityByLifeBehavior</span> <img style="height: 25px;"
-              src="./img/icon_opacityData.png"><br>
+              src="./../../../documentation/img/icon_opacityData.png"><br>
             The ParticleOpacityByLifeBehavior allows for alteration in the particle's opacity over time. It acts upon
             the ParticleOpacityData object.<br>
           <h4>Constructor</h4>
@@ -954,7 +955,7 @@
 
           <p class="c-80">
             <span class="title">6. ParticleWindBehavior</span> <img style="height: 25px;"
-              src="./img/icon_windBehavior.png"><br>
+              src="./../../../documentation/img/icon_windBehavior.png"><br>
             The ParticleWindBehavior object allows to mimic the effects of wind. It allows just like
             directionalbehavior
             for movement to the particle, but the wind behavior allows for wavey movement.
@@ -1007,7 +1008,7 @@
 
           <p class="c-80">
             <span class="title">7. ParticleColorShiftBehavior (Experimental)</span> <img style="height: 25px;"
-              src="./img/icon_colorshiftBehavior.png"><br>
+              src="./../../../documentation/img/icon_colorshiftBehavior.png"><br>
             The ParticleColorShiftBehavior allows for a gradual change in what the ColorFilterData only initializes
             once, when it comes to hue, saturation, brightness and contrast. This behavior object acts on the
             ColorFilterData. This is an experimental component and some configurations might yield odd results. This
@@ -1060,7 +1061,7 @@
 
           <p class="c-80">
             <span class="title">8. ParticleColorfilterBehavior (Experimental)</span> <img style="height: 25px;"
-              src="./img/icon_colorfilterBehavior.png"><br>
+              src="./../../../documentation/img/icon_colorfilterBehavior.png"><br>
             The ParticleColorfilterBehavior allows for a gradual change in what the ColorFilterData only initializes
             once, when it comes to color. This behavior object acts on the ColorFilterData. This is an experimental
             component, and when it
@@ -1097,7 +1098,7 @@
 
           <p class="c-80">
             <span class="title">9. ParticleFlipbookBehavior</span> <img style="height: 25px;"
-              src="./img/icon_flipbookData.png"><br>
+              src="./../../../documentation/img/icon_flipbookData.png"><br>
             The ParticleFlipbookBehavior object allows flipping through the provided spritesheet in the provided
             ParticleFlipbookData object in order to display an animation.<br>
           <h4>Constructor</h4>
@@ -1120,7 +1121,7 @@
 
           <p class="c-80">
             <span class="title">10. ParticleRotationByDirectionBehavior</span> <img style="height: 25px;"
-              src="./img/icon_rotationData.png"><br>
+              src="./../../../documentation/img/icon_rotationData.png"><br>
             This behavior object allows the rotation to always be set to match the direction that the particle is
             going towards. The object acts on
             the rotation data object and does not function in combination with the ParticleRotationBehavior.<br>
@@ -1135,7 +1136,7 @@
 
           <p class="c-80">
             <span class="title">11. ParticleSpiralBehavior</span> <img style="height: 25px;"
-              src="./img/icon_spiralbehavior.png"><br>
+              src="./../../../documentation/img/icon_spiralbehavior.png"><br>
             This behavior object allows the direction of each particle to be outwards of the center of its origin, in a
             rotation fashion, giving it the appearance
             of a spiral<br>
@@ -1231,13 +1232,13 @@
             <br>
             <strong>1.</strong> Add the script to your project.<br>
             <strong>2.</strong> Add a reference to the script in your angular.json file as shown below:<br>
-            <img src="./img/snippet_07.JPG"><br>
+            <img src="./../../../documentation/img/snippet_07.JPG"><br>
             <strong>3.</strong> In the component in which you wish to use PollenFX, add a reference to PFX, declaring
             its existance.<br>
-            <img src="./img/snippet_08.JPG"><br>
+            <img src="./../../../documentation/img/snippet_08.JPG"><br>
             <strong>4.</strong> From now on, the engine can be used, albeit with every object taken from the PFX
             constant.<br>
-            <img src="./img/snippet_09.JPG"><br>
+            <img src="./../../../documentation/img/snippet_09.JPG"><br>
           </p>
         </div>
 
@@ -1278,7 +1279,7 @@
             Finally, here is a more in-depth example of the creation of a particle effect. Beware that the examples
             below might make use of resources such as images that are not provided in the demos.
           </p>
-          <img src="./img/extensive_code_snippet.JPG" style="width:1200px;" alt="">
+          <img src="./../../../documentation/img/extensive_code_snippet.JPG" style="width:1200px;" alt="">
         </div>
       </div>
     </div>

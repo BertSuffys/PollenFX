@@ -572,9 +572,7 @@
           Adds a custom class to each particle element.
           <br>
 
-          <span class="parameter">.withAllowMirrored(mirrorX: boolean, mirrorY: boolean) (optional) </span>
-          Allows for random horizonal or vertical particle element mirroring to add further randomness.
-          <br>
+
 
           </p>
 
@@ -655,10 +653,13 @@
           rotation angle and
           randomizes the rotation value by a random angle within this cone. Default = -1 and means no
           randomization.<br>
+          randomization.<br>
           </p>
 
-
-
+          <h4>Fluent initialisation methods</h4>
+          <span class="parameter">.withAllowMirrored(mirrorX: boolean, mirrorY: boolean) (optional) </span>
+          Allows for random horizonal or vertical particle element mirroring to add further randomness.
+          <br>
 
 
           <p class="c-80">
@@ -905,7 +906,7 @@
           rotate. Positive values
           yield counter clockwise rotation.<br>
           <h4>Fluent initialisation methods</h4>
-          <span class="parameter">.withNoise(rotationNois: number, allowReverse: boolean) (optional) </span>RotationNoise
+          <span class="parameter">.withNoise(rotationNoise: number, allowReverse: boolean) (optional) </span>RotationNoise
           is a
           numeric value which adds noise/random offset to
           the rotation

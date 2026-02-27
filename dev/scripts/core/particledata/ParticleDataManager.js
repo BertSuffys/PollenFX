@@ -7,9 +7,9 @@ class ParticleDataManager {
   constructor() {}
 
   /* FLUENT */
-  build() {
+  build(particleDataManager, particleBehaviorManager) {
     for (let [type, particleData] of this.particleData) {
-      particleData.build();
+      particleData.build(particleDataManager, particleBehaviorManager);
     }
     return this;
   }
@@ -29,10 +29,13 @@ class ParticleDataManager {
     }
   }
 
-  ensureData(key) {
+  ensureData(key, build = true) {
     let particleData = this.particleData.get(key);
     if (!FXUtil.valid(particleData)) {
-      return this.createDefaultData(key).build();
+      particleData = this.createDefaultData(key)
+      if(build){
+        particleData.build();
+      }
     }
     return particleData;
   }

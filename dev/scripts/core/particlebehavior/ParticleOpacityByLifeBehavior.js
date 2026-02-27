@@ -1,6 +1,7 @@
 class ParticleOpacityByLifeBehavior extends ParticleBehavior {
   /* FIELDS */
   duration = -1;
+  initialDuration = -1;
   initialOpacity = 0;
   lastOpacityIndexSum;
   opacityNoise = -1;
@@ -26,6 +27,7 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
     // dependencies
     this.particleOpacityData = particleDataManager.ensureData("opacity");
     // calculated properties
+    this.duration = this.initialDuration;
     this.opacityIterationCount = this.opacityIterationCount > 0 ? this.opacityIterationCount : this.initialOpacityMultipliers.length;
     this.calculateOpacityMultipliers();
     this.opacityIteration = 0;
@@ -41,13 +43,14 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
   }
 
   withDuration(duration, opacityIterationCount = -1) {
-    this.opacityIterationCount = opacityIterationCount;
-    this.duration = duration;
+    this.opacityIterationCount = opacityIterationCount < 0 ? Number.MAX_VALUE : opacityIterationCount;
+    this.initialDuration = duration;
     return this;
   }
 
-  reset() {
+  reset(particle) {
     this.setInitialOpacityData();
+    this.applyParticle(particle)
     this.opacityIteration = 0;
     this.lastOpacityIndexSum = 1 % this.opacityMultipliers.length;
     return this;
@@ -102,7 +105,7 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
   }
 
   applyParticle(particle) {
-    if (this.duration <= 0) {
+    if (this.initialDuration <= 0) {
       this.duration = particle.lifeTime;
     }
   }
@@ -117,7 +120,7 @@ class ParticleOpacityByLifeBehavior extends ParticleBehavior {
     if (copy) {
       return this;
     } else {
-      return new ParticleOpacityByLifeBehavior(this.initialOpacityMultipliers).withNoise(this.opacityNoise).withDuration(this.duration, this.opacityIterationCount);
+      return new ParticleOpacityByLifeBehavior(this.initialOpacityMultipliers).withNoise(this.opacityNoise).withDuration(this.initialDuration, this.opacityIterationCount);
     }
   }
 

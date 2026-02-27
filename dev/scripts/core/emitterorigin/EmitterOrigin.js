@@ -41,7 +41,7 @@ class EmitterOrigin {
   }
 
   /* FLUENT */
-  withDomProperties(includeMargin, includePadding, includeBorder) {
+  withDomProperties(includeMargin=false, includePadding=true, includeBorder=true) {
     this.includeMargin = includeMargin;
     this.includePadding = includePadding;
     this.includeBorder = includeBorder;

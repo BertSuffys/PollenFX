@@ -84,7 +84,7 @@ class FXManager {
 
   subscribe(subscription) {
     if (typeof subscription !== "function") {
-      FXUtil.pollenFXError("You must only subscribe to an FXManager with functions of type void=>(nowTime, runtime, fxManager)");
+      FXUtil.pollenFXError("You must only subscribe to an FXManager with functions of type void=>(runtime, fxManager)");
       return;
     }
     this.subscribers.push(subscription);
@@ -170,7 +170,7 @@ class FXManager {
       if (this.canAct) {
         this.emitterManager.act(this.deltaTime, this.startTime);
         for (let subscriber of this.subscribers) {
-          subscriber(nowTime, this.runtime, this);
+          subscriber(this.runtime, this);
         }
       }
     }

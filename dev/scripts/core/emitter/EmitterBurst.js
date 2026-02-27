@@ -23,6 +23,7 @@ class EmitterBurst extends Emitter {
 
   finite(particleCount, burstCount, emitterDuration, particleLifetime, particleLifetimeNoise = -1) {
     super.initFinite(particleCount, emitterDuration, particleLifetime, particleLifetimeNoise);
+    this.burstCount = burstCount;
     this.burstIntervalTime = emitterDuration / Math.max(burstCount - 1, 1);
     return this;
   }
@@ -36,6 +37,7 @@ class EmitterBurst extends Emitter {
   /* METHODS */
   act(deltaTime, startTimeMs) {
     if (this.active && !this.paused) {
+
       for (let i = 0; i < this.localBurstCount; i++) {
         this.burst();
         this.timeSinceLastBurst = this.timeSinceLastBurst % this.burstIntervalTime;
@@ -61,6 +63,14 @@ class EmitterBurst extends Emitter {
     for (let i = 0; i < this.particleCount; i++) {
       super.spawn();
     }
+    this.burstedCount++;
+  }
+
+  reset(){
+    super.reset();
+    this.timeSinceLastBurst = 0;
+    this.burstedCount = 0;
+    this.localBurstCount = 1;
   }
 
   getAverigeAliveParticleCount() {

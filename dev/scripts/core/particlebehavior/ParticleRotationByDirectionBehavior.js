@@ -9,7 +9,7 @@ class ParticleRotationByDirectionBehavior extends ParticleBehavior {
   /* CONSTRUCTOR */
   constructor(offset = -1) {
     super("rotation");
-    this.offset = offset == -1 ? 0 : Math.max(0, Math.min(360, offset));
+    this.offset = Math.max(0, Math.min(360, offset))
   }
 
 

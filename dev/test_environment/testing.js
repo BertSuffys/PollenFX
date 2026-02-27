@@ -35,7 +35,7 @@ function getFlipbookEmitter(id) {
   let emitter_shoot = new EmitterShoot(origin_rect).infinite(400, 5000).withDelay(0).withId(id);
 
   // data
-  const data_default = new ParticleDefaultData(120, 120).withClass("flame").pivot(Pivot.CENTER, Pivot.END).withAllowMirrored(true, false);
+  const data_default = new ParticleDefaultData(120, 120).withClass("flame").pivot(Pivot.CENTER, Pivot.END)
   const data_flipbook = new ParticleFlipbookData(`../img/fire.png`, 1920, 960, 4, 2);
   const data_css = new ParticleCustomCssData(`mix-blend-mode: color-dodge;`).zIndexRange(300,400);
   emitter_shoot.addParticleData(data_default);
@@ -187,7 +187,7 @@ function getSpiralEmitter(id) {
   let emitter_shoot = new EmitterShoot(origin_circle).infinite(30, 1500).withDelay(0).withId(id);
 
   // data
-  const data_default = new ParticleDefaultData(30, 28).sizeNoise(0.5, -1, false).withClass("flame").pivot(Pivot.CENTER, Pivot.END).withAllowMirrored(true, false);
+  const data_default = new ParticleDefaultData(30, 28).sizeNoise(0.5, -1, false).withClass("flame").pivot(Pivot.CENTER, Pivot.END)
   const data_css = new ParticleCustomCssData(`
     background: radial-gradient(circle at 35% 30%, #6a6b3a 0%, #5a4a2e 35%, #4a3b24 65%, #3a2e1c 100%);
     border-radius: 58% 42% 55% 45% / 48% 60% 40% 52%;
@@ -237,7 +237,6 @@ function getChatGPTEmitter(id) {
   // Base particle
   const data_default = new ParticleDefaultData(18, 18)
     .sizeNoise(0.6, 0.6, true)
-    .withAllowMirrored(true, true)
     .withClass("chatgpt-neuron");
 
   // Direction outward
@@ -246,7 +245,7 @@ function getChatGPTEmitter(id) {
     .withConeNoise(180);
 
   // Rotation
-  const data_rotation = new ParticleRotationData(0, 1200);
+  const data_rotation = new ParticleRotationData(0, 1200).withAllowMirrored(true, true);
 
   // Base color filter
   const data_colorfilter = new ParticleColorfilterData()
