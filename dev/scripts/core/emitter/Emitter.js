@@ -101,8 +101,13 @@ class Emitter extends FXItem {
       this.setDefaultDataAndBehavior();
     }
 
-    // Provide origin to defaultData if present
-    this.particleData.get("default")?.setEmitterOrigin(this.emitterOrigin);
+    // Provide origin to defaultData if present, and if not, provide it.
+    const particleDefaultData = this.particleData.get("default");
+    if(!particleDefaultData){
+      particleDefaultData = ParticleDefaultData.createDefault();
+      this.addParticleData(particleDefaultData);
+    }
+    particleDefaultData.setEmitterOrigin(this.emitterOrigin);
 
     // All DOM related particle stuff
     this.createDOMDependencies();

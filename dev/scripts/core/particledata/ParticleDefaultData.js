@@ -67,7 +67,7 @@ class ParticleDefaultData extends ParticleData {
   }
 
   static createDefault() {
-    return new ParticleDefaultData(10, 10, new PointEmitterOrigin(0, 0));
+    return new ParticleDefaultData(20, 20);
   }
 
   createNew(copy) {

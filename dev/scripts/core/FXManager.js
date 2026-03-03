@@ -13,7 +13,7 @@ class FXManager {
   stopped = false; // whether the FXManager was stopped
   canAct = false; // global field combining all other evaluation fields to base the act method on.
   static DEBUG = false; // whether the debugging visuals must be displayed. static as must be available globally
-  static ALLOW_DOM_OVERFLOW = false; // whether or not overflow is allowed to occur on the body. static as there must only be such a value, regardless of manager count.
+  static ALLOW_DOM_OVERFLOW = true; // whether or not overflow is allowed to occur on the body. static as there must only be such a value, regardless of manager count.
   static VERSION = "1.0.0"; // version
   // misc
   subscribers = [];

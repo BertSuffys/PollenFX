@@ -1,22 +1,20 @@
 class ParticleFlipbookBehavior extends ParticleBehavior {
   /* FIELDS */
   flipCount;
-  initialSpeed;
+  speed = null;
+  initialSpeed = null;
   speedNoise = -1;
   timeSinceLastFrameshift;
   flipbookData;
-  speed;
   defaultData;
   endingFrameCount = -1;
 
   
-
   /* CONSTRUCTOR */
-  constructor(speed) {
+  constructor(speed = null) {
     super("flipbook");
     this.initialSpeed = speed;
   }
-
 
 
   /* FLUENT */
@@ -24,7 +22,9 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     // core properties
     this.flipCount = 0;
     this.timeSinceLastFrameshift = 0;
-    this.speed = this.speedNoise > 0 ? PollenMath.relativeMap(this.initialSpeed, 1 + this.speedNoise, Math.random()) : this.initialSpeed;
+    if(this.initialSpeed != null){
+      this.speed = this.speedNoise > 0 ? PollenMath.relativeMap(this.initialSpeed, 1 + this.speedNoise, Math.random()) : this.initialSpeed;
+    }
     // ensure dependencies
     this.flipbookData = particleDataManager.ensureData("flipbook");
     this.defaultData = particleDataManager.ensureData("default");
@@ -37,10 +37,12 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
   reset() {
     this.flipCount = 0;
     this.timeSinceLastFrameshift = 0;
-    if (this.speedNoise > 0) {
-      this.speed = PollenMath.relativeMap(this.initialSpeed, 1 + this.speedNoise, Math.random());
-    } else {
-      this.speed = this.initialSpeed;
+    if(this.initialSpeed){
+      if (this.speedNoise > 0) {
+        this.speed = PollenMath.relativeMap(this.initialSpeed, 1 + this.speedNoise, Math.random());
+      } else {
+        this.speed = this.initialSpeed;
+      }
     }
     return this;
   }
@@ -91,9 +93,15 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     return new ParticleFlipbookBehavior(this.initialSpeed).withNoise(this.speedNoise).withEndingFrame(this.endingFrameCount);
   }
 
-  applyParticle(particle) {}
+  applyParticle(particle) {
+    if(this.speed == null){
+      const particleLifetimeSeconds = particle.lifetime / 1000; 
+      const speed = particleLifetimeSeconds / this.flipbookData.frameCount;
+      this.speed = speed;
+    }
+  }
 
   static createDefault() {
-    return new ParticleFlipbookBehavior(30).withNoise(-1).withEndingFrame(-1);
+    return new ParticleFlipbookBehavior().withNoise(-1).withEndingFrame(-1);
   }
 }

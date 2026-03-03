@@ -34,6 +34,8 @@
 -> 8. When the particlelifetime is set to -1, and in a behaviortype the duration is set to -1, there is no way to know over which time the behavior is going to play out.
       In case of a particlellifetime of -1, this behavior duration must be provided. Solve by throwing error. Maybe let data objects also store data now related to behavior (that gets updated),
       and let behavior only update data?
+-> 9. Overflow on dom allows scrolling the full website, but pushes the scrollbar open when particles go out of bounds which is bad. No overflow on dom
+      does no longer allow you to scroll in the website. this is not ideal.
 
 
   ----- Terminology ----- 
