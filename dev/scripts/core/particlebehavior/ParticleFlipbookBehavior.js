@@ -10,11 +10,13 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
   endingFrameCount = -1;
 
   
+
   /* CONSTRUCTOR */
   constructor(speed = null) {
     super("flipbook");
     this.initialSpeed = speed;
   }
+
 
 
   /* FLUENT */
@@ -57,6 +59,9 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
     return this;
   }
   
+
+
+  
   /* METHODS */
   act(particle, startTimeMs, deltaTime, deltaTimeSeconds) {
     // keep size synced
@@ -95,8 +100,8 @@ class ParticleFlipbookBehavior extends ParticleBehavior {
 
   applyParticle(particle) {
     if(this.speed == null){
-      const particleLifetimeSeconds = particle.lifetime / 1000; 
-      const speed = particleLifetimeSeconds / this.flipbookData.frameCount;
+      const particleLifetimeSeconds = particle.lifeTime / 1000; 
+      const speed = this.flipbookData.frameCount / particleLifetimeSeconds;
       this.speed = speed;
     }
   }

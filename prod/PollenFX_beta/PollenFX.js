@@ -465,7 +465,6 @@ c.opacity = opacity;
 return c;
 }
 validateAndCorrectHexInput(hex) {
-console.trace()
 if (!FXUtil.valid(hex)) hex = ColorUtil.debugColor;
 if (!hex.startsWith("#")) hex = "#" + hex;
 hex = hex.slice(0, Color.HEX_LENGTH).padEnd(Color.HEX_LENGTH, "F");

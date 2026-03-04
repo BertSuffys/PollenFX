@@ -163,7 +163,6 @@ class Color {
   /* -------------------------------------------------------------------------- */
 
   validateAndCorrectHexInput(hex) {
-    console.trace()
     if (!FXUtil.valid(hex)) hex = ColorUtil.debugColor;
     if (!hex.startsWith("#")) hex = "#" + hex;
 

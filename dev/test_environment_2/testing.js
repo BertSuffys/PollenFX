@@ -20,26 +20,35 @@ function getEmitter() {
   let anchor = document.getElementById("anchor_1");
 
   // origin
-  const origin_circle = new CircularEmitterOrigin(100, 200, 100, 100).withAnchor(anchor).withOverflow(true).withContainerProperties(170, 170, 300, 100, null, null, PositionUnit.PIXEL)
+  const origin = new RectangularEmitterOrigin(27, 27, 54, 54).withAnchor(anchor).withOverflow(true);
 
   // emitter
-  let emitter_shoot = new EmitterShoot(origin_circle).infinite(10, 3000).withId("roebob");
+  let emitter_shoot = new EmitterShoot(origin).infinite(30, 2000).withId("my_origin");
 
   // data
-  const data_default = new ParticleDefaultData(20, 20);
+  const data_default = new ParticleDefaultData(75, 75);
   const data_css = new ParticleCustomCssData(`background-color: red; border-radius: 20px; border: 1px solid white;`).zIndexRange(300, 400);
-  const data_direction = new ParticleDirectionData(90, 150)
+  const data_direction = new ParticleDirectionData(90, 500).withConeNoise(45);
+  const data_flipbook = new ParticleFlipbookData('../img/soap_bubbles.png', 4000, 2298, 7, 4);
   emitter_shoot.addParticleData(data_default);
-  emitter_shoot.addParticleData(data_css);
+  //emitter_shoot.addParticleData(data_css);
   emitter_shoot.addParticleData(data_direction);
+  emitter_shoot.addParticleData(data_flipbook);
 
   // behavior
   const behavior_direction = new ParticleDirectionalBehavior();
-  //emitter_shoot.addParticleBehavior(behavior_direction);
+  const behavior_gravity = new ParticleGravityBehavior(340);
+  const behavior_size = new ParticleSizeByLifeBehavior([0,0.65,0.8,1,1,2]);
+  const behavior_flipbook = new ParticleFlipbookBehavior();
+  emitter_shoot.addParticleBehavior(behavior_direction);
+  emitter_shoot.addParticleBehavior(behavior_gravity);
+  emitter_shoot.addParticleBehavior(behavior_size);
+  emitter_shoot.addParticleBehavior(behavior_flipbook);
 
   // finish
   return emitter_shoot;
 }
+
 
 function getComparisonEmitter() {
   const origin_rect = new RectangularEmitterOrigin(275, 635, 65, 30);

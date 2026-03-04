@@ -16,7 +16,6 @@ class ParticleFlipbookData extends ParticleImageData {
     this.frameCountX = frameCountX;
     this.frameCountY = frameCountY;
     this.frameCount = frameCountX * frameCountY;
-    this.currentFrameIndex = (this.startFrame == -1) ? (Math.ceil(Math.random() * (frameCountX * frameCountY))) : (this.startFrame);
     // Image data overrides
     this.type = "flipbook";
     this.imageFitting = ImageFitting.CONTAIN;
@@ -24,6 +23,7 @@ class ParticleFlipbookData extends ParticleImageData {
 
   /* FLUENT */
   build(particleDataManager, particleBehaviorManager) {
+    this.currentFrameIndex = (this.startFrame == -1) ? (Math.ceil(Math.random() * (frameCountX * frameCountY))) : (this.startFrame);
     this.defaultData = particleDataManager.ensureData("default");
     this.particleWidth = this.defaultData.width;
     this.particleHeight = this.defaultData.height;
@@ -37,6 +37,7 @@ class ParticleFlipbookData extends ParticleImageData {
   }
 
   reset() {
+    this.currentFrameIndex = (this.startFrame == -1) ? (Math.ceil(Math.random() * (frameCountX * frameCountY))) : (this.startFrame);
     return this;
   }
 
